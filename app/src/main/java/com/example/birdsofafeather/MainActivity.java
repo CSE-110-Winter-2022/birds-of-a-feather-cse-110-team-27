@@ -7,6 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.db.course.ICourse;
+import com.example.birdsofafeather.db.user.User;
+import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -15,7 +20,10 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
 
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
@@ -31,6 +39,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+
+        //TODO: remove this when everyone understands how to use the database
+       // I just have this for testing purposes now
+            // creates a new user
+            User user = new User(0, "Anthony Tarbinian", "atarbini@ucsd.edu");
+            db.userWithCoursesDao().insert(user);
+            // fetches all of the users
+            System.out.println(db.userWithCoursesDao().getAll().get(0).getName());
+            // fetches user with id 0
+            System.out.println(db.userWithCoursesDao().getUser(0).getName());
+
+            // creates new course
+            Course newCourse = new Course(0, 2021, "FALL", "CSE",110);
+//            db.coursesDao().delete(newCourse);
+            db.userWithCoursesDao().insertCourse(newCourse);
+            // fetches all of the users
+            System.out.println(db.userWithCoursesDao().getAll().get(0).getCourses().get(0).getDepartment());
+            // fetches user with id 0
+            System.out.println(db.userWithCoursesDao().getUser(0).getCourses().get(0).getDepartment());
+
+
         setContentView(R.layout.activity_main);
 
         signin = findViewById(R.id.sign_in_button);
