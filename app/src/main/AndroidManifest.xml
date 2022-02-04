@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
         <activity
+            android:name=".ConfirmNameActivity"
+            android:exported="false" />
+        <activity
             android:name=".secondActivity"
             android:exported="false" />
         <activity
