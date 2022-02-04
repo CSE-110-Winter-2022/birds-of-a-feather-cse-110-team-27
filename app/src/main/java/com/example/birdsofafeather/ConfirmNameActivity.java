@@ -29,12 +29,22 @@ public class ConfirmNameActivity extends AppCompatActivity {
 
     public void nameConfirmOnClick(View view) {
 
+        //Get the name from the text box
+        TextView name_input_textView = findViewById(R.id.name_input_textView);
+        String name = name_input_textView.getText().toString();
+
+        //If user didn't provide a name, we show an alert.
+        if(name.equals("")){
+            Utility.showAlert(this, "You need a name to continue!");
+            return;
+        }
+
 
         //Save the name into SharedPreferences when user hits "Confirm"
         SharedPreferences sp =getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
-        TextView name_input_textView = findViewById(R.id.name_input_textView);
-        editor.putString("name", name_input_textView.getText().toString());
+
+        editor.putString("name", name);
         editor.apply();
 
         //TODO: Update intent to next activity
