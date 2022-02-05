@@ -2,7 +2,10 @@ package com.example.birdsofafeather.db.course;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import com.example.birdsofafeather.utils.Utilities;
 
 
 @Entity(tableName = "courses")
@@ -25,8 +28,17 @@ public class Course  extends ICourse {
     public int course_number;
 
     //TODO: randomly generate ID
+    @Ignore
     public Course(int id, int year, String quarter, String department, int course_number){
         this.id = id;
+        this.year = year;
+        this.quarter = quarter;
+        this.department = department;
+        this.course_number = course_number;
+    }
+
+    public Course(int year, String quarter, String department, int course_number) {
+        this.id = Utilities.generateUniqueId();
         this.year = year;
         this.quarter = quarter;
         this.department = department;

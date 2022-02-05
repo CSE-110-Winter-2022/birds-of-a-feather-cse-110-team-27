@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BirdsOfAFeather</string>
+    <string name="quarter_prompt">Quarter</string>
+    <string name="course_number">Course Number</string>
+    <string name="enter_classes">Enter Classes</string>
+    <string name="year">Year</string>
+    <string name="add_course">Add Course</string>
 </resources>

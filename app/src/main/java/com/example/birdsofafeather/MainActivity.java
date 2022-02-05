@@ -2,6 +2,7 @@ package com.example.birdsofafeather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -116,5 +117,11 @@ public class MainActivity extends AppCompatActivity {
             Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
 //            updateUI(null);
         }
+    }
+
+    public void onEnterClassClicked(View view) {
+        Context context = view.getContext();
+        Intent intent = new Intent(context, EnterClassActivity.class);
+        context.startActivity(intent);
     }
 }

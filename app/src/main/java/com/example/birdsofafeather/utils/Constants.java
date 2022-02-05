@@ -2,6 +2,7 @@ package com.example.birdsofafeather.utils;
 
 public class Constants {
     public static final String[] quarters =  {
+            "Quarter",
             "FALL",
             "WINTER",
             "SPRING",
@@ -10,6 +11,7 @@ public class Constants {
     };
 
     public static final String[] departments = {
+            "Subject",
             "MATH",
             "CSE",
             "BILD",
