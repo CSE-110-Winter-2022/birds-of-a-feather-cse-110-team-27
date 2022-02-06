@@ -85,8 +85,10 @@ public class EnterClassActivity extends AppCompatActivity {
            return;
        }
 
+        System.out.println("User" + user.getId());
        Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue());
         db.coursesDao().insert(newCourse);
+        System.out.println(db.coursesDao().maxId());
         courseViewAdapter.addCourse(newCourse);
         Utilities.showAlert(this, String.format("Added %s %s: %s %s", department, course_number, quarter, year));
 
@@ -152,7 +154,7 @@ public class EnterClassActivity extends AppCompatActivity {
 
 
         // Set the title with the person.
-        setTitle (user.getName ()) ;
+        setTitle (user.getName ());
         // Set up the recycler view to show our database contents.
         courseRecyclerView=findViewById(R.id.courses_view);
         coursesLayoutManager = new LinearLayoutManager( this) ;

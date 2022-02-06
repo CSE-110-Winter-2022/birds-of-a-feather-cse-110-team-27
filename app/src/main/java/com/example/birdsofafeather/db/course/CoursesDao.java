@@ -1,5 +1,7 @@
 package com.example.birdsofafeather.db.course;
 
+import static androidx.room.OnConflictStrategy.IGNORE;
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +16,7 @@ public interface CoursesDao {
 //    @Transaction
 //    @Query("SELECT * FROM courses where course_id=:userId")
 //    List<Course> getForUser(int userId);
-    @Query("SELECT MAX(id) FROM users")
+    @Query("SELECT MAX(course_id) FROM courses")
     int maxId();
 
     @Query("SELECT * FROM courses WHERE course_id=:courseId")
@@ -23,7 +25,7 @@ public interface CoursesDao {
     @Query("SELECT * FROM courses")
     List<Course> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = IGNORE)
     void insert(Course course);
 
     @Delete

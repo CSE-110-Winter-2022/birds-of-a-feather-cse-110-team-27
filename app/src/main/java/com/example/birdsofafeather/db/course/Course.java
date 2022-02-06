@@ -13,7 +13,7 @@ public class Course  extends ICourse {
 
     @PrimaryKey
     @ColumnInfo(name = "course_id")
-    public int id;
+    public int courseId;
 
     @ColumnInfo(name = "user_id")
     public int userId;
@@ -30,8 +30,8 @@ public class Course  extends ICourse {
     @ColumnInfo(name = "course_number")
     public int course_number;
 
-    public Course(int id, int userId, int year, String quarter, String department, int course_number){
-        this.id = id;
+    public Course(int courseId, int userId, int year, String quarter, String department, int course_number){
+        this.courseId = courseId;
         this.userId = userId;
         this.year = year;
         this.quarter = quarter;
@@ -41,7 +41,7 @@ public class Course  extends ICourse {
 
     @Override
     public int getId() {
-        return this.id;
+        return this.courseId;
     }
 
     @Override

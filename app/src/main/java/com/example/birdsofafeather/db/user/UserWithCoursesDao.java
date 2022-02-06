@@ -29,8 +29,8 @@ public abstract class UserWithCoursesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     public abstract void insert(User user);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    public abstract void insertCourse(Course course);
+//    @Insert(onConflict = OnConflictStrategy.IGNORE)
+//    public abstract void insertCourse(Course course);
 
 //    @Update
 //    void update(UserWithCourses user);
