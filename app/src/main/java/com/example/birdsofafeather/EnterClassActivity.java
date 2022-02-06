@@ -2,6 +2,8 @@ package com.example.birdsofafeather;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +19,25 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.db.user.IUser;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.utils.Constants;
+import com.example.birdsofafeather.utils.CoursesViewAdapter;
 import com.example.birdsofafeather.utils.Utilities;
 
 import java.sql.Array;
+import java.util.List;
+
 
 public class EnterClassActivity extends AppCompatActivity {
+
+    private AppDatabase db;
+    private IUser user;
+    private RecyclerView courseRecyclerView;
+    private RecyclerView.LayoutManager coursesLayoutManager;
+    private CoursesViewAdapter courseViewAdapter; //working on it
 
     public void onAddCourseClicked(View view) {
        EditText year_input = this.findViewById(R.id.year_input);
@@ -107,6 +120,8 @@ public class EnterClassActivity extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,6 +134,29 @@ public class EnterClassActivity extends AppCompatActivity {
         Spinner departmentDropdown = findViewById(R.id.department_dropdown);
         DropdownAdapter departmentSelectionAdapter = new DropdownAdapter(this, Constants.departments);
         departmentDropdown.setAdapter(departmentSelectionAdapter);
+
+        Intent intent = getIntent();
+        int userId = intent.getIntExtra( "user_id", 0); //for now default is 0. Maybe last activity pass some value???
+
+        db = AppDatabase.singleton(this);
+        user = db.userWithCoursesDao().getUser(userId);
+
+
+        //List<Course> courses = db.coursesDao().getForId(userId);   //couseId or userId
+        List<Course> courses = user.getCourses();
+
+
+        // Set the title with the person.
+        setTitle (user.getName ()) ;
+        // Set up the recycler view to show our database contents.
+        courseRecyclerView=findViewById(R.id.courses_view);
+        coursesLayoutManager = new LinearLayoutManager( this) ;
+        courseRecyclerView.setLayoutManager(coursesLayoutManager);
+        courseViewAdapter = new CoursesViewAdapter (courses, (course)->{
+            db.coursesDao().delete(course);
+        });
+        courseRecyclerView.setAdapter(courseViewAdapter);
+
 
     }
 }

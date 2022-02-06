@@ -8,71 +8,80 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="109dp"
-        android:text="@string/enter_classes"
+        android:layout_width="222dp"
+        android:layout_height="89dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/Choose_your_past_courses"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.613"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/department_dropdown"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="516dp"
+        android:spinnerMode="dialog"
+        app:layout_constraintStart_toStartOf="@+id/quarter_dropdown"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/quarter_dropdown"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginTop="516dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/year_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="516dp"
+        android:layout_marginEnd="100dp"
         android:ems="10"
         android:hint="@string/year"
         android:inputType="date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Spinner
-        android:id="@+id/quarter_dropdown"
-        android:layout_width="210dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="17dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/year_input" />
-
-    <Spinner
-        android:id="@+id/department_dropdown"
-        android:layout_width="211dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
-        android:spinnerMode="dialog"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/quarter_dropdown" />
+        app:layout_constraintEnd_toStartOf="@+id/department_dropdown"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/course_number_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="21dp"
+        android:layout_width="100dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="516dp"
         android:ems="10"
         android:hint="@string/course_number"
         android:inputType="numberSigned"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/department_dropdown" />
+        app:layout_constraintStart_toStartOf="@+id/department_dropdown"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/add_course"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/add_course"
+        android:layout_marginStart="140dp"
+        android:layout_marginBottom="24dp"
         android:onClick="onAddCourseClicked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/course_number_input" />
+        android:text="@string/add_course"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/courses_view"
+        android:layout_width="404dp"
+        android:layout_height="374dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="44dp"
+        android:="@id/courses_view"
+        app:layout_constraintBottom_toBottomOf="@+id/quarter_dropdown"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!--    <com.toptoche.searchablespinnerlibrary.SearchableSpinner-->
     <!--        android:layout_width="wrap_content"-->

@@ -13,6 +13,7 @@ import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.course.ICourse;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Utilities;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,7 +26,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    User user;
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         //TODO: remove this when everyone understands how to use the database
        // I just have this for testing purposes now
             // creates a new user
-            User user = new User(0, "Anthony Tarbinian", "atarbini@ucsd.edu");
+            user = new User(0, "Anthony Tarbinian", "atarbini@ucsd.edu");
             db.userWithCoursesDao().insert(user);
             // fetches all of the users
             System.out.println(db.userWithCoursesDao().getAll().get(0).getName());
@@ -120,8 +121,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onEnterClassClicked(View view) {
+        if(user == null){
+            Utilities.showAlert(this,"SIGN IN FIRST");
+            return;
+        }
         Context context = view.getContext();
         Intent intent = new Intent(context, EnterClassActivity.class);
+        intent.putExtra("userId", user.getId());
         context.startActivity(intent);
     }
 }
