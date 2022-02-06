@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
-            Intent intent = new Intent(MainActivity.this, secondActivity.class);
+            Intent intent = new Intent(MainActivity.this, ConfirmNameActivity.class);
             startActivity(intent);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
