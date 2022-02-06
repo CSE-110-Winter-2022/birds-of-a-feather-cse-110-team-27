@@ -1,8 +1,13 @@
 package com.example.birdsofafeather;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 
 public class MainActivity extends AppCompatActivity {
 
+    public final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
@@ -25,7 +31,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        updateUI(account);
+        requestEnableBluetooth();
+    }
+
+    public boolean bluetoothEnabled(){
+        if (bluetoothAdapter == null) {
+            return false;
+        }
+        return bluetoothAdapter.isEnabled();
+    }
+
+    @SuppressLint("MissingPermission")
+    public void requestEnableBluetooth(){
+        if(!bluetoothEnabled()){
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivity(intent);
+        }
     }
 
     @Override
