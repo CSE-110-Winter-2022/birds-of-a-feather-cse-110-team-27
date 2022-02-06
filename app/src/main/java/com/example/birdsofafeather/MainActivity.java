@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
             // creates a new user
             user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
             db.userWithCoursesDao().insert(user);
-            // creates new course
-            Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), 2021, "FALL", "CSE",110);
-            db.coursesDao().insert(newCourse);
+//            // creates new course
+//            Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), 2021, "FALL", "CSE",110);
+//            db.coursesDao().insert(newCourse);
 
 
         setContentView(R.layout.activity_main);
