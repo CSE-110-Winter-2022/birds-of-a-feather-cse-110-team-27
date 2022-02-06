@@ -47,21 +47,11 @@ public class MainActivity extends AppCompatActivity {
         //TODO: remove this when everyone understands how to use the database
        // I just have this for testing purposes now
             // creates a new user
-            user = new User(0, "Anthony Tarbinian", "atarbini@ucsd.edu");
+            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
             db.userWithCoursesDao().insert(user);
-            // fetches all of the users
-            // fetches user with id 0
-//            System.out.println(db.userWithCoursesDao().getUser(user.getId()).getName());
-        System.out.println(user.getId());
-
             // creates new course
-            Course newCourse = new Course(1, user.getId(), 2021, "FALL", "CSE",110);
-//            db.coursesDao().delete(newCourse);
+            Course newCourse = new Course(db.coursesDao().maxId(), user.getId(), 2021, "FALL", "CSE",110);
             db.userWithCoursesDao().insertCourse(newCourse);
-            // fetches all of the users
-            System.out.println(db.userWithCoursesDao().getAll().get(0).getCourses().get(0).getDepartment());
-            // fetches user with id 0
-            System.out.println(db.userWithCoursesDao().getUser(0).getCourses().get(0).getDepartment());
 
 
         setContentView(R.layout.activity_main);

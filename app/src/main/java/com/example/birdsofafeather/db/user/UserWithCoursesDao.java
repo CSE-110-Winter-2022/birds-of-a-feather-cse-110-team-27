@@ -14,6 +14,10 @@ import java.util.List;
 
 @Dao
 public abstract class UserWithCoursesDao {
+
+    @Query("SELECT MAX(id) FROM users")
+    public abstract int maxId();
+
     @Transaction
     @Query("SELECT * FROM users where id=:userId")
     public abstract UserWithCourses getUser(int userId);

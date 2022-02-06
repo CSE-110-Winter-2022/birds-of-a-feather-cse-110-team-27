@@ -54,15 +54,19 @@ public class EnterClassActivity extends AppCompatActivity {
 
        if (year.isEmpty()) {
             Utilities.showAlert(this, "Missing year field");
+            return;
         }
         if (quarter.isEmpty()) {
             Utilities.showAlert(this, "Missing quarter field");
+            return;
         }
         if (department.isEmpty()) {
             Utilities.showAlert(this, "Missing department field");
+            return;
         }
         if (course_number.isEmpty()) {
             Utilities.showAlert(this, "Missing course number field");
+            return;
         }
 
        Integer year_int;
@@ -81,8 +85,9 @@ public class EnterClassActivity extends AppCompatActivity {
            return;
        }
 
-       Course newCourse = new Course(0, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue());
-//               add to db here
+       Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue());
+        db.coursesDao().insert(newCourse);
+        courseViewAdapter.addCourse(newCourse);
         Utilities.showAlert(this, String.format("Added %s %s: %s %s", department, course_number, quarter, year));
 
     }
