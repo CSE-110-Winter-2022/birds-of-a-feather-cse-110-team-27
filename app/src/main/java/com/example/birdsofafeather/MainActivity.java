@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
             user = new User(0, "Anthony Tarbinian", "atarbini@ucsd.edu");
             db.userWithCoursesDao().insert(user);
             // fetches all of the users
-            System.out.println(db.userWithCoursesDao().getAll().get(0).getName());
             // fetches user with id 0
-            System.out.println(db.userWithCoursesDao().getUser(0).getName());
+//            System.out.println(db.userWithCoursesDao().getUser(user.getId()).getName());
+        System.out.println(user.getId());
 
             // creates new course
-            Course newCourse = new Course(0, 2021, "FALL", "CSE",110);
+            Course newCourse = new Course(1, user.getId(), 2021, "FALL", "CSE",110);
 //            db.coursesDao().delete(newCourse);
             db.userWithCoursesDao().insertCourse(newCourse);
             // fetches all of the users

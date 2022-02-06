@@ -81,7 +81,7 @@ public class EnterClassActivity extends AppCompatActivity {
            return;
        }
 
-       Course newCourse = new Course(year_int.intValue(), quarter, department, course_number_int.intValue());
+       Course newCourse = new Course(0, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue());
 //               add to db here
         Utilities.showAlert(this, String.format("Added %s %s: %s %s", department, course_number, quarter, year));
 

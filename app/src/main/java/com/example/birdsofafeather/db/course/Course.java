@@ -15,6 +15,9 @@ public class Course  extends ICourse {
     @ColumnInfo(name = "course_id")
     public int id;
 
+    @ColumnInfo(name = "user_id")
+    public int userId;
+
     @ColumnInfo(name = "year")
     public int year;
 
@@ -27,18 +30,9 @@ public class Course  extends ICourse {
     @ColumnInfo(name = "course_number")
     public int course_number;
 
-    //TODO: randomly generate ID
-    @Ignore
-    public Course(int id, int year, String quarter, String department, int course_number){
+    public Course(int id, int userId, int year, String quarter, String department, int course_number){
         this.id = id;
-        this.year = year;
-        this.quarter = quarter;
-        this.department = department;
-        this.course_number = course_number;
-    }
-
-    public Course(int year, String quarter, String department, int course_number) {
-        this.id = Utilities.generateUniqueId();
+        this.userId = userId;
         this.year = year;
         this.quarter = quarter;
         this.department = department;

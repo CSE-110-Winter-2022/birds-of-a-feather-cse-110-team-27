@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public abstract class UserWithCoursesDao {
     @Transaction
-    @Query("SELECT * FROM users where user_id=:userId")
+    @Query("SELECT * FROM users where id=:userId")
     public abstract UserWithCourses getUser(int userId);
 
     @Transaction

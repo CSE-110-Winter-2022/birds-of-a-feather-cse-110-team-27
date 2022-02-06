@@ -79,7 +79,6 @@
         android:layout_height="374dp"
         android:layout_marginStart="4dp"
         android:layout_marginBottom="44dp"
-        android:="@id/courses_view"
         app:layout_constraintBottom_toBottomOf="@+id/quarter_dropdown"
         app:layout_constraintStart_toStartOf="parent" />
 

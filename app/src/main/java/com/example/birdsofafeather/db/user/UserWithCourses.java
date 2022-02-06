@@ -17,11 +17,9 @@ public class UserWithCourses implements IUser {
     @Embedded
     public User user;
 
-    @Relation(parentColumn = "user_id",
-            entityColumn = "course_id",
-            entity = Course.class,
-//            associateBy = @Junction(CourseUserRef.class)
-            projection = {}
+    @Relation(parentColumn = "id",
+            entityColumn = "user_id",
+            entity = Course.class
     )
     public List<Course> courses;
 

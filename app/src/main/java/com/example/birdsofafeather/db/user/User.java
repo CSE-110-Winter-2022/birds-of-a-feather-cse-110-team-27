@@ -14,7 +14,7 @@ import java.util.List;
 public class User {
 
     @PrimaryKey
-    @ColumnInfo(name = "user_id")
+    @ColumnInfo(name = "id")
     int id;
 
     @ColumnInfo(name = "name")
