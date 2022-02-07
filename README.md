@@ -1,5 +1,7 @@
 # birds-of-a-feather-cse-110-team-27
 
+[![Unit Tests](https://github.com/CSE-110-Winter-2022/birds-of-a-feather-cse-110-team-27/workflows/Run%20Android%20Unit%20Tests/badge.svg)](https://github.com/CSE-110-Winter-2022/birds-of-a-feather-cse-110-team-27/actions/workflows/unit-test.yml)
+
 ![alt text for screen readers](./images/professor.png "Text to show on mouseover")
 ***
 
