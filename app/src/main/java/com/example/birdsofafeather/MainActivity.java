@@ -2,12 +2,21 @@ package com.example.birdsofafeather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.db.course.ICourse;
+import com.example.birdsofafeather.db.user.User;
+import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Utilities;
+
 import com.example.birdsofafeather.Bluetooth;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -16,8 +25,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
+    User user;
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
@@ -34,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+
+        //TODO: remove this when everyone understands how to use the database
+       // I just have this for testing purposes now
+            // creates a new user
+            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
+            db.userWithCoursesDao().insert(user);
+//            // creates new course
+//            Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), 2021, "FALL", "CSE",110);
+//            db.coursesDao().insert(newCourse);
+
+
         setContentView(R.layout.activity_main);
 
         signin = findViewById(R.id.sign_in_button);
@@ -88,5 +113,16 @@ public class MainActivity extends AppCompatActivity {
             Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
 //            updateUI(null);
         }
+    }
+
+    public void onEnterClassClicked(View view) {
+        if(user == null){
+            Utilities.showAlert(this,"SIGN IN FIRST");
+            return;
+        }
+        Context context = view.getContext();
+        Intent intent = new Intent(context, EnterClassActivity.class);
+        intent.putExtra("userId", user.getId());
+        context.startActivity(intent);
     }
 }

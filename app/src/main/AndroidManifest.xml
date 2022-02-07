@@ -20,6 +20,12 @@
             android:name=".ConfirmNameActivity"
             android:exported="false" />
         <activity
+            android:name=".EnterClassActivity"
+            android:exported="false" />
+        <!-- <meta-data -->
+        <!-- android:name="com.google.android.nearby.messages.API_KEY" -->
+        <!-- android:value="AIzaSyD_b1pdlTXjv-t6DHntZ8D3kMbf3dzVKG0" /> -->
+        <activity
             android:name=".secondActivity"
             android:exported="false" />
         <activity
