@@ -52,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
         //TODO: remove this when everyone understands how to use the database
        // I just have this for testing purposes now
             // creates a new user
-            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
-            db.userWithCoursesDao().insert(user);
+//            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
+//            db.userWithCoursesDao().insert(user);
 //            // creates new course
 //            Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), 2021, "FALL", "CSE",110);
 //            db.coursesDao().insert(newCourse);

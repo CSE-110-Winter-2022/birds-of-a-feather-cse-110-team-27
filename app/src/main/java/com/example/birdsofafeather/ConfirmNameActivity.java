@@ -3,6 +3,7 @@ package com.example.birdsofafeather;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -12,6 +13,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.user.User;
+import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Utilities;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -24,6 +29,7 @@ public class ConfirmNameActivity extends AppCompatActivity {
     Button signOut;
     GoogleSignInClient mGoogleSignInClient;
     String personName;
+    String personEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +58,7 @@ public class ConfirmNameActivity extends AppCompatActivity {
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
             personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
+            personEmail = acct.getEmail();
             String personId = acct.getId();
             Uri personPhoto = acct.getPhotoUrl();
 
@@ -88,9 +94,28 @@ public class ConfirmNameActivity extends AppCompatActivity {
         editor.putString("name", name);
         editor.apply();
 
-        //TODO: Update intent to next activity
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        AppDatabase db = AppDatabase.singleton(this);
+//        Utilities.showAlert(this, personEmail);
+//        Utilities.showAlert(this, name);
+        int userId = personEmail.hashCode();
+        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
+        User user;
+        if (userWithCourses == null) {
+            user = new User(userId, name, personEmail);
+            db.userWithCoursesDao().insert(user);
+        } else {
+            user = userWithCourses.user;
+        }
+
+        if(user == null){
+            Utilities.showAlert(this,"SIGN IN FIRST");
+            return;
+        }
+
+//        Utilities.showAlert(this, user.getName());
+        Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
+        enterClassesIntent.putExtra("user_id", user.getId());
+        startActivity(enterClassesIntent);
     }
 
     private void signOut() {

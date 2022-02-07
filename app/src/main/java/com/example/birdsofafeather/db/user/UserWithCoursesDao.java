@@ -22,6 +22,10 @@ public abstract class UserWithCoursesDao {
     @Query("SELECT * FROM users where id=:userId")
     public abstract UserWithCourses getUser(int userId);
 
+//    @Transaction
+//    @Query("SELECT * FROM users where email=:email")
+//    public abstract UserWithCourses getUserForEmail(String email);
+
     @Transaction
     @Query("SELECT * FROM users")
     public abstract List<UserWithCourses> getAll();
