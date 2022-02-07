@@ -14,6 +14,9 @@ import com.example.birdsofafeather.db.course.ICourse;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
+
+import com.example.birdsofafeather.Bluetooth;
+
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -34,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        Bluetooth.requestEnableBluetooth(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
 //        updateUI(account);
     }
 
@@ -100,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
             // Signed in successfully, show authenticated UI.
 //            updateUI(account);
-            Intent intent = new Intent(MainActivity.this, secondActivity.class);
+            Intent intent = new Intent(MainActivity.this, ConfirmNameActivity.class);
             startActivity(intent);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
