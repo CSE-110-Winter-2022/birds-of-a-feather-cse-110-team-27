@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         Bluetooth.requestEnableBluetooth(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-//        updateUI(account);
     }
 
     @Override

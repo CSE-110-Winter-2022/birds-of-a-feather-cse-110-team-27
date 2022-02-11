@@ -5,5 +5,5 @@
     <string name="enter_classes">Enter Classes</string>
     <string name="year"><font size="13">Year</font></string>
     <string name="add_course">Add Course</string>
-    <string name = "Choose_your_past_courses"> Choose your past courses </string>
+    <string name="Choose_your_past_courses"> Choose your past courses </string>
 </resources>

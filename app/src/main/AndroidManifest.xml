@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.birdsofafeather">
 
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
@@ -15,14 +15,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
+        <service
+            android:name=".FindNearbyService"
+            android:enabled="true"
+            android:exported="true"></service>
 
+        <meta-data
+            android:name="com.google.android.nearby.messages.API_KEY"
+            android:value="AIzaSyAv1AahhhU1Ek5BnfUHYx06o_Q2QRqT_kY" />
+
+        <activity
+            android:name=".StartFindNearby"
+            android:exported="false" />
         <activity
             android:name=".ConfirmNameActivity"
             android:exported="false" />
         <activity
             android:name=".EnterClassActivity"
-            android:exported="false" />
-        <!-- <meta-data -->
+            android:exported="false" /> <!-- <meta-data -->
         <!-- android:name="com.google.android.nearby.messages.API_KEY" -->
         <!-- android:value="AIzaSyD_b1pdlTXjv-t6DHntZ8D3kMbf3dzVKG0" /> -->
         <activity
