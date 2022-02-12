@@ -15,10 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
+        <activity
+            android:name=".DisplayOtherUserInfo"
+            android:exported="false" />
+
         <service
             android:name=".FindNearbyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <meta-data
             android:name="com.google.android.nearby.messages.API_KEY"
