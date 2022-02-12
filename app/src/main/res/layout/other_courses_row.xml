@@ -22,5 +22,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/full_names" />
-    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

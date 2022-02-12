@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.user.IUser;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -29,15 +30,16 @@ public class PersonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_person_detail);
 
         Intent intent = getIntent();
-        String[] courses_array = intent.getStringArrayExtra("courses_array");
+        String[] coursesArray = intent.getStringArrayExtra("courses_array");
 
-        setTitle("Courses");
+        setTitle(coursesArray[0]);
+        String[] coursesArrayOnly = Arrays.copyOfRange(coursesArray, 1, coursesArray.length);
 
         notesRecyclerView = findViewById(R.id.notes_view);
         notesLayoutManager = new LinearLayoutManager(this);
         notesRecyclerView.setLayoutManager(notesLayoutManager);
 
-        otherCoursesViewAdapter = new OtherCoursesViewAdapter(courses_array);
+        otherCoursesViewAdapter = new OtherCoursesViewAdapter(coursesArrayOnly);
         notesRecyclerView.setAdapter(otherCoursesViewAdapter);
     }
 

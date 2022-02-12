@@ -67,21 +67,23 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             Context context = view.getContext();
             Intent intent = new Intent(context, PersonDetailActivity.class);
             List<Course> person_course = this.person.getCourses();
-            String[] courseArray = courseArrayMaker(person_course);
+            String name = this.person.getName();
+            String[] courseArray = courseArrayMaker(person_course, name);
             intent.putExtra("courses_array", courseArray);
             context.startActivity(intent);
         }
     }
 
-    public static String[] courseArrayMaker(List<Course> courses) {
-        String[] courseArray = new String[courses.size()];
+    public static String[] courseArrayMaker(List<Course> courses, String name) {
+        String[] courseArray = new String[courses.size()+1];
+        courseArray[0] = name;
         for (int i = 0; i < courses.size(); i++) {
             String courseDepartment = courses.get(i).department;
             String courseNumber = Integer.toString(courses.get(i).course_number);
             String courseYear =  Integer.toString(courses.get(i).year);
             String courseQuarter = courses.get(i).quarter;
             String courseInfo = courseDepartment + " " + courseNumber + " " + courseYear + " " + courseQuarter;
-            courseArray[i] = courseInfo;
+            courseArray[i+1] = courseInfo;
         }
         return courseArray;
     }
