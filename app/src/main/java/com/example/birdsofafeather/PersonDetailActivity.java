@@ -43,4 +43,7 @@ public class PersonDetailActivity extends AppCompatActivity {
         notesRecyclerView.setAdapter(otherCoursesViewAdapter);
     }
 
+    public void onGoBackClicked(View view) {
+        finish();
+    }
 }

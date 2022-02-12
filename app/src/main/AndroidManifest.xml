@@ -22,7 +22,7 @@
             android:name=".OtherCoursesViewAdapter"
             android:exported="false" />
         <activity
-            android:name=".DisplayOtherUserInfo"
+            android:name=".DisplayOtherUserActivity"
             android:exported="false" />
 
         <service

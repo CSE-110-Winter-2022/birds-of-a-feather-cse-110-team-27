@@ -9,13 +9,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
-import com.example.birdsofafeather.db.course.Course;
-import com.example.birdsofafeather.db.course.ICourse;
 import com.example.birdsofafeather.db.user.User;
-import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
-
-import com.example.birdsofafeather.Bluetooth;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -24,8 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -126,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onShortcutClicked(View view) {
-        Intent intent = new Intent(this, DisplayOtherUserInfo.class);
+        Intent intent = new Intent(this, DisplayOtherUserActivity.class);
         startActivity(intent);
     }
+
 }

@@ -13,7 +13,7 @@ import com.example.birdsofafeather.db.user.UserWithCourses;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayOtherUserInfo extends AppCompatActivity {
+public class DisplayOtherUserActivity extends AppCompatActivity {
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
