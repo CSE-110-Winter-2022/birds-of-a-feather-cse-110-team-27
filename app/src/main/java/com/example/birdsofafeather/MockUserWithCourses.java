@@ -9,7 +9,7 @@ import com.example.birdsofafeather.db.user.UserWithCourses;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockUserWithCourses {
+public class MockUserWithCourses{
     private UserWithCourses student;
     Course[] courses = {
                 new Course(0,0,2020, "Fall", "ECE", 100),
@@ -51,5 +51,9 @@ public class MockUserWithCourses {
             toString += course.getQuarter() + " " + course.getYear() + " " + course.getDepartment() + course.getCourseNumber() + "\n";
         }
         return toString;
+    }
+
+    public UserWithCourses getUserWithCourses() {
+        return student;
     }
 }

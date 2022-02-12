@@ -16,6 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
         <activity
+            android:name=".PersonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtherCoursesViewAdapter"
+            android:exported="false" />
+        <activity
             android:name=".DisplayOtherUserInfo"
             android:exported="false" />
 

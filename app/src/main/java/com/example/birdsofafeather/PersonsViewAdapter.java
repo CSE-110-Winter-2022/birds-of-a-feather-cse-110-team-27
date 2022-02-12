@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 
 import java.util.List;
@@ -49,6 +50,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         private final TextView personNameView;
         private UserWithCourses person;
 
+
         ViewHolder(View itemView) {
             super(itemView);
             this.personNameView = itemView.findViewById(R.id.person_row_name);
@@ -62,10 +64,25 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
 
         @Override
         public void onClick(View view) {
-            //Context context = view.getContext();
-            //Intent intent = new Intent(context, PersonDetailActivity.class);
-            //intent.putExtra("person_id", this.person.getId());
-            //context.startActivity(intent);
+            Context context = view.getContext();
+            Intent intent = new Intent(context, PersonDetailActivity.class);
+            List<Course> person_course = this.person.getCourses();
+            String[] courseArray = courseArrayMaker(person_course);
+            intent.putExtra("courses_array", courseArray);
+            context.startActivity(intent);
         }
+    }
+
+    public static String[] courseArrayMaker(List<Course> courses) {
+        String[] courseArray = new String[courses.size()];
+        for (int i = 0; i < courses.size(); i++) {
+            String courseDepartment = courses.get(i).department;
+            String courseNumber = Integer.toString(courses.get(i).course_number);
+            String courseYear =  Integer.toString(courses.get(i).year);
+            String courseQuarter = courses.get(i).quarter;
+            String courseInfo = courseDepartment + " " + courseNumber + " " + courseYear + " " + courseQuarter;
+            courseArray[i] = courseInfo;
+        }
+        return courseArray;
     }
 }

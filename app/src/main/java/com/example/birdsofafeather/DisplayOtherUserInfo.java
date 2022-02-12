@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.user.IUser;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisplayOtherUserInfo extends AppCompatActivity {
@@ -24,8 +26,14 @@ public class DisplayOtherUserInfo extends AppCompatActivity {
         setContentView(R.layout.activity_display_other_user_info);
         setTitle("Nearby");
 
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
-        List<? extends UserWithCourses> dataList = db.userWithCoursesDao().getAll();
+        MockUserWithCourses mockUser0 = new MockUserWithCourses(0);
+        MockUserWithCourses mockUser1 = new MockUserWithCourses(1);
+        MockUserWithCourses mockUser2 = new MockUserWithCourses(2);
+
+        List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
+        dataList.add(mockUser0.getUserWithCourses());
+        dataList.add(mockUser1.getUserWithCourses());
+        dataList.add(mockUser2.getUserWithCourses());
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
