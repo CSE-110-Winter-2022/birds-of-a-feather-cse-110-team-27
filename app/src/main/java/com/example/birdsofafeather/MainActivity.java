@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.user.User;
+import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
