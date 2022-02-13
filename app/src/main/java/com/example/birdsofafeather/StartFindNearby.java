@@ -40,7 +40,7 @@ public class StartFindNearby extends AppCompatActivity {
         MockUserWithCourses John = new MockUserWithCourses(0);
         MockUserWithCourses Amy = new MockUserWithCourses(1);
         MockUserWithCourses Zoey = new MockUserWithCourses(2);
-        nearbyMessage = John + "\n" + Amy + "\n" + Zoey;
+        nearbyMessage = "*" + John + "*" + Amy + "*" + Zoey;
 
 
         List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
