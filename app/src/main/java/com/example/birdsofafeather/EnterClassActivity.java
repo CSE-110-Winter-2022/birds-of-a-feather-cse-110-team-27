@@ -169,6 +169,7 @@ public class EnterClassActivity extends AppCompatActivity {
 
     public void doneClicked(View view) {
         Intent intent = new Intent(this, StartFindNearby.class);
+        intent.putExtra("user_id", user.getId());
         startActivity(intent);
     }
 }

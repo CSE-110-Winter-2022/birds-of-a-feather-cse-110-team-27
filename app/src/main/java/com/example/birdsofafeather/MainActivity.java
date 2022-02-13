@@ -2,6 +2,7 @@ package com.example.birdsofafeather;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +10,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
-import com.example.birdsofafeather.db.course.Course;
-import com.example.birdsofafeather.db.course.ICourse;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
-
-import com.example.birdsofafeather.Bluetooth;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,11 +22,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    User user;
+    UserWithCourses user;
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
         //TODO: remove this when everyone understands how to use the database
-       // I just have this for testing purposes now
-            // creates a new user
+        // I just have this for testing purposes now
+        // creates a new user
 //            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
 //            db.userWithCoursesDao().insert(user);
 //            // creates new course
@@ -127,4 +128,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("userId", user.getId());
         context.startActivity(intent);
     }
+
+    public void onShortcutClicked(View view) {
+        Intent intent = new Intent(this, StartFindNearby.class);
+        startActivity(intent);
+    }
+
+
 }
