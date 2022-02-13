@@ -94,28 +94,30 @@ public class ConfirmNameActivity extends AppCompatActivity {
         editor.putString("name", name);
         editor.apply();
 
-        AppDatabase db = AppDatabase.singleton(this);
-//        Utilities.showAlert(this, personEmail);
-//        Utilities.showAlert(this, name);
-        int userId = personEmail.hashCode();
-        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
-        User user;
-        if (userWithCourses == null) {
-            user = new User(userId, name, personEmail);
-            db.userWithCoursesDao().insert(user);
-        } else {
-            user = userWithCourses.user;
-        }
+//        AppDatabase db = AppDatabase.singleton(this);
+//        int userId = personEmail.hashCode();
+//        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
+//        User user;
+//        if (userWithCourses == null) {
+//            user = new User(userId, name, personEmail);
+//            db.userWithCoursesDao().insert(user);
+//        } else {
+//            user = userWithCourses.user;
+//        }
 
-        if(user == null){
-            Utilities.showAlert(this,"SIGN IN FIRST");
-            return;
-        }
+//        if(user == null){
+//            Utilities.showAlert(this,"SIGN IN FIRST");
+//            return;
+//        }
 
 //        Utilities.showAlert(this, user.getName());
-        Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
-        enterClassesIntent.putExtra("user_id", user.getId());
-        startActivity(enterClassesIntent);
+        Intent intent = new Intent(this, UploadProfilePicture.class);
+        intent.putExtra("name", name);
+        intent.putExtra("email", personEmail);
+        startActivity(intent);
+//        Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
+//        enterClassesIntent.putExtra("user_id", user.getId());
+//        startActivity(enterClassesIntent);
     }
 
     private void signOut() {

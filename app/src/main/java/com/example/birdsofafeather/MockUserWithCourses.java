@@ -23,10 +23,15 @@ public class MockUserWithCourses{
             };
     public static String[] studentNames = {"John", "Amy", "Zoey"};
     public static String[] studentEmails = {"john@ucsd.edu", "amy@ucsd.edu", "zoey@ucsd.edu"};
+    public static String[] studentProfilePictureUrls = {
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/220px-President_Barack_Obama.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg",
+            "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fyt3.ggpht.com%2Fa%2FAATXAJz-pxhZ06vo_zXiADT0BVthIyQyghRsBZxn1w%3Ds900-c-k-c0xffffffff-no-rj-mo&f=1&nofb=1"
+    };
 
 
     public MockUserWithCourses(int studentNum){
-        User user = new User(studentNum,studentNames[studentNum], studentEmails[studentNum]);
+        User user = new User(studentNum,studentNames[studentNum], studentEmails[studentNum], studentProfilePictureUrls[studentNum]);
         List<Course> listOfCourses = new ArrayList<Course>();
         for(int i = 0; i < 4; i++){
             Course course = courses[(int)(Math.random()*8)];

@@ -8,6 +8,7 @@ public interface IUser {
     int getId();
     String getName();
     String getEmail();
+    String getProfilePictureUrl();
     List<Course> getCourses();
 
     void addCourse(Course course);

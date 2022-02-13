@@ -16,6 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
+      
+        <activity
+            android:name=".UploadProfilePicture"
+            android:exported="false" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />

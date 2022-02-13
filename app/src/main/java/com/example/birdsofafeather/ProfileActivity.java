@@ -37,7 +37,7 @@ public class ProfileActivity extends AppCompatActivity {
         nameTextView.setText(name);
 
         ImageView imageView = findViewById(R.id.profile_details_picture);
-        Picasso.get().load(profilePictureUrl).into(imageView);
+        Picasso.get().load(profilePictureUrl).error(R.drawable.default_pfp).into(imageView);
 
         System.out.println(courseNames);
         RecyclerView coursesRecyclerView = findViewById(R.id.profile_details_courses);
