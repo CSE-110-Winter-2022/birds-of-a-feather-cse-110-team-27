@@ -19,6 +19,12 @@
         <entry key="..\:/projects/birds-of-a-feather-cse-110-team-27/app/src/main/res/layout/activity_second2.xml" value="0.25" />
         <entry key="..\:/projects/birds-of-a-feather-cse-110-team-27/app/src/main/res/layout/courses_row.xml" value="0.5541666666666667" />
         <entry key="..\:/workspace/CSE110/BOAF/test_4/birds-of-a-feather-cse-110-team-27/app/src/main/res/layout/activity_main.xml" value="0.31354166666666666" />
+        <entry key="app/src/main/res/layout/activity_enter_class.xml" value="0.16168478260869565" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/activity_start_find_nearby.xml" value="0.3614583333333333" />
+        <entry key="app/src/main/res/layout/courses_row.xml" value="0.16168478260869565" />
+        <entry key="app/src/main/res/layout/profile_courses_row.xml" value="0.33" />
       </map>
     </option>
   </component>
