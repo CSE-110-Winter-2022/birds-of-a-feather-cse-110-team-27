@@ -9,7 +9,7 @@ import com.example.birdsofafeather.db.user.UserWithCourses;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MockUserWithCourses {
+public class MockUserWithCourses{
     private UserWithCourses student;
     Course[] courses = {
                 new Course(0,0,2020, "Fall", "ECE", 100),
@@ -45,11 +45,15 @@ public class MockUserWithCourses {
 
     @Override
     public String toString() {
-        String toString = student.getName() + "\n";
+        String toString = student.getName() + ":|";
         List<Course> studentsCourses = student.courses;
         for(Course course: studentsCourses){
-            toString += course.getQuarter() + " " + course.getYear() + " " + course.getDepartment() + course.getCourseNumber() + "\n";
+            toString += course.getQuarter() + " " + course.getYear() + " " + course.getDepartment() + course.getCourseNumber() + "|";
         }
         return toString;
+    }
+
+    public UserWithCourses getUserWithCourses() {
+        return student;
     }
 }

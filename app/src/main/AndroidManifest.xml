@@ -20,6 +20,16 @@
             android:name=".ProfileActivity"
             android:exported="false" />
 
+          <activity
+            android:name=".PersonDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".OtherCoursesViewAdapter"
+            android:exported="false" />
+        <activity
+            android:name=".DisplayOtherUserActivity"
+            android:exported="false" />
+      
         <service
             android:name=".FindNearbyService"
             android:enabled="true"
@@ -53,5 +63,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>
