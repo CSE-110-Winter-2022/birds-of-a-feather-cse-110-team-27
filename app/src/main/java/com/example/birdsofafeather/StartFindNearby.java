@@ -2,6 +2,8 @@ package com.example.birdsofafeather;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -23,6 +26,10 @@ public class StartFindNearby extends AppCompatActivity {
     private static final String TAG = "FindNearby";
     public String nearbyMessage;
 
+    protected RecyclerView personsRecyclerView;
+    protected RecyclerView.LayoutManager personsLayoutManager;
+    protected PersonsViewAdapter personsViewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +41,21 @@ public class StartFindNearby extends AppCompatActivity {
         MockUserWithCourses Amy = new MockUserWithCourses(1);
         MockUserWithCourses Zoey = new MockUserWithCourses(2);
         nearbyMessage = John + "\n" + Amy + "\n" + Zoey;
+
+
+        List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
+        dataList.add(John.getUserWithCourses());
+        dataList.add(Amy.getUserWithCourses());
+        dataList.add(Zoey.getUserWithCourses());
+
+        personsRecyclerView = findViewById(R.id.persons_view);
+
+        personsLayoutManager = new LinearLayoutManager(this);
+        personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+        personsViewAdapter = new PersonsViewAdapter(dataList);
+        personsRecyclerView.setAdapter(personsViewAdapter);
+
 
         MessageListener realListener = new MessageListener() {
             @Override

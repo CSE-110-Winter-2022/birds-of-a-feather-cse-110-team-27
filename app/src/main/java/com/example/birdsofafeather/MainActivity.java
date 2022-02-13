@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
         //TODO: remove this when everyone understands how to use the database
-       // I just have this for testing purposes now
-            // creates a new user
+        // I just have this for testing purposes now
+        // creates a new user
 //            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
 //            db.userWithCoursesDao().insert(user);
 //            // creates new course
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onShortcutClicked(View view) {
-        Intent intent = new Intent(this, DisplayOtherUserActivity.class);
+        Intent intent = new Intent(this, StartFindNearby.class);
         startActivity(intent);
     }
 
