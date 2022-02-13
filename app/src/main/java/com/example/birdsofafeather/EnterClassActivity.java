@@ -143,7 +143,7 @@ public class EnterClassActivity extends AppCompatActivity {
         departmentDropdown.setAdapter(departmentSelectionAdapter);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra( "user_id", 0); //for now default is 0. Maybe last activity pass some value???
+        int userId = intent.getIntExtra( "user_id", -1); //for now default is 0. Maybe last activity pass some value???
 
         db = AppDatabase.singleton(this);
         user = db.userWithCoursesDao().getUser(userId);

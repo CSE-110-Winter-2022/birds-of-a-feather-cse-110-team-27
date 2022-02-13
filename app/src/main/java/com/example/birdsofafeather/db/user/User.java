@@ -23,11 +23,15 @@ public class User {
     @ColumnInfo(name = "email")
     String email;
 
+    @ColumnInfo(name = "profile_picture_url")
+    String profilePictureUrl;
+
     //TODO: randomly generate id
-    public User(int id, String name, String email) {
+    public User(int id, String name, String email, String profilePictureUrl) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.profilePictureUrl = profilePictureUrl;
     }
     public int getId(){
         return this.id;
@@ -37,5 +41,8 @@ public class User {
         return this.name;
     }
 
+    public String getProfilePictureUrl() {
+        return this.profilePictureUrl;
+    }
 
 }

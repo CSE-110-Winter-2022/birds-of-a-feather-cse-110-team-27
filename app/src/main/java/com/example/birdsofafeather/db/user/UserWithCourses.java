@@ -67,4 +67,9 @@ public class UserWithCourses implements IUser {
         this.user.email = email;
     }
 
+    @Override
+    public String getProfilePictureUrl() {
+        return this.user.profilePictureUrl;
+    }
+
 }

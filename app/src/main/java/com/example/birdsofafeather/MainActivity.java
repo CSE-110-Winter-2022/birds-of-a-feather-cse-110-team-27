@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
         Bluetooth.requestEnableBluetooth(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-        //DELETE THIS
-        Intent intent = new Intent(MainActivity.this, UploadProfilePicture.class);
-        startActivity(intent);
+//        //DELETE THIS
+//        Intent intent = new Intent(MainActivity.this, UploadProfilePicture.class);
+//        startActivity(intent);
     }
 
     @SuppressLint("WrongThread")
