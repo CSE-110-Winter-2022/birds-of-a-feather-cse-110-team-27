@@ -34,7 +34,7 @@
         android:layout_marginTop="188dp"
         android:layout_marginBottom="104dp"
         android:onClick="onEnterClassClicked"
-        android:text="Enter Class"
+        android:text="Bypass Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

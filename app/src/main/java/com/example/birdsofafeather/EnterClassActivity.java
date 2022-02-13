@@ -23,6 +23,7 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.IUser;
 import com.example.birdsofafeather.db.user.User;
+import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CoursesViewAdapter;
 import com.example.birdsofafeather.utils.Utilities;
@@ -34,7 +35,7 @@ import java.util.List;
 public class EnterClassActivity extends AppCompatActivity {
 
     private AppDatabase db;
-    private IUser user;
+    private UserWithCourses user;
     private RecyclerView courseRecyclerView;
     private RecyclerView.LayoutManager coursesLayoutManager;
     private CoursesViewAdapter courseViewAdapter; //working on it

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
@@ -29,7 +30,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    UserWithCourses user;
     SignInButton signin;
     GoogleSignInClient mGoogleSignInClient;
     int RC_SIGN_IN = 0;
@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppDatabase db = AppDatabase.singleton(getApplicationContext());
 
         //TODO: remove this when everyone understands how to use the database
         // I just have this for testing purposes now
@@ -119,13 +118,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onEnterClassClicked(View view) {
-        if(user == null){
-            Utilities.showAlert(this,"SIGN IN FIRST");
-            return;
+//        if(user == null){
+//            Utilities.showAlert(this,"SIGN IN FIRST");
+//            return;
+//        }
+        User newUser = new User("userEmail@ucsd.edu".hashCode(), "User Name", "userEmail@ucsd.edu", "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/220px-President_Barack_Obama.jpg");
+        AppDatabase db = AppDatabase.singleton(getApplicationContext());
+        db.userWithCoursesDao().insert(newUser);
+        UserWithCourses dbUser = db.userWithCoursesDao().getUser(newUser.getId());
+        for(Course course : dbUser.getCourses()) {
+            db.coursesDao().delete(course);
         }
+//        dbUser.courses.clear();
+
         Context context = view.getContext();
         Intent intent = new Intent(context, EnterClassActivity.class);
-        intent.putExtra("userId", user.getId());
+        intent.putExtra("user_id", newUser.getId());
         context.startActivity(intent);
     }
 
