@@ -98,4 +98,63 @@ public class StartFindNearby extends AppCompatActivity {
         super.onStop();
         Nearby.getMessagesClient(this).unsubscribe(messageListener);
     }
+
+    public ArrayList<String> getNames(String nearbyMessage){
+        ArrayList<String> names =  new ArrayList<String>(0);
+        int i = 0;
+        int j = 0;
+
+        //Search Name
+        while(1>0){
+            i = nearbyMessage.indexOf("*", i);
+            j = nearbyMessage.indexOf(":", j);
+            if(i < 0 || j < 0){break;}
+            else{
+                String name = nearbyMessage.substring(i+1, j);
+                names.add(name);
+                i++;
+                j++;
+            }
+        }
+        return names;
+    }
+
+    public ArrayList<ArrayList<String>> getCourses(String nearbyMessage){
+        int i = 0;
+        int j = 0;
+        ArrayList<String> names = getNames(nearbyMessage);
+        ArrayList<ArrayList<String>> courses = new ArrayList<ArrayList<String>>(names.size());
+        //Search courses
+        ArrayList<String> al = new ArrayList<String>(0);
+        while(1>0){
+            i = nearbyMessage.indexOf("|", j);
+            j = nearbyMessage.indexOf("|", i+1);
+            if(i < 0 || j < 0){break;}
+            else{
+                String course = nearbyMessage.substring(i+1, j);
+                al.add(course);
+                //System.out.println("al:"+al.toString());
+                if(j == nearbyMessage.length()-1){
+                    ArrayList<String> temp = new ArrayList<String>(0);
+                    //deep copy
+                    for(int x = 0; x < al.size(); x++){
+                        temp.add(al.get(x));
+                    }
+                    courses.add(temp);
+                    al.clear();
+                    break;
+                }
+                if(nearbyMessage.charAt(j+1) == '*'){
+                    ArrayList<String> temp = new ArrayList<String>(0);
+                    for(int x = 0; x < al.size(); x++){
+                        temp.add(al.get(x));
+                    }
+                    courses.add(temp);
+                    al.clear();
+                    j++;
+                }
+            }
+        }
+        return courses;
+    }
 }
