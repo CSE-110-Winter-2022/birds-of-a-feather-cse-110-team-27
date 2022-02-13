@@ -67,20 +67,22 @@ public class StartFindNearby extends AppCompatActivity {
         personsViewAdapter = new PersonsViewAdapter(dataList);
         personsRecyclerView.setAdapter(personsViewAdapter);
 
+        personsRecyclerView.setVisibility(View.INVISIBLE);
 
 
     }
 
     public void startClicked(View view){
         Intent intent = new Intent(StartFindNearby.this, FindNearbyService.class);
-        start.setVisibility(View.GONE);
+        start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
+        personsRecyclerView.setVisibility(View.VISIBLE);
         startService(intent);
     }
 
     public void stopClicked(View view){
         Intent intent = new Intent(StartFindNearby.this, FindNearbyService.class);
-        stop.setVisibility(View.GONE);
+        stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
         stopService(intent);
     }
