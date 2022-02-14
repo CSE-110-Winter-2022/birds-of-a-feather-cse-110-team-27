@@ -14,6 +14,7 @@ import java.util.List;
 //@Entity(tableName = "users_with_courses")
 public class UserWithCourses implements IUser {
 
+
     @Embedded
     public User user;
 
@@ -70,6 +71,18 @@ public class UserWithCourses implements IUser {
     @Override
     public String getProfilePictureUrl() {
         return this.user.profilePictureUrl;
+    }
+
+    public void setNumSameCourses(int numSameCourses) {
+        this.user.setNumSameCourses(numSameCourses);
+    }
+
+    public void incrementNumSamCourses() {
+        this.user.incrementNumSamCourses();
+    }
+
+    public int getNumSamCourses() {
+        return this.user.getNumSamCourses();
     }
 
 }

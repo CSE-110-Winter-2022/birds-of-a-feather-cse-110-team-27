@@ -101,11 +101,7 @@ public class MainActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    public void onShortcutClicked(View view) {
-        Intent intent = new Intent(this, FindNearbyActivity.class);
-        startActivity(intent);
-        Log.d(this.TAG, "Taking shortcut to Find Nearby Activity");
-    }
+
 
 
 }
