@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,11 +19,14 @@ public class UploadProfilePicture extends AppCompatActivity {
     private String personEmail;
     private String name;
     private String image_url;
+    Button confirmButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_profile_picture);
+        confirmButton = findViewById(R.id.button3);
+        confirmButton.setVisibility(View.INVISIBLE);
 
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
@@ -49,6 +53,7 @@ public class UploadProfilePicture extends AppCompatActivity {
                     .error(R.drawable.default_pfp)
                     .into(display_photo_ImageView);
         }
+        confirmButton.setVisibility(View.VISIBLE);
     }
 //        else {
 //            Picasso.get()
