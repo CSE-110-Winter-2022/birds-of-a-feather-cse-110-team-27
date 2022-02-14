@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.google.android.gms.nearby.messages.MessageListener;
 
@@ -19,11 +21,14 @@ import java.util.List;
 public class FindNearbyActivity extends AppCompatActivity {
     private Button start;
     private Button stop;
+    private AppDatabase db;
+    List<Course> myCourseList;
 
 
     public static MessageListener messageListener;
     public static String nearbyMessage;
     private int test_user_id;
+    private UserWithCourses me;
     private static final String TAG = "FindNearbyActivity";
 
     protected RecyclerView personsRecyclerView;
@@ -35,8 +40,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_find_nearby);
 
+
         Intent intent = getIntent();
         test_user_id = intent.getIntExtra("user_id", -1);
+        db = AppDatabase.singleton(this);
+        me = db.userWithCoursesDao().getUser(test_user_id);
+        myCourseList= me.getCourses();
 
         start = findViewById(R.id.start_button);
         stop = findViewById(R.id.stop_button);
@@ -57,11 +66,33 @@ public class FindNearbyActivity extends AppCompatActivity {
         students.add(Zoey);
         students.add(Matt);
 
+
+
         nearbyMessage = "";
-        int numStudents = (int)(Math.random()*4 + 1);
+        int numStudents = 4;
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
             nearbyMessage += "*" + students.get(i);
+        }
+
+        for(int i = 0; i < dataList.size(); i++) {
+            Boolean isClassMate = false;
+            List<Course> userCourses = dataList.get(i).getCourses();
+            for(int j = 0; j < myCourseList.size(); j++) {
+                for(int k = 0; k < userCourses.size(); k++) {
+                    Boolean testDep = myCourseList.get(j).getDepartment().equals(userCourses.get(k).getDepartment());
+                    Boolean testNum = myCourseList.get(j).getCourseNumber() == (userCourses.get(k).getCourseNumber());
+                    Boolean testQrt = myCourseList.get(j).getQuarter().equals(userCourses.get(k).getQuarter());
+                    Boolean testYea = myCourseList.get(j).getYear() == (userCourses.get(k).getYear());
+                    if (testDep && testNum && testQrt && testYea) {
+                        isClassMate = true;
+                    }
+                }
+            }
+            if(!isClassMate) {
+                dataList.remove(i);
+                i--;
+            }
         }
 
         personsRecyclerView = findViewById(R.id.persons_view);

@@ -11,15 +11,16 @@ import java.util.List;
 
 public class MockUserWithCourses{
     private UserWithCourses student;
+    Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 101);
     Course[] courses = {
-                new Course(0,0,2020, "Fall", "ECE", 100),
-                new Course(0,0,2020, "Fall", "BILD", 1),
-                new Course(0,0,2020, "Fall", "MATH", 183),
-                new Course(0,0,2020, "Fall", "MATH", 18),
-                new Course(0,0,2020, "Fall", "HILD", 7),
-                new Course(0,0,2020, "Fall", "HUM", 2),
-                new Course(0,0,2020, "Fall", "CHEM", 40),
-                new Course(0,0,2020, "Fall", "DOC", 1),
+                new Course(0,0,2020, "FALL", "ECE", 100),
+                new Course(0,0,2020, "FALL", "BILD", 1),
+                new Course(0,0,2020, "FALL", "MATH", 183),
+                new Course(0,0,2020, "FALL", "MATH", 18),
+                new Course(0,0,2020, "FALL", "HILD", 7),
+                new Course(0,0,2020, "FALL", "HUM", 2),
+                new Course(0,0,2020, "FALL", "CHEM", 40),
+                new Course(0,0,2020, "FALL", "DOC", 1),
             };
     public static String[] studentNames = {"John", "Amy", "Zoey", "Matt"};
     public static String[] studentEmails = {"john@ucsd.edu", "amy@ucsd.edu", "zoey@ucsd.edu", "matt@ucsd.edu"};
@@ -34,17 +35,25 @@ public class MockUserWithCourses{
 
     public MockUserWithCourses(int studentNum){
         User user = new User(studentNum,studentNames[studentNum], studentEmails[studentNum], studentProfilePictureUrls[studentNum]);
+
         List<Course> listOfCourses = new ArrayList<Course>();
-        for(int i = 0; i < 4; i++){
-            Course course = courses[(int)(Math.random()*8)];
-            if(!listOfCourses.contains(course)) {
-                listOfCourses.add(course);
-            }
-            else{
-                i--;
+        if(studentNum != 3){
+            for(int i = 0; i < 4; i++){
+                Course course = courses[(int)(Math.random()*8)];
+                if(!listOfCourses.contains(course)) {
+                    listOfCourses.add(course);
+                }
+                else{
+                    i--;
+                }
             }
         }
-
+        else {
+            listOfCourses.add(testCourse_1);
+        }
+        if(studentNum == 2) {
+            listOfCourses.add(testCourse_1);
+        }
         student = new UserWithCourses();
         student.user = user;
         student.courses = listOfCourses;
