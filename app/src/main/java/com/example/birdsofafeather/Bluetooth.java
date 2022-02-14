@@ -7,7 +7,7 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class BluetoothPermission extends AppCompatActivity {
+public class Bluetooth extends AppCompatActivity {
     public static final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     public static boolean bluetoothEnabled(){

@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        BluetoothPermission.requestEnableBluetooth(this);
+        Bluetooth.requestEnableBluetooth(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
     }
 
