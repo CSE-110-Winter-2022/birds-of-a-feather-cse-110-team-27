@@ -30,7 +30,7 @@ public abstract class UserWithCoursesDao {
     @Query("SELECT * FROM users")
     public abstract List<UserWithCourses> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(User user);
 
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
