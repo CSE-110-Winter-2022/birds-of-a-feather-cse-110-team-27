@@ -84,8 +84,8 @@ public class FindNearbyActivity extends AppCompatActivity {
             List<Course> userCourses = dataList.get(i).getCourses();
             for(int j = 0; j < myCourseList.size(); j++) {
                 for(int k = 0; k < userCourses.size(); k++) {
-                    isClassMate = CourseComparison.compareCourses(myCourseList.get(j), userCourses.get(k));
-                    if(isClassMate) {
+                    if(CourseComparison.compareCourses(myCourseList.get(j), userCourses.get(k))) {
+                        isClassMate = true;
                         numSameCourses += 1;
                         dataList.get(i).incrementNumSamCourses();
                     }
