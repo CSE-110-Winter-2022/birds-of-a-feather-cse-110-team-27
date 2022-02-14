@@ -16,7 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class secondActivity extends AppCompatActivity {
+public class SignOutActivity extends AppCompatActivity {
 
     ImageView photo;
     TextView name, email, id;

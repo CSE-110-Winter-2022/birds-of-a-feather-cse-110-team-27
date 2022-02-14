@@ -18,4 +18,9 @@
         android:textStyle="bold"
         tools:text="Name" />
 
+    <TextView
+        android:id="@+id/num_same_courses_view"
+        android:layout_width="119dp"
+        android:layout_height="wrap_content" />
+
 </FrameLayout>

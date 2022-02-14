@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +20,8 @@ public class UploadProfilePicture extends AppCompatActivity {
     private String personEmail;
     private String name;
     private String image_url;
+    private static final String TAG = "Upload Profile";
+    Button confirmBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +31,11 @@ public class UploadProfilePicture extends AppCompatActivity {
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         personEmail = intent.getStringExtra("email");
+        confirmBtn = findViewById(R.id.button3);
 
 
         ImageView display_photo_ImageView = findViewById(R.id.display_photo);
-        // The user's profile picture should be here:
-//        Picasso.get().load().into(display_photo_ImageView);
-//        display_photo_ImageView.setImageDrawable(R.drawable.default_pfp);
+        confirmBtn.setVisibility(View.INVISIBLE);
     }
 
     public void onUploadClick(View view) {
@@ -49,13 +52,10 @@ public class UploadProfilePicture extends AppCompatActivity {
                     .error(R.drawable.default_pfp)
                     .into(display_photo_ImageView);
         }
+        Log.d(this.TAG, "Previewing Photo");
+        confirmBtn.setVisibility(View.VISIBLE);
+
     }
-//        else {
-//            Picasso.get()
-//                    .load(R.drawable.default_pfp)
-//                    .into(display_photo_ImageView);
-//        }
-//    }
 
     public void onConfirmClicked(View view) {
         AppDatabase db = AppDatabase.singleton(this);
@@ -72,5 +72,6 @@ public class UploadProfilePicture extends AppCompatActivity {
         Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
         enterClassesIntent.putExtra("user_id", user.getId());
         startActivity(enterClassesIntent);
+        Log.d(this.TAG, "Confirming Photo and Going to Find Nearby Activity");
     }
 }
