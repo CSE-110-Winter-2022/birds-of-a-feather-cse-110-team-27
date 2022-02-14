@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class ConfirmNameActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     String personName;
     String personEmail;
+    private static final String TAG = "ConfirmNameActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +41,6 @@ public class ConfirmNameActivity extends AppCompatActivity {
         //Got intent from previous activity
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-
-
-//        signOut = findViewById(R.id.sign_out_button);
-//        signOut.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                switch (view.getId()) {
-//                    // ...
-//                    case R.id.sign_out_button:
-//                        signOut();
-//                        break;
-//                    // ...
-//                }
-//            }
-//        });
 
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
         if (acct != null) {
@@ -94,30 +81,11 @@ public class ConfirmNameActivity extends AppCompatActivity {
         editor.putString("name", name);
         editor.apply();
 
-//        AppDatabase db = AppDatabase.singleton(this);
-//        int userId = personEmail.hashCode();
-//        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
-//        User user;
-//        if (userWithCourses == null) {
-//            user = new User(userId, name, personEmail);
-//            db.userWithCoursesDao().insert(user);
-//        } else {
-//            user = userWithCourses.user;
-//        }
-
-//        if(user == null){
-//            Utilities.showAlert(this,"SIGN IN FIRST");
-//            return;
-//        }
-
-//        Utilities.showAlert(this, user.getName());
         Intent intent = new Intent(this, UploadProfilePicture.class);
         intent.putExtra("name", name);
         intent.putExtra("email", personEmail);
         startActivity(intent);
-//        Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
-//        enterClassesIntent.putExtra("user_id", user.getId());
-//        startActivity(enterClassesIntent);
+        Log.d(this.TAG, "Confirming Name and going to Profile Activity");
     }
 
     private void signOut() {

@@ -44,7 +44,7 @@
             android:value="AIzaSyAv1AahhhU1Ek5BnfUHYx06o_Q2QRqT_kY" />
 
         <activity
-            android:name=".StartFindNearby"
+            android:name=".FindNearbyActivity"
             android:exported="false" />
         <activity
             android:name=".ConfirmNameActivity"
@@ -55,7 +55,7 @@
         <!-- android:name="com.google.android.nearby.messages.API_KEY" -->
         <!-- android:value="AIzaSyD_b1pdlTXjv-t6DHntZ8D3kMbf3dzVKG0" /> -->
         <activity
-            android:name=".secondActivity"
+            android:name=".SignOutActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

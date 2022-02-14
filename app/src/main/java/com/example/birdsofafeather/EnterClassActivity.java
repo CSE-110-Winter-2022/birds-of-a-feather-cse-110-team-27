@@ -11,23 +11,18 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.IUser;
-import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CoursesViewAdapter;
 import com.example.birdsofafeather.utils.Utilities;
 
-import java.sql.Array;
 import java.util.List;
 
 
@@ -168,7 +163,7 @@ public class EnterClassActivity extends AppCompatActivity {
     }
 
     public void doneClicked(View view) {
-        Intent intent = new Intent(this, StartFindNearby.class);
+        Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", user.getId());
         startActivity(intent);
     }
