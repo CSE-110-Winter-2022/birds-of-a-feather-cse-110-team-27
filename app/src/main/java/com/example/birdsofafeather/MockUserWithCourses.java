@@ -11,9 +11,9 @@ import java.util.List;
 
 public class MockUserWithCourses{
     private UserWithCourses student;
-    Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 101);
+    Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100);
     Course[] courses = {
-                new Course(0,0,2020, "FALL", "ECE", 100),
+                new Course(0,0,2021, "FALL", "ECE", 101),
                 new Course(0,0,2020, "FALL", "BILD", 1),
                 new Course(0,0,2020, "FALL", "MATH", 183),
                 new Course(0,0,2020, "FALL", "MATH", 18),

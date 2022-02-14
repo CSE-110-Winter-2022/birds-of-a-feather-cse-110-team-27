@@ -69,7 +69,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
 
         nearbyMessage = "";
-        int numStudents = 4;
+        int numStudents = (int)(Math.random()*4 + 1);
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
             nearbyMessage += "*" + students.get(i);
