@@ -61,4 +61,7 @@ public class User {
         return this.numSameCourses;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
 }

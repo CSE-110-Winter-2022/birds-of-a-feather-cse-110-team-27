@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MockUserWithCourses{
-    private UserWithCourses student;
+    public UserWithCourses student;
     Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100);
     Course testCourse_2 = new Course(0,0,2021, "FALL", "ECE", 65);
     Course testCourse_3 = new Course(0,0,2021, "FALL", "MATH", 109);
