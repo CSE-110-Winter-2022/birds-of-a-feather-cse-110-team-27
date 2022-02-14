@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.db.AppDatabase;
@@ -26,12 +27,14 @@ import java.util.List;
 public class StartFindNearby extends AppCompatActivity {
     private Button start;
     private Button stop;
+    private AppDatabase db;
 
   
     public static MessageListener messageListener;
     public static final String TAG = "FindNearby";
     public static String nearbyMessage;
     private int test_user_id;
+    private UserWithCourses me;
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
@@ -44,20 +47,53 @@ public class StartFindNearby extends AppCompatActivity {
 
         Intent intent = getIntent();
         test_user_id = intent.getIntExtra("user_id", -1);
+        db = AppDatabase.singleton(this);
+        me = db.userWithCoursesDao().getUser(test_user_id);
+        TextView myCoursesTextView = findViewById(R.id.myCourses);
+        List<Course> myCourseList= me.getCourses();
+
+
 
         start = findViewById(R.id.start_button);
         stop = findViewById(R.id.stop_button);
 
+
+
         MockUserWithCourses John = new MockUserWithCourses(0);
         MockUserWithCourses Amy = new MockUserWithCourses(1);
         MockUserWithCourses Zoey = new MockUserWithCourses(2);
-        nearbyMessage = "*" + John + "*" + Amy + "*" + Zoey;
+        MockUserWithCourses Gary = new MockUserWithCourses(3);
+        nearbyMessage = "*" + John + "*" + Amy + "*" + Zoey + "*" + Gary;
 
 
         List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
         dataList.add(John.getUserWithCourses());
         dataList.add(Amy.getUserWithCourses());
         dataList.add(Zoey.getUserWithCourses());
+        dataList.add(Gary.getUserWithCourses());
+
+
+
+
+        for(int i = 0; i < dataList.size(); i++) {
+            Boolean isClassMate = false;
+            List<Course> userCourses = dataList.get(i).getCourses();
+            for(int j = 0; j < myCourseList.size(); j++) {
+                for(int k = 0; k < userCourses.size(); k++) {
+                    Boolean testDep = myCourseList.get(j).getDepartment().equals(userCourses.get(k).getDepartment());
+                    Boolean testNum = myCourseList.get(j).getCourseNumber() == (userCourses.get(k).getCourseNumber());
+                    Boolean testQrt = myCourseList.get(j).getQuarter().equals(userCourses.get(k).getQuarter());
+                    Boolean testYea = myCourseList.get(j).getYear() == (userCourses.get(k).getYear());
+                    if (testDep && testNum && testQrt && testYea) {
+                        isClassMate = true;
+                    }
+                }
+            }
+            if(!isClassMate) {
+                dataList.remove(i);
+                i--;
+            }
+        }
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
