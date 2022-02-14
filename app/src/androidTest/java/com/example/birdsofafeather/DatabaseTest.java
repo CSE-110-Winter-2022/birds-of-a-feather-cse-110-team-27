@@ -29,7 +29,7 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu");
+        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "");
         db.userWithCoursesDao().insert(newUser);
 
         UserWithCourses user = db.userWithCoursesDao().getUser(0);
@@ -45,7 +45,7 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu");
+        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "");
         db.userWithCoursesDao().insert(newUser);
         Course newCourse = new Course(59, newUser.getId(), 2022, "WINTER", "CSE", 110);
         db.coursesDao().insert(newCourse);

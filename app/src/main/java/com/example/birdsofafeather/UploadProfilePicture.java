@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class UploadProfilePicture extends AppCompatActivity {
     private String name;
     private String image_url;
     private static final String TAG = "Upload Profile";
+    Button confirmBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +31,11 @@ public class UploadProfilePicture extends AppCompatActivity {
         Intent intent = getIntent();
         name = intent.getStringExtra("name");
         personEmail = intent.getStringExtra("email");
+        confirmBtn = findViewById(R.id.button3);
 
 
         ImageView display_photo_ImageView = findViewById(R.id.display_photo);
+        confirmBtn.setVisibility(View.INVISIBLE);
     }
 
     public void onUploadClick(View view) {
@@ -49,6 +53,7 @@ public class UploadProfilePicture extends AppCompatActivity {
                     .into(display_photo_ImageView);
         }
         Log.d(this.TAG, "Previewing Photo");
+        confirmBtn.setVisibility(View.VISIBLE);
 
     }
 

@@ -54,10 +54,10 @@
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="161dp"
-        android:layout_marginTop="22dp"
-        android:text="Confirm"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="20dp"
         android:onClick="onConfirmClicked"
+        android:text="Confirm"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_pfp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
