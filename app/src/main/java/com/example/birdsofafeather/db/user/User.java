@@ -20,6 +20,9 @@ public class User {
     @ColumnInfo(name = "name")
     String name;
 
+    @ColumnInfo(name = "numSameCourses")
+    int numSameCourses;
+
     @ColumnInfo(name = "email")
     String email;
 
@@ -32,6 +35,7 @@ public class User {
         this.name = name;
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
+        this.numSameCourses = 0;
     }
     public int getId(){
         return this.id;
@@ -43,6 +47,18 @@ public class User {
 
     public String getProfilePictureUrl() {
         return this.profilePictureUrl;
+    }
+
+    public void setNumSameCourses(int numSameCourses) {
+        this.numSameCourses = numSameCourses;
+    }
+
+    public void incrementNumSamCourses() {
+        this.numSameCourses += 1;
+    }
+
+    public int getNumSamCourses() {
+        return this.numSameCourses;
     }
 
 }

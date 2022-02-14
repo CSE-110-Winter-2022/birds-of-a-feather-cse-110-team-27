@@ -30,10 +30,12 @@ public class FindNearbyActivity extends AppCompatActivity {
     private int test_user_id;
     private UserWithCourses me;
     private static final String TAG = "FindNearbyActivity";
+    private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
     protected PersonsViewAdapter personsViewAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +69,17 @@ public class FindNearbyActivity extends AppCompatActivity {
         students.add(Matt);
 
 
-
+        List<UserWithCourses> validDataList= new ArrayList<UserWithCourses>();
         nearbyMessage = "";
-        int numStudents = (int)(Math.random()*4 + 1);
+        int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
             nearbyMessage += "*" + students.get(i);
         }
-
+        List<Integer> sameCourseList = new ArrayList<Integer>();
         for(int i = 0; i < dataList.size(); i++) {
             Boolean isClassMate = false;
+            int numSameCourses = 0;
             List<Course> userCourses = dataList.get(i).getCourses();
             for(int j = 0; j < myCourseList.size(); j++) {
                 for(int k = 0; k < userCourses.size(); k++) {
@@ -86,21 +89,54 @@ public class FindNearbyActivity extends AppCompatActivity {
                     Boolean testYea = myCourseList.get(j).getYear() == (userCourses.get(k).getYear());
                     if (testDep && testNum && testQrt && testYea) {
                         isClassMate = true;
+                        numSameCourses += 1;
+                        dataList.get(i).incrementNumSamCourses();
                     }
                 }
             }
-            if(!isClassMate) {
-                dataList.remove(i);
-                i--;
+            if(isClassMate) {
+                validDataList.add(dataList.get(i));
             }
         }
+
+        for(int i = 0; i < validDataList.size(); i++) {
+            Boolean isUnique = true;
+            for(int j = 0; j < this.recordedDataList.size(); j++) {
+                if(validDataList.get(i).getName().equals(this.recordedDataList.get(j).getName())) {
+                    isUnique = false;
+                }
+            }
+            if(isUnique) {
+                this.recordedDataList.add(validDataList.get(i));
+            }
+        }
+
+        List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
+        int iterations = this.recordedDataList.size();
+        for(int i = 0; i < iterations; i++){
+            int max = 0;
+            int maxIndex = 0;
+            for(int j =0; j<this.recordedDataList.size(); j++) {
+                if(this.recordedDataList.get(j).getNumSamCourses() >max) {
+                    max = this.recordedDataList.get(j).getNumSamCourses();
+                    maxIndex = j;
+                }
+            }
+            sortedDataList.add(this.recordedDataList.get(maxIndex));
+            this.recordedDataList.remove(maxIndex);
+        }
+        for(int i = 0; i < sortedDataList.size(); i++) {
+            this.recordedDataList.add(sortedDataList.get(i));
+        }
+
+
 
         personsRecyclerView = findViewById(R.id.persons_view);
 
         personsLayoutManager = new LinearLayoutManager(this);
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-        personsViewAdapter = new PersonsViewAdapter(dataList);
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 

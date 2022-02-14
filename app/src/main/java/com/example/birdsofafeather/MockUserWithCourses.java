@@ -12,6 +12,8 @@ import java.util.List;
 public class MockUserWithCourses{
     private UserWithCourses student;
     Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100);
+    Course testCourse_2 = new Course(0,0,2021, "FALL", "ECE", 65);
+    Course testCourse_3 = new Course(0,0,2021, "FALL", "MATH", 109);
     Course[] courses = {
                 new Course(0,0,2021, "FALL", "ECE", 101),
                 new Course(0,0,2020, "FALL", "BILD", 1),
@@ -53,6 +55,8 @@ public class MockUserWithCourses{
         }
         if(studentNum == 2) {
             listOfCourses.add(testCourse_1);
+            listOfCourses.add(testCourse_2);
+            listOfCourses.add(testCourse_3);
         }
         student = new UserWithCourses();
         student.user = user;

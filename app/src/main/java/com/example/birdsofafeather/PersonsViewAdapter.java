@@ -51,17 +51,22 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             implements View.OnClickListener {
         private final TextView personNameView;
         private UserWithCourses person;
+        private TextView numSameView;
 
 
         ViewHolder(View itemView) {
             super(itemView);
             this.personNameView = itemView.findViewById(R.id.person_row_name);
+            this.numSameView = itemView.findViewById(R.id.num_same_courses_view);
             itemView.setOnClickListener(this);
         }
 
         public void setPerson(UserWithCourses person) {
             this.person = person;
-            this.personNameView.setText(person.getName());
+            if(person.getNumSamCourses() != 0) {
+                this.personNameView.setText(person.getName());
+                this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
+            }
         }
 
         @Override
