@@ -49,7 +49,6 @@ public class StartFindNearby extends AppCompatActivity {
         test_user_id = intent.getIntExtra("user_id", -1);
         db = AppDatabase.singleton(this);
         me = db.userWithCoursesDao().getUser(test_user_id);
-        TextView myCoursesTextView = findViewById(R.id.myCourses);
         List<Course> myCourseList= me.getCourses();
 
 
