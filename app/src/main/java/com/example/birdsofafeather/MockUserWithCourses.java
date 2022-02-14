@@ -20,7 +20,9 @@ public class MockUserWithCourses{
                 new Course(0,0,2020, "FALL", "MATH", 183),
                 new Course(0,0,2020, "FALL", "MATH", 18),
                 new Course(0,0,2020, "FALL", "HILD", 7),
+                new Course(0,0,2020, "FALL", "HUM", 2),
                 new Course(0,0,2020, "FALL", "CHEM", 40),
+                new Course(0,0,2020, "FALL", "DOC", 1),
             };
     public static String[] studentNames = {"John", "Amy", "Zoey", "Matt"};
     public static String[] studentEmails = {"john@ucsd.edu", "amy@ucsd.edu", "zoey@ucsd.edu", "matt@ucsd.edu"};
