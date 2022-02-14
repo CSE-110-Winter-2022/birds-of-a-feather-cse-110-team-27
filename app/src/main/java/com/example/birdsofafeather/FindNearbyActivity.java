@@ -13,6 +13,7 @@ import android.widget.Button;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.CourseComparison;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.util.ArrayList;
@@ -80,13 +81,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             List<Course> userCourses = dataList.get(i).getCourses();
             for(int j = 0; j < myCourseList.size(); j++) {
                 for(int k = 0; k < userCourses.size(); k++) {
-                    Boolean testDep = myCourseList.get(j).getDepartment().equals(userCourses.get(k).getDepartment());
-                    Boolean testNum = myCourseList.get(j).getCourseNumber() == (userCourses.get(k).getCourseNumber());
-                    Boolean testQrt = myCourseList.get(j).getQuarter().equals(userCourses.get(k).getQuarter());
-                    Boolean testYea = myCourseList.get(j).getYear() == (userCourses.get(k).getYear());
-                    if (testDep && testNum && testQrt && testYea) {
-                        isClassMate = true;
-                    }
+                    isClassMate = CourseComparison.compareCourses(myCourseList.get(j), userCourses.get(k));
                 }
             }
             if(!isClassMate) {

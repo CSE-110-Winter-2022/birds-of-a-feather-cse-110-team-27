@@ -45,4 +45,7 @@ public class User {
         return this.profilePictureUrl;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
 }
