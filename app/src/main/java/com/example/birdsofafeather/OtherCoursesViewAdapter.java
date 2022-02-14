@@ -25,8 +25,6 @@ public class OtherCoursesViewAdapter extends RecyclerView.Adapter<OtherCoursesVi
         this.courses = courseArray;
     }
 
-
-
     @NonNull
     @Override
     public OtherCoursesViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
-import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
 
@@ -22,27 +21,19 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
 
-    UserWithCourses user;
-    SignInButton signin;
-    GoogleSignInClient mGoogleSignInClient;
-    int RC_SIGN_IN = 0;
+    private UserWithCourses user;
+    private SignInButton signin;
+    private GoogleSignInClient mGoogleSignInClient;
+    private int RC_SIGN_IN = 0;
+    private static final String TAG = "Main Activity";
 
     @Override
     protected void onStart() {
         super.onStart();
         Bluetooth.requestEnableBluetooth(this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-//        //DELETE THIS
-//        Intent intent = new Intent(MainActivity.this, UploadProfilePicture.class);
-//        startActivity(intent);
     }
 
     @SuppressLint("WrongThread")
@@ -51,16 +42,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
-
-        //TODO: remove this when everyone understands how to use the database
-        // I just have this for testing purposes now
-        // creates a new user
-//            user = new User(db.userWithCoursesDao().maxId(), "Anthony Tarbinian", "atarbini@ucsd.edu");
-//            db.userWithCoursesDao().insert(user);
-//            // creates new course
-//            Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), 2021, "FALL", "CSE",110);
-//            db.coursesDao().insert(newCourse);
-
 
         setContentView(R.layout.activity_main);
 
@@ -72,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.sign_in_button:
                         signIn();
                         break;
-                    // ...
                 }
             }
         });
@@ -87,16 +67,14 @@ public class MainActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        Log.d(this.TAG, "Signing in with google going to Confirm Name Activity");
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
@@ -105,16 +83,10 @@ public class MainActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-//            updateUI(account);
             Intent intent = new Intent(MainActivity.this, ConfirmNameActivity.class);
             startActivity(intent);
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("Error", "signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
         }
     }
 
@@ -130,8 +102,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onShortcutClicked(View view) {
-        Intent intent = new Intent(this, StartFindNearby.class);
+        Intent intent = new Intent(this, FindNearbyActivity.class);
         startActivity(intent);
+        Log.d(this.TAG, "Taking shortcut to Find Nearby Activity");
     }
 
 
