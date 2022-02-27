@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B587D376">
+
+    <TextView
+        android:id="@+id/resume_or_new"
+        android:layout_width="287dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="104dp"
+        android:text="Resume a existed session or start a new one"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/resume"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/resume_or_new"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="189dp"
+        android:layout_marginBottom="-145dp"
+        android:onClick="resumeClicked"
+        android:text="Resume" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/resume_or_new"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="-144dp"
+        android:onClick="newClicked"
+        android:text="New" />
+</RelativeLayout>

@@ -147,11 +147,15 @@ public class FindNearbyActivity extends AppCompatActivity {
     }
 
     public void stopClicked(View view){
+
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
         stopService(intent);
         Log.d(this.TAG, "Stopped Nearby Service");
+
+        startActivity(new Intent(FindNearbyActivity.this, Pop_save.class));
+
     }
 
 

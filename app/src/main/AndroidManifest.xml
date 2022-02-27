@@ -66,5 +66,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name=".Pop_save"
+            android:theme="@style/AppTheme.CustomTheme">
+
+        </activity>
+        <activity android:name=".Pop_resume"
+            android:theme="@style/AppTheme.CustomTheme">
+
+        </activity>
+
+
     </application>
 </manifest>
