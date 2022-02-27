@@ -36,5 +36,6 @@ public class Pop_resume extends Activity {
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);
         startActivity(intent);
+        finish();
     }
 }

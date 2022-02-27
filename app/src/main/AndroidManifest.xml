@@ -72,8 +72,8 @@
 
         </activity>
         <activity android:name=".Pop_resume"
-            android:theme="@style/AppTheme.CustomTheme">
-
+            android:theme="@style/AppTheme.CustomTheme"
+            android:noHistory="true">
         </activity>
 
 

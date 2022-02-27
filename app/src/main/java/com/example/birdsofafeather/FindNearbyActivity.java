@@ -154,7 +154,9 @@ public class FindNearbyActivity extends AppCompatActivity {
         stopService(intent);
         Log.d(this.TAG, "Stopped Nearby Service");
 
-        startActivity(new Intent(FindNearbyActivity.this, Pop_save.class));
+        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
+        intentSave.putExtra("user_id",test_user_id);
+        startActivity(intentSave);
 
     }
 

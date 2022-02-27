@@ -7,8 +7,14 @@ import android.util.DisplayMetrics;
 import android.view.View;
 
 public class Pop_save extends Activity {
+
+    private int test_user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
+
+        Intent intent = getIntent();
+        test_user_id = intent.getIntExtra("user_id", -1);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.pop_window_save);
@@ -23,7 +29,9 @@ public class Pop_save extends Activity {
     }
 
     public void saveClicked(View view) {
-        Intent intent = new Intent(this, EnterClassActivity.class);
+        Intent intent = new Intent(this, FindNearbyActivity.class);
+        intent.putExtra("user_id", test_user_id);
         startActivity(intent);
+        finish();
     }
 }
