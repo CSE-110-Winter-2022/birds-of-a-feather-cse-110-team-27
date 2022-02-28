@@ -58,7 +58,5 @@ public class ProfileActivity extends AppCompatActivity {
         UserWithCourses user = db.userWithCoursesDao().getUser(userId);
         user.toggleFavorite();
         db.userWithCoursesDao().insert(user.user);
-//        user.setName("test");
-
     }
 }

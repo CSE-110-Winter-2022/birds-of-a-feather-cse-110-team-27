@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".PersonsViewAdapter">
 
     <ImageView
         android:id="@+id/profile_details_picture"
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="268dp"
         android:layout_marginBottom="1dp"
-        android:onClick="onToggleFavorite"
+        android:onClick="toggleFavorite"
         android:text="Add Favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

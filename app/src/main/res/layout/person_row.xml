@@ -29,6 +29,8 @@
         android:height="32sp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="340sp"
-        android:layout_marginTop="16sp" />
+        android:layout_marginTop="16sp"
+        android:clickable="true"
+        android:onClick="toggleFavorite"/>
 
 </FrameLayout>

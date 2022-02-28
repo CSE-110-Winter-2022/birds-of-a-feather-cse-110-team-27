@@ -2,6 +2,7 @@ package com.example.birdsofafeather;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,11 +72,11 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
-                if (person.isFavorite()) this.favorite.setText("✩");
+
+                if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");
             }
         }
-
 
         @Override
         public void onClick(View view) {
@@ -94,9 +95,6 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             context.startActivity(intent);
         }
 
-//        public void updateFavorite() {
-//            AppDatabase db = AppDatabase.singleton(this);
-//        }
     }
 
     public static ArrayList<String> courseArrayMaker(List<Course> courses, String name) {
