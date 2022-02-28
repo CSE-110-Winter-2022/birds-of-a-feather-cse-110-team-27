@@ -85,4 +85,7 @@ public class UserWithCourses implements IUser {
         return this.user.getNumSamCourses();
     }
 
+    public Boolean isFavorite() { return this.user.isFavorite(); }
+
+    public void toggleFavorite() { this.user.toggleFavorite(); }
 }

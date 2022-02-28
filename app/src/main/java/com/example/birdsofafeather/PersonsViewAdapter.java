@@ -52,12 +52,14 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         private final TextView personNameView;
         private UserWithCourses person;
         private TextView numSameView;
+        private TextView favorite;
 
 
         ViewHolder(View itemView) {
             super(itemView);
             this.personNameView = itemView.findViewById(R.id.person_row_name);
             this.numSameView = itemView.findViewById(R.id.num_same_courses_view);
+            this.favorite = itemView.findViewById(R.id.favorite);
             itemView.setOnClickListener(this);
         }
 
@@ -66,6 +68,8 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
+                if (person.isFavorite()) this.favorite.setText("\uD83D\uDFCA");
+                else this.favorite.setText("no");
             }
         }
 
@@ -76,9 +80,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             List<Course> person_course = this.person.getCourses();
             String name = this.person.getName();
             String profilePictureUrl = person.getProfilePictureUrl();
+            int userId = person.getId();
             ArrayList<String> courseArray = courseArrayMaker(person_course, name);
             intent.putStringArrayListExtra("course_names", courseArray);
-
+            intent.putExtra("userId", userId);
             intent.putExtra("name", name);
             intent.putExtra("profile_picture_url", profilePictureUrl);
 
