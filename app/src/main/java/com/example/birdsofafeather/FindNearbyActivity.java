@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -56,6 +57,21 @@ public class FindNearbyActivity extends AppCompatActivity {
         stop.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if (personsRecyclerView != null) {
+            for (int x = personsRecyclerView.getChildCount(), i = 0; i < x; ++i) {
+                PersonsViewAdapter.ViewHolder holder = (PersonsViewAdapter.ViewHolder) personsRecyclerView.getChildViewHolder(personsRecyclerView.getChildAt(i));
+                AppDatabase db = AppDatabase.singleton(this);
+                UserWithCourses user = db.userWithCoursesDao().getUser(holder.person.getId());
+                holder.setPerson(user);
+            }
+        }
+    }
+
+
     public void mockFindingNearbyUsers(){
         MockUserWithCourses John = new MockUserWithCourses(0);
         MockUserWithCourses Amy = new MockUserWithCourses(1);
@@ -93,6 +109,11 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
             if(isClassMate) {
                 validDataList.add(dataList.get(i));
+                AppDatabase db = AppDatabase.singleton(this);
+                db.userWithCoursesDao().insert(dataList.get(i).user);
+                for (Course course: dataList.get(i).getCourses()) {
+                    db.coursesDao().insert(course);
+                }
             }
         }
 

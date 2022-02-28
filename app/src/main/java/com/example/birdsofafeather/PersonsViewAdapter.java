@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 
@@ -50,7 +51,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView personNameView;
-        private UserWithCourses person;
+        public UserWithCourses person;
         private TextView numSameView;
         private TextView favorite;
 
@@ -64,14 +65,17 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         }
 
         public void setPerson(UserWithCourses person) {
-            this.person = person;
+            if (this.person == null) this.person = person;
+            else this.person.user = person.user;
+
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
-                if (person.isFavorite()) this.favorite.setText("\uD83D\uDFCA");
-                else this.favorite.setText("no");
+                if (person.isFavorite()) this.favorite.setText("✩");
+                else this.favorite.setText("✩");
             }
         }
+
 
         @Override
         public void onClick(View view) {
@@ -89,6 +93,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
 
             context.startActivity(intent);
         }
+
+//        public void updateFavorite() {
+//            AppDatabase db = AppDatabase.singleton(this);
+//        }
     }
 
     public static ArrayList<String> courseArrayMaker(List<Course> courses, String name) {

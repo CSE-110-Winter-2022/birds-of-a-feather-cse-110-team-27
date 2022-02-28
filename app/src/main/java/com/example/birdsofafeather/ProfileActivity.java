@@ -19,12 +19,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity {
-//    private final List<? extends UserWithCourses> persons;
-//
-//    public ProfileActivity(List<? extends UserWithCourses> persons) {
-//        super();
-//        this.persons = persons;
-//    }
 
     @SuppressLint("WrongThread")
     @Override
@@ -62,8 +56,9 @@ public class ProfileActivity extends AppCompatActivity {
         AppDatabase db = AppDatabase.singleton(this);
 
         UserWithCourses user = db.userWithCoursesDao().getUser(userId);
-//        user.toggleFavorite();
-        user.setName("test");
+        user.toggleFavorite();
+        db.userWithCoursesDao().insert(user.user);
+//        user.setName("test");
 
     }
 }
