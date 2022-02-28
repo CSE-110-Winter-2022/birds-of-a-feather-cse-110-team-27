@@ -72,7 +72,6 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
-
                 if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");
             }

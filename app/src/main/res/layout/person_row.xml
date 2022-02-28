@@ -23,14 +23,13 @@
         android:layout_width="119dp"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <Button
         android:id="@+id/favorite"
-        android:layout_width="20dp"
-        android:height="32sp"
+        android:layout_width="68dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="340sp"
+        android:layout_marginLeft="300sp"
         android:layout_marginTop="16sp"
-        android:clickable="true"
+        android:height="32sp"
         android:onClick="toggleFavorite"/>
 
 </FrameLayout>
