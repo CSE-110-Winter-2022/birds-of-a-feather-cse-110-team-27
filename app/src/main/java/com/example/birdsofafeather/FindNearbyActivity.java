@@ -14,6 +14,7 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.CourseComparison;
+import com.example.birdsofafeather.utils.CheckUserLastSameCourse;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             dataList.add(students.get(i).getUserWithCourses());
             nearbyMessage += "*" + students.get(i);
         }
-        List<Integer> sameCourseList = new ArrayList<Integer>();
+
         for(int i = 0; i < dataList.size(); i++) {
             Boolean isClassMate = false;
             int numSameCourses = 0;
@@ -88,6 +89,9 @@ public class FindNearbyActivity extends AppCompatActivity {
                         isClassMate = true;
                         numSameCourses += 1;
                         dataList.get(i).incrementNumSamCourses();
+                        int year = userCourses.get(k).getYear();
+                        String quarter = userCourses.get(k).getQuarter();
+                        CheckUserLastSameCourse.updateUserLastSameCourseTime(dataList.get(i), year, quarter);
                     }
                 }
             }
@@ -108,14 +112,15 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
 
+
         List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
         int iterations = this.recordedDataList.size();
         for(int i = 0; i < iterations; i++){
             int max = 0;
             int maxIndex = 0;
             for(int j =0; j<this.recordedDataList.size(); j++) {
-                if(this.recordedDataList.get(j).getNumSamCourses() >max) {
-                    max = this.recordedDataList.get(j).getNumSamCourses();
+                if(this.recordedDataList.get(j).getLastSameCourseTime() >max) {
+                    max = this.recordedDataList.get(j).getLastSameCourseTime();
                     maxIndex = j;
                 }
             }
@@ -125,6 +130,24 @@ public class FindNearbyActivity extends AppCompatActivity {
         for(int i = 0; i < sortedDataList.size(); i++) {
             this.recordedDataList.add(sortedDataList.get(i));
         }
+
+//        List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
+//        int iterations = this.recordedDataList.size();
+//        for(int i = 0; i < iterations; i++){
+//            int max = 0;
+//            int maxIndex = 0;
+//            for(int j =0; j<this.recordedDataList.size(); j++) {
+//                if(this.recordedDataList.get(j).getNumSamCourses() >max) {
+//                    max = this.recordedDataList.get(j).getNumSamCourses();
+//                    maxIndex = j;
+//                }
+//            }
+//            sortedDataList.add(this.recordedDataList.get(maxIndex));
+//            this.recordedDataList.remove(maxIndex);
+//        }
+//        for(int i = 0; i < sortedDataList.size(); i++) {
+//            this.recordedDataList.add(sortedDataList.get(i));
+//        }
 
 
 

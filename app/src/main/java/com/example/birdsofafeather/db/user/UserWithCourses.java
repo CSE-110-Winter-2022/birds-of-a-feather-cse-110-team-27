@@ -77,6 +77,14 @@ public class UserWithCourses implements IUser {
         this.user.setNumSameCourses(numSameCourses);
     }
 
+    public int getLastSameCourseTime() {
+        return user.getLastSameCourseTime();
+    }
+
+    public void setLastSameCourseTime(int lastSameCourseTime) {
+        this.user.setLastSameCourseTime(lastSameCourseTime);
+    }
+
     public void incrementNumSamCourses() {
         this.user.incrementNumSamCourses();
     }

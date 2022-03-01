@@ -14,6 +14,7 @@ public class MockUserWithCourses{
     Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100);
     Course testCourse_2 = new Course(0,0,2021, "FALL", "ECE", 65);
     Course testCourse_3 = new Course(0,0,2021, "FALL", "MATH", 109);
+    Course testCourse_4 = new Course(0,0,2022, "WINTER", "CSE", 110);
     Course[] courses = {
                 new Course(0,0,2021, "FALL", "ECE", 101),
                 new Course(0,0,2020, "FALL", "BILD", 1),
@@ -51,7 +52,7 @@ public class MockUserWithCourses{
             }
         }
         else {
-            listOfCourses.add(testCourse_1);
+            listOfCourses.add(testCourse_4);
         }
         if(studentNum == 2) {
             listOfCourses.add(testCourse_1);

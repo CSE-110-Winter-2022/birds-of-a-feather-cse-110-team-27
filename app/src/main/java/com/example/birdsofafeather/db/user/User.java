@@ -23,6 +23,9 @@ public class User {
     @ColumnInfo(name = "numSameCourses")
     int numSameCourses;
 
+    @ColumnInfo(name = "lastSameCourseTime")
+    int lastSameCourseTime;
+
     @ColumnInfo(name = "email")
     String email;
 
@@ -59,6 +62,14 @@ public class User {
 
     public int getNumSamCourses() {
         return this.numSameCourses;
+    }
+
+    public int getLastSameCourseTime() {
+        return lastSameCourseTime;
+    }
+
+    public void setLastSameCourseTime(int lastSameCourseTime) {
+        this.lastSameCourseTime = lastSameCourseTime;
     }
 
     public String getEmail() {
