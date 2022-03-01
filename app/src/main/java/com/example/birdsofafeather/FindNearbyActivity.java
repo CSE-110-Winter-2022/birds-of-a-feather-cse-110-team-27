@@ -1,18 +1,26 @@
 package com.example.birdsofafeather;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.example.birdsofafeather.utils.CheckUserLastSameCourse;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -55,6 +63,10 @@ public class FindNearbyActivity extends AppCompatActivity {
         stop = findViewById(R.id.stop_button);
 
         stop.setVisibility(View.INVISIBLE);
+
+        Spinner quarterDropdown = findViewById(R.id.sort_options);
+        DropdownAdapter sortSelectionAdapter = new DropdownAdapter(this, Constants.sortOptions);
+        quarterDropdown.setAdapter(sortSelectionAdapter);
     }
 
     public void mockFindingNearbyUsers(){
@@ -70,6 +82,8 @@ public class FindNearbyActivity extends AppCompatActivity {
         students.add(Zoey);
         students.add(Matt);
 
+        Spinner sort_dropdown = this.findViewById(R.id.sort_options);
+        String sortOption = sort_dropdown.getSelectedItem().toString();
 
         List<UserWithCourses> validDataList= new ArrayList<UserWithCourses>();
         nearbyMessage = "";
@@ -111,43 +125,47 @@ public class FindNearbyActivity extends AppCompatActivity {
                 this.recordedDataList.add(validDataList.get(i));
             }
         }
-
-
         List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
-        int iterations = this.recordedDataList.size();
-        for(int i = 0; i < iterations; i++){
-            int max = 0;
-            int maxIndex = 0;
-            for(int j =0; j<this.recordedDataList.size(); j++) {
-                if(this.recordedDataList.get(j).getLastSameCourseTime() >max) {
-                    max = this.recordedDataList.get(j).getLastSameCourseTime();
-                    maxIndex = j;
+        if(sortOption.equals("Recency")) {
+
+            int iterations = this.recordedDataList.size();
+            for(int i = 0; i < iterations; i++){
+                int max = 0;
+                int maxIndex = 0;
+                for(int j =0; j<this.recordedDataList.size(); j++) {
+                    if(this.recordedDataList.get(j).getLastSameCourseTime() >max) {
+                        max = this.recordedDataList.get(j).getLastSameCourseTime();
+                        maxIndex = j;
+                    }
                 }
+                sortedDataList.add(this.recordedDataList.get(maxIndex));
+                this.recordedDataList.remove(maxIndex);
             }
-            sortedDataList.add(this.recordedDataList.get(maxIndex));
-            this.recordedDataList.remove(maxIndex);
+            for(int i = 0; i < sortedDataList.size(); i++) {
+                this.recordedDataList.add(sortedDataList.get(i));
+            }
         }
-        for(int i = 0; i < sortedDataList.size(); i++) {
-            this.recordedDataList.add(sortedDataList.get(i));
+        else if(sortOption.equals("# of same courses")) {
+
+            int iterations = this.recordedDataList.size();
+            for(int i = 0; i < iterations; i++){
+                int max = 0;
+                int maxIndex = 0;
+                for(int j =0; j<this.recordedDataList.size(); j++) {
+                    if(this.recordedDataList.get(j).getNumSamCourses() >max) {
+                        max = this.recordedDataList.get(j).getNumSamCourses();
+                        maxIndex = j;
+                    }
+                }
+                sortedDataList.add(this.recordedDataList.get(maxIndex));
+                this.recordedDataList.remove(maxIndex);
+            }
+            for(int i = 0; i < sortedDataList.size(); i++) {
+                this.recordedDataList.add(sortedDataList.get(i));
+            }
         }
 
-//        List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
-//        int iterations = this.recordedDataList.size();
-//        for(int i = 0; i < iterations; i++){
-//            int max = 0;
-//            int maxIndex = 0;
-//            for(int j =0; j<this.recordedDataList.size(); j++) {
-//                if(this.recordedDataList.get(j).getNumSamCourses() >max) {
-//                    max = this.recordedDataList.get(j).getNumSamCourses();
-//                    maxIndex = j;
-//                }
-//            }
-//            sortedDataList.add(this.recordedDataList.get(maxIndex));
-//            this.recordedDataList.remove(maxIndex);
-//        }
-//        for(int i = 0; i < sortedDataList.size(); i++) {
-//            this.recordedDataList.add(sortedDataList.get(i));
-//        }
+
 
 
 
@@ -235,5 +253,37 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
         return courses;
+    }
+    private class DropdownAdapter extends ArrayAdapter {
+
+        public DropdownAdapter(@NonNull Context context, String[] items) {
+            super(context, android.R.layout.simple_spinner_dropdown_item, items);
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            if (position == 0) {
+                // Disable the first item from Spinner
+                // First item will be use for hint
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    ViewGroup parent) {
+            View view = super.getDropDownView(position, convertView, parent);
+            TextView tv = (TextView) view;
+            if (position == 0) {
+                // Set the hint text color gray
+                tv.setTextColor(Color.GRAY);
+            } else {
+                tv.setTextColor(Color.BLACK);
+            }
+            return view;
+        }
+
     }
 }

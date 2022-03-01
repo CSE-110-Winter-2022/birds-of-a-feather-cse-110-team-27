@@ -27,4 +27,9 @@ public class Constants {
             "MUS",
             "PHYS"
     };
+    public static final String[] sortOptions = {
+            "Sort by",
+            "Recency",
+            "# of same courses"
+    };
 }
