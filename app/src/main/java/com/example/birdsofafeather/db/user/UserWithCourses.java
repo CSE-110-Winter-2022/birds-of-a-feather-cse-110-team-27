@@ -93,4 +93,12 @@ public class UserWithCourses implements IUser {
         return this.user.getNumSamCourses();
     }
 
+    public int getSmallestSameCourseSize() {
+        return user.getSmallestSameCourseSize();
+    }
+
+    public void setSmallestSameCourseSize(int smallestSameCourseSize) {
+        this.user.setSmallestSameCourseSize(smallestSameCourseSize);
+    }
+
 }

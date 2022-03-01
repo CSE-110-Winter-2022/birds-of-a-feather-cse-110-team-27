@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.CheckUserSmallestSameCourse;
 import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.example.birdsofafeather.utils.CheckUserLastSameCourse;
@@ -105,7 +106,9 @@ public class FindNearbyActivity extends AppCompatActivity {
                         dataList.get(i).incrementNumSamCourses();
                         int year = userCourses.get(k).getYear();
                         String quarter = userCourses.get(k).getQuarter();
+                        String size = userCourses.get(k).getSize();
                         CheckUserLastSameCourse.updateUserLastSameCourseTime(dataList.get(i), year, quarter);
+                        CheckUserSmallestSameCourse.updateUserSmallestSameCourse(dataList.get(i), size);
                     }
                 }
             }
@@ -159,6 +162,24 @@ public class FindNearbyActivity extends AppCompatActivity {
                 }
                 sortedDataList.add(this.recordedDataList.get(maxIndex));
                 this.recordedDataList.remove(maxIndex);
+            }
+            for(int i = 0; i < sortedDataList.size(); i++) {
+                this.recordedDataList.add(sortedDataList.get(i));
+            }
+        }
+        else if(sortOption.equals("Class size")) {
+            int iterations = this.recordedDataList.size();
+            for(int i = 0; i < iterations; i++){
+                int min = 999;
+                int minIndex = 0;
+                for(int j =0; j<this.recordedDataList.size(); j++) {
+                    if(this.recordedDataList.get(j).getSmallestSameCourseSize() < min) {
+                        min = this.recordedDataList.get(j).getSmallestSameCourseSize();
+                        minIndex = j;
+                    }
+                }
+                sortedDataList.add(this.recordedDataList.get(minIndex));
+                this.recordedDataList.remove(minIndex);
             }
             for(int i = 0; i < sortedDataList.size(); i++) {
                 this.recordedDataList.add(sortedDataList.get(i));

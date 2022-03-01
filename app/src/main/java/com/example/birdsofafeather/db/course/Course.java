@@ -30,13 +30,17 @@ public class Course  extends ICourse {
     @ColumnInfo(name = "course_number")
     public int course_number;
 
-    public Course(int courseId, int userId, int year, String quarter, String department, int course_number){
+    @ColumnInfo(name = "size")
+    public String size;
+
+    public Course(int courseId, int userId, int year, String quarter, String department, int course_number, String size){
         this.courseId = courseId;
         this.userId = userId;
         this.year = year;
         this.quarter = quarter;
         this.department = department;
         this.course_number = course_number;
+        this.size = size;
     }
 
     @Override
@@ -64,6 +68,8 @@ public class Course  extends ICourse {
         return this.course_number;
     }
 
+    public String getSize() { return size; }
+
     @Override
     public void setYear(int year) {
         this.year = year;
@@ -83,4 +89,6 @@ public class Course  extends ICourse {
     public void setCourseNumber(int courseNumber) {
         this.course_number = courseNumber;
     }
+
+    public void setSize(String size) { this.size = size; }
 }

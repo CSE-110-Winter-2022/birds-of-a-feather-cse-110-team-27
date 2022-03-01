@@ -26,6 +26,9 @@ public class User {
     @ColumnInfo(name = "lastSameCourseTime")
     int lastSameCourseTime;
 
+    @ColumnInfo(name = "smallestSameCourseSize")
+    int smallestSameCourseSize;
+
     @ColumnInfo(name = "email")
     String email;
 
@@ -70,6 +73,14 @@ public class User {
 
     public void setLastSameCourseTime(int lastSameCourseTime) {
         this.lastSameCourseTime = lastSameCourseTime;
+    }
+
+    public int getSmallestSameCourseSize() {
+        return smallestSameCourseSize;
+    }
+
+    public void setSmallestSameCourseSize(int smallestSameCourseSize) {
+        this.smallestSameCourseSize = smallestSameCourseSize;
     }
 
     public String getEmail() {
