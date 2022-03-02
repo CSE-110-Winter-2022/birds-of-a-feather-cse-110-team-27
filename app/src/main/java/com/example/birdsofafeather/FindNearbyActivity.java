@@ -16,6 +16,7 @@ import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class FindNearbyActivity extends AppCompatActivity {
     private UserWithCourses me;
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
+    List<UserWithCourses> validDataList;
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
@@ -70,7 +72,8 @@ public class FindNearbyActivity extends AppCompatActivity {
         students.add(Matt);
 
 
-        List<UserWithCourses> validDataList= new ArrayList<UserWithCourses>();
+
+        validDataList= new ArrayList<UserWithCourses>();
         nearbyMessage = "";
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
@@ -93,6 +96,10 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
             if(isClassMate) {
                 validDataList.add(dataList.get(i));
+                db.userWithCoursesDao().insert(dataList.get(i).user);
+                for (Course course : dataList.get(i).courses) {
+                    db.coursesDao().insert(course);
+                }
             }
         }
 
@@ -147,7 +154,6 @@ public class FindNearbyActivity extends AppCompatActivity {
     }
 
     public void stopClicked(View view){
-
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
@@ -156,6 +162,11 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
         intentSave.putExtra("user_id",test_user_id);
+        ArrayList<Integer> user_ids = new ArrayList<>();
+        for(int i = 0; i < this.validDataList.size(); ++i) {
+            user_ids.add(this.validDataList.get(i).user.getId());
+        }
+        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
         startActivity(intentSave);
 
     }
