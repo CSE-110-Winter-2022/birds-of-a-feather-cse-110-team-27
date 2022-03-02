@@ -234,15 +234,4 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         return courses;
     }
-
-    public void toggleFavorite(View view) {
-        Button favorite_button = findViewById(R.id.favorite);
-        favorite_button.setText("x");
-//        int userId = getIntent().getIntExtra("userId", -1);
-//        AppDatabase db = AppDatabase.singleton(this);
-//
-//        UserWithCourses user = db.userWithCoursesDao().getUser(userId);
-//        user.toggleFavorite();
-//        db.userWithCoursesDao().insert(user.user);
-    }
 }

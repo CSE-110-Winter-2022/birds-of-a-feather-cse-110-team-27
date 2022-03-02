@@ -30,6 +30,6 @@
         android:layout_marginLeft="300sp"
         android:layout_marginTop="16sp"
         android:height="32sp"
-        android:onClick="toggleFavorite"/>
+        android:onClick="toggleFavorite" />
 
 </FrameLayout>
