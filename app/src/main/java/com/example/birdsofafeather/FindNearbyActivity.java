@@ -130,7 +130,6 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
         if(sortOption.equals("Recency")) {
-
             int iterations = this.recordedDataList.size();
             for(int i = 0; i < iterations; i++){
                 int max = 0;
@@ -149,7 +148,6 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
         else if(sortOption.equals("# of same courses")) {
-
             int iterations = this.recordedDataList.size();
             for(int i = 0; i < iterations; i++){
                 int max = 0;
@@ -168,6 +166,8 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
         else if(sortOption.equals("Class size")) {
+
+
             int iterations = this.recordedDataList.size();
             for(int i = 0; i < iterations; i++){
                 int min = 999;
