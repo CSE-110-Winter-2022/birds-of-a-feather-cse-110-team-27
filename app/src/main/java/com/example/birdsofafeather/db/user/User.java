@@ -42,6 +42,8 @@ public class User {
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
+        this.lastSameCourseTime = 0;
+        this.smallestSameCourseSize = 999;
     }
     public int getId(){
         return this.id;
