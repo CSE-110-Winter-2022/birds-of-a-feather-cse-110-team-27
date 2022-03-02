@@ -44,6 +44,9 @@ public class EnterClassActivity extends AppCompatActivity {
        Spinner department_dropdown = this.findViewById(R.id.department_dropdown);
        String department = department_dropdown.getSelectedItem().toString();
 
+       Spinner size_dropDown = this.findViewById(R.id.class_size);
+       String size = size_dropDown.getSelectedItem().toString();
+
        EditText course_number_input = this.findViewById(R.id.course_number_input);
        String course_number = course_number_input.getText().toString();
 
@@ -57,6 +60,10 @@ public class EnterClassActivity extends AppCompatActivity {
         }
         if (department.isEmpty()) {
             Utilities.showAlert(this, "Missing department field");
+            return;
+        }
+        if (size.isEmpty()) {
+            Utilities.showAlert(this, "Missing course size field");
             return;
         }
         if (course_number.isEmpty()) {
@@ -81,7 +88,7 @@ public class EnterClassActivity extends AppCompatActivity {
        }
 
         System.out.println("User" + user.getId());
-       Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue());
+        Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue(), size);
         db.coursesDao().insert(newCourse);
         System.out.println(db.coursesDao().maxId());
         courseViewAdapter.addCourse(newCourse);
@@ -136,6 +143,10 @@ public class EnterClassActivity extends AppCompatActivity {
         Spinner departmentDropdown = findViewById(R.id.department_dropdown);
         DropdownAdapter departmentSelectionAdapter = new DropdownAdapter(this, Constants.departments);
         departmentDropdown.setAdapter(departmentSelectionAdapter);
+
+        Spinner sizeDropDown = findViewById(R.id.class_size);
+        DropdownAdapter sizeSelectionAdapter = new DropdownAdapter(this, Constants.sizes);
+        sizeDropDown.setAdapter(sizeSelectionAdapter);
 
         Intent intent = getIntent();
         int userId = intent.getIntExtra( "user_id", -1); //for now default is 0. Maybe last activity pass some value???

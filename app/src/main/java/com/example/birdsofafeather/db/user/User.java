@@ -23,6 +23,12 @@ public class User {
     @ColumnInfo(name = "numSameCourses")
     int numSameCourses;
 
+    @ColumnInfo(name = "lastSameCourseTime")
+    int lastSameCourseTime;
+
+    @ColumnInfo(name = "smallestSameCourseSize")
+    int smallestSameCourseSize;
+
     @ColumnInfo(name = "email")
     String email;
 
@@ -36,6 +42,8 @@ public class User {
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
+        this.lastSameCourseTime = 0;
+        this.smallestSameCourseSize = 999;
     }
     public int getId(){
         return this.id;
@@ -59,6 +67,22 @@ public class User {
 
     public int getNumSamCourses() {
         return this.numSameCourses;
+    }
+
+    public int getLastSameCourseTime() {
+        return lastSameCourseTime;
+    }
+
+    public void setLastSameCourseTime(int lastSameCourseTime) {
+        this.lastSameCourseTime = lastSameCourseTime;
+    }
+
+    public int getSmallestSameCourseSize() {
+        return smallestSameCourseSize;
+    }
+
+    public void setSmallestSameCourseSize(int smallestSameCourseSize) {
+        this.smallestSameCourseSize = smallestSameCourseSize;
     }
 
     public String getEmail() {
