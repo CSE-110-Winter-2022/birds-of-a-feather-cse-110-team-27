@@ -6,7 +6,7 @@ public class CheckUserSmallestSameCourse {
     public static void updateUserSmallestSameCourse(UserWithCourses user, String size) {
         int sizeIndex = 999;
         if (size.equals("Tiny (<40)")) {
-            sizeIndex = 0;
+            sizeIndex = 1;
         }
         else if (size.equals("Small (40-75)")) {
             sizeIndex = 40;
