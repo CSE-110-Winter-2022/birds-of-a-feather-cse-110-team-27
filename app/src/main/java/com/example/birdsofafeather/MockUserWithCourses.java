@@ -1,5 +1,7 @@
 package com.example.birdsofafeather;
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 
 import com.example.birdsofafeather.db.course.Course;
@@ -14,15 +16,16 @@ public class MockUserWithCourses{
     Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100);
     Course testCourse_2 = new Course(0,0,2021, "FALL", "ECE", 65);
     Course testCourse_3 = new Course(0,0,2021, "FALL", "MATH", 109);
+    Course testCourse_4 = new Course(0,0,2019, "SPRING", "BILD", 1);
     Course[] courses = {
-                new Course(0,0,2021, "FALL", "ECE", 101),
-                new Course(0,0,2020, "FALL", "BILD", 1),
-                new Course(0,0,2020, "FALL", "MATH", 183),
-                new Course(0,0,2020, "FALL", "MATH", 18),
-                new Course(0,0,2020, "FALL", "HILD", 7),
-                new Course(0,0,2020, "FALL", "HUM", 2),
-                new Course(0,0,2020, "FALL", "CHEM", 40),
-                new Course(0,0,2020, "FALL", "DOC", 1),
+                new Course(0,0,2021, "FALL", "ECE", 100),
+                new Course(0,0,2019, "SPRING", "BILD", 1),
+                new Course(0,0,2018, "WINTER", "MATH", 183),
+                new Course(0,0,2015, "WINTER", "MATH", 18),
+                new Course(0,0,2021, "SPRING", "HILD", 7),
+                new Course(0,0,2017, "FALL", "HUM", 2),
+                new Course(0,0,2020, "SPRING", "CHEM", 40),
+                new Course(0,0,2016, "WINTER", "DOC", 1),
             };
     public static String[] studentNames = {"John", "Amy", "Zoey", "Matt"};
     public static String[] studentEmails = {"john@ucsd.edu", "amy@ucsd.edu", "zoey@ucsd.edu", "matt@ucsd.edu"};
@@ -31,7 +34,6 @@ public class MockUserWithCourses{
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Donald_Trump_official_portrait.jpg/220px-Donald_Trump_official_portrait.jpg",
             "https://resizing.flixster.com/9Tn-N5F9wPj2VvlJWDNT1iw7kNo=/206x305/v2/https://flxt.tmsimg.com/assets/p186137_b_v8_aa.jpg",
             "https://static.wikia.nocookie.net/w__/images/5/52/HEYimHeroic_3DS_FACE-024_Matt-Wii.JPG/revision/latest?cb=20200705094326&path-prefix=wiisports"
-
     };
 
 
@@ -51,12 +53,14 @@ public class MockUserWithCourses{
             }
         }
         else {
+            listOfCourses.add(testCourse_4);
+        }
+
+        if(studentNum == 2 && !FindNearbyActivity.containsCourse(testCourse_1, listOfCourses)) {
             listOfCourses.add(testCourse_1);
         }
-        if(studentNum == 2) {
-            listOfCourses.add(testCourse_1);
-            listOfCourses.add(testCourse_2);
-            listOfCourses.add(testCourse_3);
+        if(studentNum == 2 || studentNum == 1){
+            listOfCourses.remove(testCourse_4);
         }
         student = new UserWithCourses();
         student.user = user;

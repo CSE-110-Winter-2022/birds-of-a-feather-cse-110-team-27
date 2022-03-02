@@ -17,7 +17,10 @@ import com.example.birdsofafeather.utils.CourseComparison;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 public class FindNearbyActivity extends AppCompatActivity {
     private Button start;
@@ -32,6 +35,7 @@ public class FindNearbyActivity extends AppCompatActivity {
     private UserWithCourses me;
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
+    private List<UserWithCourses> sortedDataList;
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
@@ -108,7 +112,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
 
-        List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
+        sortedDataList= new ArrayList<UserWithCourses>();
         int iterations = this.recordedDataList.size();
         for(int i = 0; i < iterations; i++){
             int max = 0;
@@ -135,6 +139,54 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         personsViewAdapter = new PersonsViewAdapter(sortedDataList);
         personsRecyclerView.setAdapter(personsViewAdapter);
+    }
+
+    public void sortByRecency(View view){
+        PriorityQueue<UserWithCourses> pq = new PriorityQueue<UserWithCourses>(new Comparator<UserWithCourses>() {
+            public int compare(UserWithCourses user1, UserWithCourses user2) {
+                Course mostRecent1 = null;
+                Course mostRecent2 = null;
+
+                for(Course course: user1.courses){
+                    if(containsCourse(course, myCourseList)){
+                        if(mostRecent1 == null || CourseComparison.compareCourseRecency(mostRecent1, course) < 0){
+                            mostRecent1 = course;
+                        }
+                    }
+                }
+                for(Course course: user2.courses){
+                    if(containsCourse(course, myCourseList)){
+                        if(mostRecent2 == null || CourseComparison.compareCourseRecency(mostRecent2, course) < 0){
+                            mostRecent2 = course;
+                        }
+                    }
+                }
+
+                return CourseComparison.compareCourseRecency(mostRecent1,mostRecent2);
+            }
+        });
+        pq.addAll(sortedDataList);
+        List<UserWithCourses> sortedByRecency = new ArrayList<>(pq);
+        Collections.reverse(sortedByRecency);
+        personsRecyclerView = findViewById(R.id.persons_view);
+
+        personsLayoutManager = new LinearLayoutManager(this);
+        personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+        personsViewAdapter = new PersonsViewAdapter(sortedByRecency);
+        personsRecyclerView.setAdapter(personsViewAdapter);
+    }
+
+    public static boolean containsCourse(Course course, List<Course> courseList){
+        for(Course myCourse: courseList){
+            if(myCourse.getDepartment().equals(course.getDepartment())
+                    && myCourse.getCourseNumber() == course.getCourseNumber()
+                    && myCourse.getQuarter().equals(course.getQuarter())
+                    && myCourse.getYear() == course.getYear()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void startClicked(View view){
