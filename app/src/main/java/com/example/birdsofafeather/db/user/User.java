@@ -36,10 +36,10 @@ public class User {
     public String email;
 
     @ColumnInfo(name = "profile_picture_url")
-    String profilePictureUrl;
+    public String profilePictureUrl;
 
     @ColumnInfo(name = "favorite")
-    Boolean favorite;
+    public Boolean favorite;
 
     //TODO: randomly generate id
     public User(int id, String name, String email, String profilePictureUrl) {
@@ -75,7 +75,6 @@ public class User {
     public int getNumSamCourses() {
         return this.numSameCourses;
     }
-
 
     public Boolean isFavorite() { return this.favorite; }
 
