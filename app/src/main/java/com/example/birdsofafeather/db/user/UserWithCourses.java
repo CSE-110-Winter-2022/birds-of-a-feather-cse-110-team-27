@@ -93,6 +93,11 @@ public class UserWithCourses implements IUser {
         return this.user.getNumSamCourses();
     }
 
+
+    public Boolean isFavorite() { return this.user.isFavorite(); }
+
+    public void toggleFavorite() { this.user.toggleFavorite(); }
+
     public int getSmallestSameCourseSize() {
         return user.getSmallestSameCourseSize();
     }
@@ -100,5 +105,6 @@ public class UserWithCourses implements IUser {
     public void setSmallestSameCourseSize(int smallestSameCourseSize) {
         this.user.setSmallestSameCourseSize(smallestSameCourseSize);
     }
+
 
 }

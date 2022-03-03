@@ -1,8 +1,15 @@
 package com.example.birdsofafeather;
 
+import static com.example.birdsofafeather.PersonsViewAdapter.courseArrayMaker;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
+
+import com.example.birdsofafeather.db.course.Course;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -15,3 +22,4 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 }
+

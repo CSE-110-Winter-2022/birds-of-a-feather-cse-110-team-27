@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
+    tools:context=".PersonsViewAdapter">
 
     <ImageView
         android:id="@+id/profile_details_picture"
@@ -48,6 +48,17 @@
         android:layout_marginBottom="1dp"
         android:text="Go Back"
         android:onClick="onGoBackFromProfileClicked"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/toggle_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="216dp"
+        android:layout_marginBottom="1dp"
+        android:onClick="onToggleFavorite"
+        android:text="Add Favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

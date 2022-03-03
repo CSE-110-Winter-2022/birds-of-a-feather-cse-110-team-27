@@ -23,4 +23,13 @@
         android:layout_width="119dp"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:id="@+id/favorite"
+        android:layout_width="68dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300sp"
+        android:layout_marginTop="16sp"
+        android:height="32sp"
+        android:onClick="toggleFavorite" />
+
 </FrameLayout>

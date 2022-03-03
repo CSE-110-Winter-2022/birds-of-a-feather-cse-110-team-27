@@ -36,7 +36,10 @@ public class User {
     public String email;
 
     @ColumnInfo(name = "profile_picture_url")
-    String profilePictureUrl;
+    public String profilePictureUrl;
+
+    @ColumnInfo(name = "favorite")
+    public Boolean favorite;
 
     //TODO: randomly generate id
     public User(int id, String name, String email, String profilePictureUrl) {
@@ -45,6 +48,7 @@ public class User {
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
+        this.favorite = false;
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
     }
@@ -72,6 +76,10 @@ public class User {
         return this.numSameCourses;
     }
 
+    public Boolean isFavorite() { return this.favorite; }
+
+    public void toggleFavorite() { this.favorite ^= true; }
+
     public int getLastSameCourseTime() {
         return lastSameCourseTime;
     }
@@ -87,6 +95,7 @@ public class User {
     public void setSmallestSameCourseSize(int smallestSameCourseSize) {
         this.smallestSameCourseSize = smallestSameCourseSize;
     }
+
 
     public String getEmail() {
         return this.email;
