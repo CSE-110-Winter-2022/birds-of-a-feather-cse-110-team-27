@@ -27,9 +27,9 @@ public class ExampleUnitTest {
         List<Course> listOfCourses = new ArrayList<Course>();
 
         // Initializes 3 different courses
-        Course course0 = new Course(0, 0, 2021, "Fall", "ECE", 101);
-        Course course1 = new Course(0, 0, 2022, "Winter", "CSE", 110);
-        Course course2 = new Course(0, 0, 2022, "Winter", "CSE", 101);
+        Course course0 = new Course(0, 0, 2021, "Fall", "ECE", 101, "SMALL");
+        Course course1 = new Course(0, 0, 2022, "Winter", "CSE", 110, "SMALL");
+        Course course2 = new Course(0, 0, 2022, "Winter", "CSE", 101, "SMALL");
 
         listOfCourses.add(course0);
         listOfCourses.add(course1);
