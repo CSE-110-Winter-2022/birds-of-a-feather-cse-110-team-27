@@ -17,11 +17,14 @@ public class User {
     @ColumnInfo(name = "id")
     int id;
 
+    @ColumnInfo(name = "sessionId")
+    long sessionId;
+
     @ColumnInfo(name = "name")
     String name;
 
     @ColumnInfo(name = "numSameCourses")
-    int numSameCourses;
+    public int numSameCourses;
 
     @ColumnInfo(name = "lastSameCourseTime")
     int lastSameCourseTime;
@@ -30,7 +33,7 @@ public class User {
     int smallestSameCourseSize;
 
     @ColumnInfo(name = "email")
-    String email;
+    public String email;
 
     @ColumnInfo(name = "profile_picture_url")
     String profilePictureUrl;
@@ -88,4 +91,8 @@ public class User {
     public String getEmail() {
         return this.email;
     }
+
+    public long getSessionId() { return this.sessionId; }
+
+    public void setSessionId(long sessionId) { this.sessionId = sessionId; }
 }

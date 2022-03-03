@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.birdsofafeather.db.AppDatabase;
+import com.example.birdsofafeather.db.session.Session;
+import com.example.birdsofafeather.db.session.SessionWithUsers;
+import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Utilities;
 
@@ -20,6 +23,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +48,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AppDatabase db = AppDatabase.singleton(getApplicationContext());
+
+        /**
+        long session_id = db.sessionWithUsersDao().insertSession(new Session());
+        SessionWithUsers sessionWithUsers = db.sessionWithUsersDao().getForId(session_id);
+        sessionWithUsers.setSessionName("CSE 110");
+        db.sessionWithUsersDao().addUsersToSession(
+                session_id,
+                Arrays.asList(
+                        new User(5, "Anthony Tarbinian", "atarbini@ucsd.edu", "https://google.com")));
+
+         //this session_id2 will be identical to session_id
+        long session_id2 = db.sessionWithUsersDao().insertSession(sessionWithUsers.getSession());
+        SessionWithUsers sessionWithUsers2 = db.sessionWithUsersDao().getForId(session_id2);
+        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(session_id2);
+         **/
+
 
         setContentView(R.layout.activity_main);
 
