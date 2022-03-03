@@ -17,9 +17,9 @@ public class CourseArrayMakerTest {
         List<Course> listOfCourses = new ArrayList<Course>();
 
         // Initializes 3 different courses
-        Course course0 = new Course(0, 0, 2021, "Fall", "ECE", 101);
-        Course course1 = new Course(0, 0, 2022, "Winter", "CSE", 110);
-        Course course2 = new Course(0, 0, 2022, "Winter", "CSE", 101);
+        Course course0 = new Course(0, 0, 2021, "Fall", "ECE", 101,"Medium (75-150)");
+        Course course1 = new Course(0, 0, 2022, "Winter", "CSE", 110, "Large (150-250)");
+        Course course2 = new Course(0, 0, 2022, "Winter", "CSE", 101, "Medium (75-150)");
 
         listOfCourses.add(course0);
         listOfCourses.add(course1);

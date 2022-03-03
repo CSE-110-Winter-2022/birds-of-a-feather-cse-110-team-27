@@ -27,4 +27,22 @@ public class Constants {
             "MUS",
             "PHYS"
     };
+
+    public static final String[] sizes = {
+            "Room Sizes",
+            "Tiny (<40)",
+            "Small (40-75)",
+            "Medium (75-150)",
+            "Large (150-250)",
+            "Huge (250-400)",
+            "Gigantic (400+)"
+    };
+
+    public static final String[] sortOptions = {
+            "Sort by",
+            "Recency",
+            "# of same courses",
+            "Class size"
+    };
+
 }

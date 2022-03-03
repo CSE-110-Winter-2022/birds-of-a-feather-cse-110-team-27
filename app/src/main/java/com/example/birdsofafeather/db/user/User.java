@@ -17,14 +17,23 @@ public class User {
     @ColumnInfo(name = "id")
     int id;
 
+    @ColumnInfo(name = "sessionId")
+    long sessionId;
+
     @ColumnInfo(name = "name")
     String name;
 
     @ColumnInfo(name = "numSameCourses")
-    int numSameCourses;
+    public int numSameCourses;
+
+    @ColumnInfo(name = "lastSameCourseTime")
+    int lastSameCourseTime;
+
+    @ColumnInfo(name = "smallestSameCourseSize")
+    int smallestSameCourseSize;
 
     @ColumnInfo(name = "email")
-    String email;
+    public String email;
 
     @ColumnInfo(name = "profile_picture_url")
     String profilePictureUrl;
@@ -40,6 +49,8 @@ public class User {
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
         this.favorite = false;
+        this.lastSameCourseTime = 0;
+        this.smallestSameCourseSize = 999;
     }
     public int getId(){
         return this.id;
@@ -65,11 +76,33 @@ public class User {
         return this.numSameCourses;
     }
 
+
     public Boolean isFavorite() { return this.favorite; }
 
     public void toggleFavorite() { this.favorite ^= true; }
 
+    public int getLastSameCourseTime() {
+        return lastSameCourseTime;
+    }
+
+    public void setLastSameCourseTime(int lastSameCourseTime) {
+        this.lastSameCourseTime = lastSameCourseTime;
+    }
+
+    public int getSmallestSameCourseSize() {
+        return smallestSameCourseSize;
+    }
+
+    public void setSmallestSameCourseSize(int smallestSameCourseSize) {
+        this.smallestSameCourseSize = smallestSameCourseSize;
+    }
+
+
     public String getEmail() {
         return this.email;
     }
+
+    public long getSessionId() { return this.sessionId; }
+
+    public void setSessionId(long sessionId) { this.sessionId = sessionId; }
 }

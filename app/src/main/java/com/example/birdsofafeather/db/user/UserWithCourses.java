@@ -77,6 +77,14 @@ public class UserWithCourses implements IUser {
         this.user.setNumSameCourses(numSameCourses);
     }
 
+    public int getLastSameCourseTime() {
+        return user.getLastSameCourseTime();
+    }
+
+    public void setLastSameCourseTime(int lastSameCourseTime) {
+        this.user.setLastSameCourseTime(lastSameCourseTime);
+    }
+
     public void incrementNumSamCourses() {
         this.user.incrementNumSamCourses();
     }
@@ -85,7 +93,18 @@ public class UserWithCourses implements IUser {
         return this.user.getNumSamCourses();
     }
 
+
     public Boolean isFavorite() { return this.user.isFavorite(); }
 
     public void toggleFavorite() { this.user.toggleFavorite(); }
+
+    public int getSmallestSameCourseSize() {
+        return user.getSmallestSameCourseSize();
+    }
+
+    public void setSmallestSameCourseSize(int smallestSameCourseSize) {
+        this.user.setSmallestSameCourseSize(smallestSameCourseSize);
+    }
+
+
 }
