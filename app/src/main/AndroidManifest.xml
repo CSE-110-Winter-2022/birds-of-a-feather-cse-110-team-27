@@ -16,15 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
-      
+        <activity
+            android:name=".Resume_session"
+            android:exported="false" />
         <activity
             android:name=".UploadProfilePicture"
             android:exported="false" />
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
-
-          <activity
+        <activity
             android:name=".PersonDetailActivity"
             android:exported="false" />
         <activity
@@ -33,7 +34,7 @@
         <activity
             android:name=".DisplayOtherUserActivity"
             android:exported="false" />
-      
+
         <service
             android:name=".FindNearbyService"
             android:enabled="true"
@@ -66,16 +67,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
-        <activity android:name=".Pop_save"
-            android:theme="@style/AppTheme.CustomTheme">
-
-        </activity>
-        <activity android:name=".Pop_resume"
-            android:theme="@style/AppTheme.CustomTheme"
-            android:noHistory="true">
-        </activity>
-
-
+        <activity
+            android:name=".Pop_save"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity
+            android:name=".Pop_resume"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
     </application>
+
 </manifest>
