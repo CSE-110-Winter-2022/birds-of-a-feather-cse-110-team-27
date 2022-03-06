@@ -40,7 +40,7 @@ public abstract class SessionWithUsersDao {
     public abstract SessionWithUsers getForId(long sessionId);
 
     @Query("SELECT * FROM sessions")
-    abstract List<SessionWithUsers> getAllSessions();
+    public abstract List<SessionWithUsers> getAllSessions();
 
     @Query("SELECT * FROM users WHERE sessionId=:sessionId")
     public abstract List<User> getUsersForSessionId(long sessionId);
