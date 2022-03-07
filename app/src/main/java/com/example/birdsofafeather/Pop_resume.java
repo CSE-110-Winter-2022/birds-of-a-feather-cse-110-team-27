@@ -45,7 +45,7 @@ public class Pop_resume extends Activity {
     }
 
     public void resumeClicked(View view) {
-        Intent intent = new Intent(this, FindNearbyActivity.class);
+        Intent intent = new Intent(this, Resume_session.class);
         intent.putExtra("user_id", test_user_id);
         AppDatabase db = AppDatabase.singleton(this);
         List<SessionWithUsers> s = db.sessionWithUsersDao().getAllSessions();
