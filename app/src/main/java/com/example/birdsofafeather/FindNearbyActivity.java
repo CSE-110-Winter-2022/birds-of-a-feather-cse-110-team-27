@@ -87,6 +87,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
     public void mockFindingNearbyUsers(){
         MockUserWithCourses John = new MockUserWithCourses(0);
         MockUserWithCourses Amy = new MockUserWithCourses(1);
