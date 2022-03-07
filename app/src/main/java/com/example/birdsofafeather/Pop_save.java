@@ -61,13 +61,6 @@ public class Pop_save extends Activity {
 
         List<User> users = db.sessionWithUsersDao().getUsersForSessionId(session_id);
 
-
-//        Utilities.showAlert(this, String.format("%o", users.size()));
-
-        Intent intent = new Intent(this, FindNearbyActivity.class);
-        intent.putExtra("user_id", test_user_id);
-        intent.putExtra("session_id", session_id);
-        startActivity(intent);
         finish();
     }
 }
