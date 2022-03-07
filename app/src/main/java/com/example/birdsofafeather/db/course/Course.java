@@ -41,18 +41,18 @@ public class Course  extends ICourse {
         this.course_number = course_number;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Course course = (Course) o;
-        return year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(courseId, userId, year, quarter, department, course_number);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Course course = (Course) o;
+//        return year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(courseId, userId, year, quarter, department, course_number);
+//    }
 
     @Override
     public int getId() {

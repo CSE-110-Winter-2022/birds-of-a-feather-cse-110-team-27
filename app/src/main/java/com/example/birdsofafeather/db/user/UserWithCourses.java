@@ -35,18 +35,18 @@ public class UserWithCourses implements IUser {
 //    }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserWithCourses that = (UserWithCourses) o;
-        return Objects.equals(user, that.user) && Objects.equals(courses, that.courses);
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        UserWithCourses that = (UserWithCourses) o;
+//        return Objects.equals(user, that.user) && Objects.equals(courses, that.courses);
+//    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(user, courses);
-    }
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(user, courses);
+//    }
 
     @Override
     public int getId() {

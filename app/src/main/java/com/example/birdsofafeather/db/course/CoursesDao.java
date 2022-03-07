@@ -1,5 +1,6 @@
 package com.example.birdsofafeather.db.course;
 
+import static androidx.room.OnConflictStrategy.ABORT;
 import static androidx.room.OnConflictStrategy.IGNORE;
 import static androidx.room.OnConflictStrategy.REPLACE;
 

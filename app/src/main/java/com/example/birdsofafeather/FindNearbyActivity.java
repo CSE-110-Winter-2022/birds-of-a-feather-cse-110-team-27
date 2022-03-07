@@ -72,17 +72,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
         sortedDataList = new ArrayList<>();
-//        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(curr_session_id);
         List<User> users = currSession.getUsers();
         List<UserWithCourses> uWCourses = new ArrayList<>();
         for (User user : users) {
             UserWithCourses newUWCourse = new UserWithCourses();
             newUWCourse.user = user;
-//            newUWCourse.courses = db.userWithCoursesDao().getUser(user.getId()).getCourses();
-            List<Course> c = db.userWithCoursesDao().getCoursesForUserId(user.getId());
-            newUWCourse.courses = c;
-            int test = c.size();
-            List<Course> allCourses = db.coursesDao().getAll();
+            newUWCourse.courses = db.userWithCoursesDao().getCoursesForUserId(user.getId());
             uWCourses.add(newUWCourse);
         }
         sortedDataList.addAll(uWCourses);
@@ -117,12 +112,11 @@ public class FindNearbyActivity extends AppCompatActivity {
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
-            for(Course course : students.get(i).courses) {
+            for(Course course : students.get(i).getUserWithCourses().courses) {
                 course.userId = students.get(i).student.getId();
-//                db.coursesDao().insert(course);
-                db.userWithCoursesDao().insertCourse(course);
-//                Utilities.showAlert(this, String.format("%o", course.course_number));
+                db.coursesDao().insert(course);
             }
+            System.out.println(db.coursesDao().getAll().size());
             nearbyMessage += "*" + students.get(i);
         }
         List<Integer> sameCourseList = new ArrayList<Integer>();
@@ -191,6 +185,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 //        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
 //        personsRecyclerView.setAdapter(personsViewAdapter);
     }
+
 
     public void startClicked(View view){
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
