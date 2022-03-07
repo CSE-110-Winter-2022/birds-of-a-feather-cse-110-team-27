@@ -10,6 +10,8 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.session.Session;
 import com.example.birdsofafeather.db.session.SessionWithUsers;
 
+import java.util.List;
+
 public class Pop_resume extends Activity {
     private int test_user_id;
 
@@ -38,12 +40,19 @@ public class Pop_resume extends Activity {
 
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);
+        intent.putExtra("session_id", session_id);
         startActivity(intent);
     }
 
     public void resumeClicked(View view) {
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);
+        AppDatabase db = AppDatabase.singleton(this);
+        List<SessionWithUsers> s = db.sessionWithUsersDao().getAllSessions();
+
+        // CHANGE THE session_id BELOW TO BE THE ONE FROM THE SESSION THE USER SELECTS
+        SessionWithUsers chosenSession = db.sessionWithUsersDao().getForId(1);
+        intent.putExtra("session_id", chosenSession.getSession().getId());
         startActivity(intent);
         finish();
     }

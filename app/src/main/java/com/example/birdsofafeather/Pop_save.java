@@ -13,6 +13,7 @@ import com.example.birdsofafeather.db.session.Session;
 import com.example.birdsofafeather.db.session.SessionWithUsers;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +47,7 @@ public class Pop_save extends Activity {
         TextView sessionNameTextView = findViewById(R.id.current_enrolled_class);
         String sessionName = sessionNameTextView.getText().toString();
         AppDatabase db = AppDatabase.singleton(this);
+
         long session_id = db.sessionWithUsersDao().insertSession(new Session());
         SessionWithUsers sessionWithUsers = db.sessionWithUsersDao().getForId(session_id);
         sessionWithUsers.setSessionName(sessionName);
@@ -54,9 +56,13 @@ public class Pop_save extends Activity {
             db.sessionWithUsersDao().addUsersToSession(session_id, Arrays.asList(user.user));
         }
         Log.d("Pop_save", "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.size() + " users");
+//        Utilities.showAlert(this, "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.size() + " users");
         db.sessionWithUsersDao().insertSession(sessionWithUsers.getSession());
 
+        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(session_id);
 
+
+//        Utilities.showAlert(this, String.format("%o", users.size()));
 
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);

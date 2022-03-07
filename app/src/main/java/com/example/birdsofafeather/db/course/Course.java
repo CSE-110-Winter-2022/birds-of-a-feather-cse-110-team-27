@@ -7,6 +7,8 @@ import androidx.room.PrimaryKey;
 
 import com.example.birdsofafeather.utils.Utilities;
 
+import java.util.Objects;
+
 
 @Entity(tableName = "courses")
 public class Course  extends ICourse {
@@ -37,6 +39,19 @@ public class Course  extends ICourse {
         this.quarter = quarter;
         this.department = department;
         this.course_number = course_number;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Course course = (Course) o;
+        return courseId == course.courseId && userId == course.userId && year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(courseId, userId, year, quarter, department, course_number);
     }
 
     @Override

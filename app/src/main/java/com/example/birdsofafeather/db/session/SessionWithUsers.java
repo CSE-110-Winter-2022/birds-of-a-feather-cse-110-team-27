@@ -23,7 +23,7 @@ public class SessionWithUsers {
     }
 
     public void setSessionName(String name) {
-        this.session.name = name;
+        this.session.setName(name);
     }
 
     public String getSessionName() {

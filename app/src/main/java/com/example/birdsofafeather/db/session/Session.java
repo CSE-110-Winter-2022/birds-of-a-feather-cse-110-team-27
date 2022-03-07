@@ -10,6 +10,7 @@ import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "sessions")
@@ -23,6 +24,11 @@ public class Session {
     @ColumnInfo(name = "name")
     String name;
 
+    @ColumnInfo(name = "date")
+    String date;
+
+    @ColumnInfo(name = "hasName")
+    boolean hasName;
 
 //    @ColumnInfo(name = "filters")
 //    @Embedded
@@ -47,6 +53,14 @@ public class Session {
 //        this.filters = new ArrayList<>();
 //        this.sort_options = new ArrayList<>();
 //        this.nearby_users = new ArrayList<>();
+        this.hasName = false;
+        this.date = new Date().toString();
+    }
+
+    public Session(String name) {
+        this.name = name;
+        this.hasName = true;
+        this.date = new Date().toString();
     }
 
 
@@ -54,6 +68,9 @@ public class Session {
     public String getName() {
        return this.name;
     }
+    public long getId() { return this.id; }
+    public String getDate() { return this.date; }
+    public boolean hasName() { return this.hasName; }
 
 //    public List<String> getFilters() {
 //       return this.filters;
@@ -69,7 +86,9 @@ public class Session {
 
     //setters
     public void setName(String name) {
+       this.hasName = true;
        this.name = name;
+       this.date = new Date().toString();
     }
 
 //    public void setFilters(List<String> filters) {

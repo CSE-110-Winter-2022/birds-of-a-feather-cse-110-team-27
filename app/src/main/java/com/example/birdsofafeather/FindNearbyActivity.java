@@ -12,8 +12,11 @@ import android.widget.Button;
 
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.db.session.SessionWithUsers;
+import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.CourseComparison;
+import com.example.birdsofafeather.utils.Utilities;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.lang.reflect.Array;
@@ -30,7 +33,9 @@ public class FindNearbyActivity extends AppCompatActivity {
     public static MessageListener messageListener;
     public static String nearbyMessage;
     private int test_user_id;
+    private long curr_session_id;
     private UserWithCourses me;
+    private SessionWithUsers currSession;
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
@@ -38,6 +43,8 @@ public class FindNearbyActivity extends AppCompatActivity {
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
     protected PersonsViewAdapter personsViewAdapter;
+
+    private List<UserWithCourses> sortedDataList;
 
 
     @Override
@@ -48,14 +55,36 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         test_user_id = intent.getIntExtra("user_id", -1);
+        curr_session_id = intent.getLongExtra("session_id", -1);
         db = AppDatabase.singleton(this);
         me = db.userWithCoursesDao().getUser(test_user_id);
+        currSession = db.sessionWithUsersDao().getForId(curr_session_id);
         myCourseList= me.getCourses();
 
         start = findViewById(R.id.start_button);
         stop = findViewById(R.id.stop_button);
 
         stop.setVisibility(View.INVISIBLE);
+
+        personsRecyclerView = findViewById(R.id.persons_view);
+
+        personsLayoutManager = new LinearLayoutManager(this);
+        personsRecyclerView.setLayoutManager(personsLayoutManager);
+
+        sortedDataList = new ArrayList<>();
+//        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(curr_session_id);
+        List<User> users = currSession.getUsers();
+        List<UserWithCourses> uWCourses = new ArrayList<>();
+        for (User user : users) {
+            UserWithCourses newUWCourse = new UserWithCourses();
+            newUWCourse.user = user;
+            newUWCourse.courses = db.userWithCoursesDao().getUser(user.getId()).getCourses();
+            uWCourses.add(newUWCourse);
+        }
+        sortedDataList.addAll(uWCourses);
+
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
+        personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
     public void mockFindingNearbyUsers(){
@@ -115,7 +144,6 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
 
-        List<UserWithCourses> sortedDataList= new ArrayList<UserWithCourses>();
         int iterations = this.recordedDataList.size();
         for(int i = 0; i < iterations; i++){
             int max = 0;
@@ -126,22 +154,18 @@ public class FindNearbyActivity extends AppCompatActivity {
                     maxIndex = j;
                 }
             }
-            sortedDataList.add(this.recordedDataList.get(maxIndex));
+            if(!sortedDataList.contains(this.recordedDataList.get(maxIndex))) {
+                sortedDataList.add(this.recordedDataList.get(maxIndex));
+                personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+            }
             this.recordedDataList.remove(maxIndex);
         }
         for(int i = 0; i < sortedDataList.size(); i++) {
             this.recordedDataList.add(sortedDataList.get(i));
         }
 
-
-
-        personsRecyclerView = findViewById(R.id.persons_view);
-
-        personsLayoutManager = new LinearLayoutManager(this);
-        personsRecyclerView.setLayoutManager(personsLayoutManager);
-
-        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
-        personsRecyclerView.setAdapter(personsViewAdapter);
+//        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
+//        personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
     public void startClicked(View view){
@@ -160,14 +184,22 @@ public class FindNearbyActivity extends AppCompatActivity {
         stopService(intent);
         Log.d(this.TAG, "Stopped Nearby Service");
 
-        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
-        intentSave.putExtra("user_id",test_user_id);
-        ArrayList<Integer> user_ids = new ArrayList<>();
-        for(int i = 0; i < this.validDataList.size(); ++i) {
-            user_ids.add(this.validDataList.get(i).user.getId());
+        AppDatabase db = AppDatabase.singleton(this);
+        for(UserWithCourses user : sortedDataList) {
+            user.user.setSessionId(curr_session_id);
+            db.userWithCoursesDao().insert(user.user);
         }
-        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
-        startActivity(intentSave);
+
+        if(currSession.getSessionName() == null) {
+            Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
+            intentSave.putExtra("user_id", test_user_id);
+            ArrayList<Integer> user_ids = new ArrayList<>();
+            for (int i = 0; i < this.validDataList.size(); ++i) {
+                user_ids.add(this.validDataList.get(i).user.getId());
+            }
+            intentSave.putIntegerArrayListExtra("user_ids", user_ids);
+            startActivity(intentSave);
+        }
 
     }
 
