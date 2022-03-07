@@ -46,7 +46,7 @@ public class Course  extends ICourse {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Course course = (Course) o;
-        return courseId == course.courseId && userId == course.userId && year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
+        return year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
     }
 
     @Override

@@ -154,7 +154,14 @@ public class FindNearbyActivity extends AppCompatActivity {
                     maxIndex = j;
                 }
             }
-            if(!sortedDataList.contains(this.recordedDataList.get(maxIndex))) {
+            boolean personAlreadyExists = false;
+            for(UserWithCourses user : sortedDataList) {
+                if(this.recordedDataList.get(maxIndex).user.getName().equals(user.user.getName())) {
+                    personAlreadyExists = true;
+                    break;
+                }
+            }
+            if(!personAlreadyExists) {
                 sortedDataList.add(this.recordedDataList.get(maxIndex));
                 personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
             }
