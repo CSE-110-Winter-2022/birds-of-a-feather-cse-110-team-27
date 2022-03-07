@@ -78,7 +78,11 @@ public class FindNearbyActivity extends AppCompatActivity {
         for (User user : users) {
             UserWithCourses newUWCourse = new UserWithCourses();
             newUWCourse.user = user;
-            newUWCourse.courses = db.userWithCoursesDao().getUser(user.getId()).getCourses();
+//            newUWCourse.courses = db.userWithCoursesDao().getUser(user.getId()).getCourses();
+            List<Course> c = db.userWithCoursesDao().getCoursesForUserId(user.getId());
+            newUWCourse.courses = c;
+            int test = c.size();
+            List<Course> allCourses = db.coursesDao().getAll();
             uWCourses.add(newUWCourse);
         }
         sortedDataList.addAll(uWCourses);
@@ -113,6 +117,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
+            for(Course course : students.get(i).courses) {
+                course.userId = students.get(i).student.getId();
+//                db.coursesDao().insert(course);
+                db.userWithCoursesDao().insertCourse(course);
+//                Utilities.showAlert(this, String.format("%o", course.course_number));
+            }
             nearbyMessage += "*" + students.get(i);
         }
         List<Integer> sameCourseList = new ArrayList<Integer>();
@@ -133,6 +143,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                 validDataList.add(dataList.get(i));
                 db.userWithCoursesDao().insert(dataList.get(i).user);
                 for (Course course : dataList.get(i).courses) {
+                    course.userId = dataList.get(i).user.getId();
                     db.coursesDao().insert(course);
                 }
             }
@@ -201,9 +212,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         for(UserWithCourses user : sortedDataList) {
             user.user.setSessionId(curr_session_id);
             db.userWithCoursesDao().insert(user.user);
+            for(Course course : user.getCourses()) {
+                db.coursesDao().insert(course);
+            }
         }
 
-        if(currSession.getSessionName() == null) {
+        if(!currSession.getSession().hasName()) {
             Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
             intentSave.putExtra("user_id", test_user_id);
             ArrayList<Integer> user_ids = new ArrayList<>();

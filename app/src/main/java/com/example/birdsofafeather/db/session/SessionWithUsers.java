@@ -13,7 +13,7 @@ public class SessionWithUsers {
     private Session session;
 
     @Relation(parentColumn = "id",
-            entityColumn = "id",
+            entityColumn = "sessionId",
             entity = User.class
     )
     private List<User> users;

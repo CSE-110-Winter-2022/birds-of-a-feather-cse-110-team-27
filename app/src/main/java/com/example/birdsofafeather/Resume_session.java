@@ -33,7 +33,7 @@ public class Resume_session extends AppCompatActivity {
         sessionLayoutManager = new LinearLayoutManager(this);
         sessionRecyclerView.setLayoutManager(sessionLayoutManager);
 
-        sessionViewAdapter = new SessionViewAdapter(sessions);
+        sessionViewAdapter = new SessionViewAdapter(sessions, personId);
         sessionRecyclerView.setAdapter(sessionViewAdapter);
     }
 }

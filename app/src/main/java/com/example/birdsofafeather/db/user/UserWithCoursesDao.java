@@ -22,6 +22,10 @@ public abstract class UserWithCoursesDao {
     @Query("SELECT * FROM users where id=:userId")
     public abstract UserWithCourses getUser(int userId);
 
+    @Transaction
+    @Query("SELECT * FROM courses where user_id=:userId")
+    public abstract List<Course> getCoursesForUserId(int userId);
+
 //    @Transaction
 //    @Query("SELECT * FROM users where email=:email")
 //    public abstract UserWithCourses getUserForEmail(String email);
@@ -29,6 +33,11 @@ public abstract class UserWithCoursesDao {
     @Transaction
     @Query("SELECT * FROM users")
     public abstract List<UserWithCourses> getAll();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public abstract void insertCourse(Course course);
+
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void insert(User user);

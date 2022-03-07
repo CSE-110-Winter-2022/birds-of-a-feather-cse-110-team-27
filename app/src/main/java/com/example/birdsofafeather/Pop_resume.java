@@ -47,12 +47,6 @@ public class Pop_resume extends Activity {
     public void resumeClicked(View view) {
         Intent intent = new Intent(this, Resume_session.class);
         intent.putExtra("user_id", test_user_id);
-        AppDatabase db = AppDatabase.singleton(this);
-        List<SessionWithUsers> s = db.sessionWithUsersDao().getAllSessions();
-
-        // CHANGE THE session_id BELOW TO BE THE ONE FROM THE SESSION THE USER SELECTS
-        SessionWithUsers chosenSession = db.sessionWithUsersDao().getForId(1);
-        intent.putExtra("session_id", chosenSession.getSession().getId());
         startActivity(intent);
         finish();
     }

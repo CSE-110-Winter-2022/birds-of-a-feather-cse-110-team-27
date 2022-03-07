@@ -51,16 +51,20 @@ public class Pop_save extends Activity {
         long session_id = db.sessionWithUsersDao().insertSession(new Session());
         SessionWithUsers sessionWithUsers = db.sessionWithUsersDao().getForId(session_id);
         sessionWithUsers.setSessionName(sessionName);
+//        List<User> users = new ArrayList<>();
         for (Integer id : user_ids) {
             UserWithCourses user = db.userWithCoursesDao().getUser(id);
             db.sessionWithUsersDao().addUsersToSession(session_id, Arrays.asList(user.user));
+//            users.add(user.user);
         }
+//        sessionWithUsers.addUsers(users);
         Log.d("Pop_save", "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.size() + " users");
-//        Utilities.showAlert(this, "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.size() + " users");
         db.sessionWithUsersDao().insertSession(sessionWithUsers.getSession());
 
-        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(session_id);
+        SessionWithUsers testS = db.sessionWithUsersDao().getForId(session_id);
+        List<User> u = testS.getUsers();
 
+        System.out.println();
         finish();
     }
 }
