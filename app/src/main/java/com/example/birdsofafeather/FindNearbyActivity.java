@@ -86,11 +86,6 @@ public class FindNearbyActivity extends AppCompatActivity {
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
 
     public void mockFindingNearbyUsers(){
         MockUserWithCourses John = new MockUserWithCourses(0);
@@ -111,9 +106,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         nearbyMessage = "";
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
+            students.get(i).student.user.setSessionId(curr_session_id);
+            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1);
             dataList.add(students.get(i).getUserWithCourses());
             for(Course course : students.get(i).getUserWithCourses().courses) {
                 course.userId = students.get(i).student.getId();
+                course.courseId = db.coursesDao().maxId() + 1;
                 db.coursesDao().insert(course);
             }
             System.out.println(db.coursesDao().getAll().size());
@@ -175,6 +173,11 @@ public class FindNearbyActivity extends AppCompatActivity {
             if(!personAlreadyExists) {
                 sortedDataList.add(this.recordedDataList.get(maxIndex));
                 personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
+                for (Course course : this.recordedDataList.get(maxIndex).courses) {
+                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
+                    db.coursesDao().insert(course);
+                }
             }
             this.recordedDataList.remove(maxIndex);
         }
