@@ -66,6 +66,7 @@ public class Pop_save extends Activity {
 
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);
+        intent.putExtra("session_id", session_id);
         startActivity(intent);
         finish();
     }
