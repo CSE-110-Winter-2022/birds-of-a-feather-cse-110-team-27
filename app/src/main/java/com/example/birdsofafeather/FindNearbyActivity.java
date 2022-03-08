@@ -25,6 +25,8 @@ import com.example.birdsofafeather.utils.CheckUserSmallestSameCourse;
 import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.example.birdsofafeather.utils.CheckUserLastSameCourse;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.lang.reflect.Array;
@@ -87,6 +89,11 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        Nearby.getMessagesClient(this).unsubscribe(messageListener);
+    }
 
     public void mockFindingNearbyUsers(){
         MockUserWithCourses John = new MockUserWithCourses(0);
@@ -227,7 +234,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        mockFindingNearbyUsers();
+//        mockFindingNearbyUsers();
         startService(intent);
         Log.d(this.TAG, "Started Nearby Service");
     }
@@ -239,14 +246,15 @@ public class FindNearbyActivity extends AppCompatActivity {
         stopService(intent);
         Log.d(this.TAG, "Stopped Nearby Service");
 
-        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
-        intentSave.putExtra("user_id",test_user_id);
-        ArrayList<Integer> user_ids = new ArrayList<>();
-        for(int i = 0; i < this.validDataList.size(); ++i) {
-            user_ids.add(this.validDataList.get(i).user.getId());
-        }
-        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
-        startActivity(intentSave);
+        //tmp commnet
+//        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
+//        intentSave.putExtra("user_id",test_user_id);
+//        ArrayList<Integer> user_ids = new ArrayList<>();
+//        for(int i = 0; i < this.validDataList.size(); ++i) {
+//            user_ids.add(this.validDataList.get(i).user.getId());
+//        }
+//        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
+//        startActivity(intentSave);
 
     }
 
@@ -309,6 +317,12 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         return courses;
     }
+
+    public void onMockBluetoothClicked(View view) {
+        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+        startActivity(intent);
+    }
+
     private class DropdownAdapter extends ArrayAdapter {
 
         public DropdownAdapter(@NonNull Context context, String[] items) {

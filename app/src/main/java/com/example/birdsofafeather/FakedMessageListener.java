@@ -16,10 +16,19 @@ public class FakedMessageListener extends MessageListener{
         this.messageListener = realMessageListener;
         this.executor = Executors.newSingleThreadScheduledExecutor();
 
-        executor.schedule(() -> {
+        executor.scheduleAtFixedRate(() -> {
             Message message = new Message(messageStr.getBytes(StandardCharsets.UTF_8));
             this.messageListener.onFound(message);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             this.messageListener.onLost(message);
-        }, 0, TimeUnit.SECONDS);
+        }, 0, frequency, TimeUnit.SECONDS);
+    }
+
+    public void stopMessages() {
+        this.executor.shutdown();
     }
 }

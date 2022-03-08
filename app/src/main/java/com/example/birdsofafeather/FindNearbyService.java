@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
@@ -44,8 +45,9 @@ public class FindNearbyService extends Service {
                             Log.d(FindNearbyService.TAG, "Lost sign of message: " + new String(message.getContent()));
                         }
                     };
-                    FindNearbyActivity.messageListener = new FakedMessageListener(realListener, 1, FindNearbyActivity.nearbyMessage);
+                    FindNearbyActivity.messageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyMessage);
                     wait(300000);
+                    Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.messageListener);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -58,7 +60,10 @@ public class FindNearbyService extends Service {
 
     @Override
     public void onDestroy() {
+        ((FakedMessageListener)(FindNearbyActivity.messageListener)).stopMessages();
+        Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.messageListener);
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
+        stopSelf();
         super.onDestroy();
     }
 }
