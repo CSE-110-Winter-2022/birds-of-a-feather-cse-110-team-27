@@ -21,6 +21,7 @@ import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FindNearbyActivity extends AppCompatActivity {
@@ -178,6 +179,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                     course.userId = this.recordedDataList.get(maxIndex).user.getId();
                     db.coursesDao().insert(course);
                 }
+                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
             }
             this.recordedDataList.remove(maxIndex);
         }
