@@ -13,7 +13,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="57dp"
         android:ems="10"
-        android:hint="Current enrolled class"
+        android:hint="Session name"
         android:inputType="textPersonName"
         android:text="" />
 

@@ -107,6 +107,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
             students.get(i).student.user.setSessionId(curr_session_id);
+//            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1); //del?
             dataList.add(students.get(i).getUserWithCourses());
             for(Course course : students.get(i).getUserWithCourses().courses) {
                 course.userId = students.get(i).student.getId();
@@ -213,18 +214,6 @@ public class FindNearbyActivity extends AppCompatActivity {
                 db.coursesDao().insert(course);
             }
         }
-
-        if(!currSession.getSession().hasName()) {
-            Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
-            intentSave.putExtra("user_id", test_user_id);
-            ArrayList<Integer> user_ids = new ArrayList<>();
-            for (int i = 0; i < this.validDataList.size(); i++) {
-                user_ids.add(this.validDataList.get(i).user.getId());
-            }
-            intentSave.putIntegerArrayListExtra("user_ids", user_ids);
-            startActivity(intentSave);
-        }
-
     }
 
 
@@ -285,5 +274,19 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
         return courses;
+    }
+
+    public void saveSession_onClick(View view) {
+        if(!currSession.getSession().hasName()) {
+            Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
+            intentSave.putExtra("user_id", test_user_id);
+            ArrayList<Integer> user_ids = new ArrayList<>();
+            for (int i = 0; i < this.validDataList.size(); i++) {
+                user_ids.add(this.validDataList.get(i).user.getId());
+            }
+            intentSave.putIntegerArrayListExtra("user_ids", user_ids);
+            startActivity(intentSave);
+        }
+
     }
 }
