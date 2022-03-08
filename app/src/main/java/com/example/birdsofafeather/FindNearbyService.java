@@ -8,6 +8,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.birdsofafeather.parsers.NearbyUserParser;
+import com.example.birdsofafeather.parsers.Parser;
+import com.example.birdsofafeather.parsers.WaveParser;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
@@ -18,6 +21,7 @@ import java.util.concurrent.Executors;
 public class FindNearbyService extends Service {
     public static final String TAG = "FindNearbyService";
     ExecutorService executor = Executors.newSingleThreadExecutor();
+    private Parser parser;
 
     public FindNearbyService() {
     }
@@ -30,6 +34,12 @@ public class FindNearbyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String parser_type = intent.getStringExtra("parser_type");
+        if(parser_type.equals("nearby_user")) {
+            parser = new NearbyUserParser();
+        } else if(parser_type.equals("wave")) {
+            parser = new WaveParser();
+        }
         Toast.makeText(FindNearbyService.this, "Start Finding Nearby Users", Toast.LENGTH_SHORT).show();
         executor.submit(() -> {
             synchronized (this) {
@@ -38,6 +48,7 @@ public class FindNearbyService extends Service {
                         @Override
                         public void onFound(@NonNull Message message) {
                             Log.d(FindNearbyService.TAG, "Found message: " + new String(message.getContent()));
+                            parser.parse(getApplicationContext(), new String(message.getContent()));
                         }
 
                         @Override

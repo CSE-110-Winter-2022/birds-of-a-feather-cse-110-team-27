@@ -11,12 +11,12 @@ import com.example.birdsofafeather.db.session.Session;
 import com.example.birdsofafeather.db.session.SessionWithUsers;
 
 public class Pop_resume extends Activity {
-    private int test_user_id;
+    private long test_user_id;
 
     protected void onCreate(Bundle savedInstanceState){
 
         Intent intent = getIntent();
-        test_user_id = intent.getIntExtra("user_id", -1);
+        test_user_id = intent.getLongExtra("user_id", -1);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.pop_window_resume);

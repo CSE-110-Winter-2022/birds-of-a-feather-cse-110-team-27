@@ -11,8 +11,8 @@ public class CheckUserLastSameCourseTest {
 
     @Test
     public void checkUserLastSameCourse() {
-        User user1 = new User(0, "Byron Chan", "bschan@ucsd.edu", "https://ucsd.edu");
-        User user2 = new User(1, "Emil Sharkov", "esharkov@ucsd.edu", "https://ucsd.edu");
+        User user1 = new User("Byron Chan", "bschan@ucsd.edu", "https://ucsd.edu");
+        User user2 = new User("Emil Sharkov", "esharkov@ucsd.edu", "https://ucsd.edu");
         UserWithCourses userWithCourses1 = new UserWithCourses();
         userWithCourses1.user = user1;
         UserWithCourses userWithCourses2 = new UserWithCourses();

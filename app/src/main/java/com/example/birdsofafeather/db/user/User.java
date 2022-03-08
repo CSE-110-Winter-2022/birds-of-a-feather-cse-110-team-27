@@ -13,9 +13,9 @@ import java.util.List;
 @Entity(tableName = "users")
 public class User {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    int id;
+    public long id;
 
     @ColumnInfo(name = "sessionId")
     long sessionId;
@@ -42,8 +42,8 @@ public class User {
     public Boolean favorite;
 
     //TODO: randomly generate id
-    public User(int id, String name, String email, String profilePictureUrl) {
-        this.id = id;
+    public User(String name, String email, String profilePictureUrl) {
+//        this.id = id;
         this.name = name;
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
@@ -52,7 +52,7 @@ public class User {
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
     }
-    public int getId(){
+    public long getId(){
         return this.id;
     }
 

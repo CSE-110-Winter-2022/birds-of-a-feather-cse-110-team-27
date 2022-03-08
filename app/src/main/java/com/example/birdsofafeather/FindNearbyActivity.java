@@ -42,7 +42,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public static MessageListener messageListener;
     public static String nearbyMessage;
-    private int test_user_id;
+    private long test_user_id;
     private UserWithCourses me;
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
@@ -60,7 +60,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        test_user_id = intent.getIntExtra("user_id", -1);
+        test_user_id = intent.getLongExtra("user_id", -1);
         db = AppDatabase.singleton(this);
         me = db.userWithCoursesDao().getUser(test_user_id);
         myCourseList= me.getCourses();
@@ -235,6 +235,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
 //        mockFindingNearbyUsers();
+        intent.putExtra("parser_type", "nearby_user");
         startService(intent);
         Log.d(this.TAG, "Started Nearby Service");
     }

@@ -34,7 +34,7 @@ public class UserWithCourses implements IUser {
 //    }
 
     @Override
-    public int getId() {
+    public long getId() {
         return this.user.id;
     }
 

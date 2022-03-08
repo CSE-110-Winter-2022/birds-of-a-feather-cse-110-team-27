@@ -31,7 +31,7 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "");
+        User newUser = new User("User Name", "userEmail@ucsd.edu", "");
         db.userWithCoursesDao().insert(newUser);
 
         UserWithCourses user = db.userWithCoursesDao().getUser(0);
@@ -47,9 +47,9 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "");
-        db.userWithCoursesDao().insert(newUser);
-        Course newCourse = new Course(59, newUser.getId(), 2022, "WINTER", "CSE", 110);
+        User newUser = new User( "User Name", "userEmail@ucsd.edu", "");
+        long userId = db.userWithCoursesDao().insert(newUser);
+        Course newCourse = new Course(userId, 2022, "WINTER", "CSE", 110, "Tiny");
         db.coursesDao().insert(newCourse);
 
         UserWithCourses user = db.userWithCoursesDao().getUser(0);
@@ -67,9 +67,9 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "");
-        db.userWithCoursesDao().insert(newUser);
-        Course newCourse = new Course(59, newUser.getId(), 2022, "WINTER", "CSE", 110);
+        User newUser = new User("User Name", "userEmail@ucsd.edu", "");
+        long userId = db.userWithCoursesDao().insert(newUser);
+        Course newCourse = new Course(userId, 2022, "WINTER", "CSE", 110, "Tiny");
         db.coursesDao().insert(newCourse);
         db.coursesDao().delete(newCourse);
 
@@ -84,10 +84,10 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User(0, "User Name", "userEmail@ucsd.edu", "https://i.insider.com/602ee9ced3ad27001837f2ac?width=1000&format=jpeg&auto=webp");
-        db.userWithCoursesDao().insert(newUser);
+        User newUser = new User("User Name", "userEmail@ucsd.edu", "https://i.insider.com/602ee9ced3ad27001837f2ac?width=1000&format=jpeg&auto=webp");
+        long userId = db.userWithCoursesDao().insert(newUser);
 
-        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(0);
+        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
         String urlFromDB = userWithCourses.getProfilePictureUrl();
 
         //assertEquals(user.getEmail(), "userEmail@ucsd.edu");
@@ -100,15 +100,15 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User Rick = new User(6121,"Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        User Rick = new User("Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
         db.userWithCoursesDao().insert(Rick);
-        User Morty = new User(56467,"Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
         db.userWithCoursesDao().insert(Morty);
-        Course RickCourse1 = new Course(666, Rick.getId(), 1985, "FALL", "MATH",130);
+        Course RickCourse1 = new Course(Rick.getId(), 1985, "FALL", "MATH",130, "TINY");
         db.coursesDao().insert(RickCourse1);
-        Course RickCourse2 = new Course(667, Rick.getId(), 1985, "FALL", "CHEM",7);
+        Course RickCourse2 = new Course(Rick.getId(), 1985, "FALL", "CHEM",7, "TINY");
         db.coursesDao().insert(RickCourse2);
-        Course MortyCourse1 = new Course(9527, Morty.getId(), 2018, "WINTER", "MMW",3);
+        Course MortyCourse1 = new Course(Morty.getId(), 2018, "WINTER", "MMW",3, "TINY");
         db.coursesDao().insert(MortyCourse1);
         List<Course> courses= db.coursesDao().getAll();
         System.out.println(courses.toString());
@@ -126,10 +126,10 @@ public class DatabaseTest {
         assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
         AppDatabase db = AppDatabase.singleton(appContext);
-        User student = new User(65414584,"X", "******@ucsd.edu", "");
+        User student = new User("X", "******@ucsd.edu", "");
         db.userWithCoursesDao().insert(student);
 
-        Course classCancelled = new Course(93217, student.getId(), 2021, "WINTER", "HUM",1);
+        Course classCancelled = new Course(student.getId(), 2021, "WINTER", "HUM",1, "TINY");
         db.coursesDao().insert(classCancelled);
         db.coursesDao().delete(classCancelled);
         UserWithCourses studentData = db.userWithCoursesDao().getUser(student.getId());

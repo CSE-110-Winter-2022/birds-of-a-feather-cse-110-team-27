@@ -1,7 +1,7 @@
 package com.example.birdsofafeather.db.course;
 
 public abstract class ICourse {
-    abstract int getId();
+    abstract long getId();
     abstract int getYear();
     abstract String getQuarter();
     abstract String getDepartment();

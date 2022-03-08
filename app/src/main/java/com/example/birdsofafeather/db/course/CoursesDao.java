@@ -26,7 +26,7 @@ public interface CoursesDao {
     List<Course> getAll();
 
     @Insert(onConflict = IGNORE)
-    void insert(Course course);
+    long insert(Course course);
 
     @Delete
     void delete(Course course);
