@@ -52,6 +52,7 @@ public class FindNearbyActivity extends AppCompatActivity {
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
+    public static List<Long> userIdsFromMockCSV = new ArrayList<>();
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
@@ -127,17 +128,23 @@ public class FindNearbyActivity extends AppCompatActivity {
 
 
     public void mockFindingNearbyUsers(){
-        MockUserWithCourses John = new MockUserWithCourses(0);
-        MockUserWithCourses Amy = new MockUserWithCourses(1);
-        MockUserWithCourses Zoey = new MockUserWithCourses(2);
-        MockUserWithCourses Matt = new MockUserWithCourses(3);
+//        MockUserWithCourses John = new MockUserWithCourses(0);
+//        MockUserWithCourses Amy = new MockUserWithCourses(1);
+//        MockUserWithCourses Zoey = new MockUserWithCourses(2);
+//        MockUserWithCourses Matt = new MockUserWithCourses(3);
 
         List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
-        List<MockUserWithCourses> students = new ArrayList<MockUserWithCourses>();
-        students.add(John);
-        students.add(Amy);
-        students.add(Zoey);
-        students.add(Matt);
+        List<UserWithCourses> students = new ArrayList<>();
+        for(Long userId : userIdsFromMockCSV) {
+            students.add(db.userWithCoursesDao().getUser(userId));
+        }
+        if(students.isEmpty()) {
+            return;
+        }
+//        students.add(John);
+//        students.add(Amy);
+//        students.add(Zoey);
+//        students.add(Matt);
 
         Spinner sort_dropdown = this.findViewById(R.id.sort_options);
         String sortOption = sort_dropdown.getSelectedItem().toString();
@@ -146,11 +153,11 @@ public class FindNearbyActivity extends AppCompatActivity {
         nearbyMessage = "";
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
-            students.get(i).student.user.setSessionId(curr_session_id);
+            students.get(i).user.setSessionId(curr_session_id);
 //            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1); //del?
-            dataList.add(students.get(i).getUserWithCourses());
-            for(Course course : students.get(i).getUserWithCourses().courses) {
-                course.userId = students.get(i).student.getId();
+            dataList.add(students.get(i));
+            for(Course course : students.get(i).courses) {
+                course.userId = students.get(i).getId();
                 course.courseId = db.coursesDao().maxId() + 1;
                 db.coursesDao().insert(course);
             }

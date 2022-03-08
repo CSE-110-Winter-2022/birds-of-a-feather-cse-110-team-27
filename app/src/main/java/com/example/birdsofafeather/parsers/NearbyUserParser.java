@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.birdsofafeather.FindNearbyActivity;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.utils.Constants;
 
 public class NearbyUserParser implements Parser {
     private String fieldSeparator = ",,,,";
@@ -29,9 +31,7 @@ public class NearbyUserParser implements Parser {
         String[] courses = fields[3].split("\n");
         for(String course : courses) {
             String[] course_fields = course.split(",");
-            Log.d("dafk;", String.format("%o",course_fields.length));
             if(course_fields.length <= 4) {
-                Log.d("NearbyUserParser", "Nearby User Message was missing fields for a course");
                 continue;
             }
             String year = course_fields[0];
@@ -51,8 +51,24 @@ public class NearbyUserParser implements Parser {
             String department = course_fields[2];
             String course_number = course_fields[3];
             String size = course_fields[4];
-            Course new_course = new Course(userId, Integer.parseInt(year), parsed_quarter, department, Integer.parseInt(course_number), size);
+            String parsed_size = "";
+            if(size.equals("Tiny")) {
+               parsed_size = Constants.sizes[1];
+            } else if(size.equals("Small")) {
+                parsed_size = Constants.sizes[2];
+            } else if(size.equals("Medium")) {
+                parsed_size = Constants.sizes[3];
+            } else if(size.equals("Large")) {
+                parsed_size = Constants.sizes[4];
+            } else if(size.equals("Huge")) {
+                parsed_size= Constants.sizes[5];
+            } else if(size.equals("Gigantic")) {
+                parsed_size= Constants.sizes[6];
+            }
+
+            Course new_course = new Course(userId, Integer.parseInt(year), parsed_quarter, department, Integer.parseInt(course_number), parsed_size);
             db.coursesDao().insert(new_course);
         }
+        FindNearbyActivity.userIdsFromMockCSV.add(userId);
     }
 }
