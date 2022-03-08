@@ -21,15 +21,15 @@ import java.util.List;
 
 public class Pop_save extends Activity {
 
-    private int test_user_id;
-    private List<Integer> user_ids;
+    private long test_user_id;
+    private long[] user_ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
         Intent intent = getIntent();
-        test_user_id = intent.getIntExtra("user_id", -1);
-        user_ids = intent.getIntegerArrayListExtra("user_ids");
+        test_user_id = intent.getLongExtra("user_id", -1);
+        user_ids = intent.getLongArrayExtra("user_ids");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.pop_window_save);
@@ -52,13 +52,14 @@ public class Pop_save extends Activity {
         SessionWithUsers sessionWithUsers = db.sessionWithUsersDao().getForId(session_id);
         sessionWithUsers.setSessionName(sessionName);
 //        List<User> users = new ArrayList<>();
-        for (Integer id : user_ids) {
+        for (long id : user_ids) {
             UserWithCourses user = db.userWithCoursesDao().getUser(id);
             db.sessionWithUsersDao().addUsersToSession(session_id, Arrays.asList(user.user));
 //            users.add(user.user);
         }
 //        sessionWithUsers.addUsers(users);
-        Log.d("Pop_save", "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.size() + " users");
+        List<SessionWithUsers> s = db.sessionWithUsersDao().getAllSessions();
+        Log.d("Pop_save", "Creating session id: " + session_id + " with name: " + sessionName + " and " + user_ids.length + " users");
         db.sessionWithUsersDao().insertSession(sessionWithUsers.getSession());
 
         SessionWithUsers testS = db.sessionWithUsersDao().getForId(session_id);

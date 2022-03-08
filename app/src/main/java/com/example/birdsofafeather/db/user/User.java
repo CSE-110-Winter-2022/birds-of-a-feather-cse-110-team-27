@@ -36,6 +36,9 @@ public class User {
     @ColumnInfo(name = "email")
     public String email;
 
+    @ColumnInfo(name = "uuid")
+    public String uuid;
+
     @ColumnInfo(name = "profile_picture_url")
     public String profilePictureUrl;
 
@@ -47,6 +50,7 @@ public class User {
 //        this.id = id;
         this.name = name;
         this.email = email;
+        this.uuid = "";
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
         this.favorite = false;

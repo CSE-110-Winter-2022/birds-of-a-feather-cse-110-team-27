@@ -19,6 +19,9 @@ public class NearbyUserParser implements Parser {
         AppDatabase db = AppDatabase.singleton(context);
         String[] fields = message.split(fieldSeparator);
         if(fields.length <= 3) {
+            for(String field : fields) {
+                System.out.println(field);
+            }
             Log.d("NearbyUserParser", "Nearby User Message was missing fields");
             return;
         }
@@ -26,6 +29,11 @@ public class NearbyUserParser implements Parser {
         String name = fields[1].replaceAll("\n", "");
         String pic_url = fields[2].replaceAll("\n", "");
         User user = new User(name, "", pic_url);
+        user.uuid = uuid;
+        if(db.userWithCoursesDao().getUserForUUID(uuid) != null) {
+            Log.d("NearbyUserParser", String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
+            return;
+        }
         long userId = db.userWithCoursesDao().insert(user);
 
         String[] courses = fields[3].split("\n");

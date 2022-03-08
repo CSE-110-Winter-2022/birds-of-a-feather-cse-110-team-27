@@ -117,6 +117,9 @@ public class FindNearbyActivity extends AppCompatActivity {
                 UserWithCourses user = db.userWithCoursesDao().getUser(holder.person.getId());
                 holder.setPerson(user);
             }
+            if(currSession != null && currSession.getSession().hasName()) {
+                setTitle(currSession.getSessionName());
+            }
         }
     }
 
@@ -150,19 +153,18 @@ public class FindNearbyActivity extends AppCompatActivity {
         String sortOption = sort_dropdown.getSelectedItem().toString();
 
 
-        nearbyMessage = "";
-        int numStudents = (int)(4);
-        for(int i = 0; i < numStudents; i++){
+        // the first time it doesnt populate the array
+//        nearbyMessage = "";
+        for(int i = 0; i < students.size(); i++){
             students.get(i).user.setSessionId(curr_session_id);
 //            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1); //del?
             dataList.add(students.get(i));
-            for(Course course : students.get(i).courses) {
-                course.userId = students.get(i).getId();
-                course.courseId = db.coursesDao().maxId() + 1;
-                db.coursesDao().insert(course);
-            }
-            System.out.println(db.coursesDao().getAll().size());
-            nearbyMessage += "*" + students.get(i);
+//            for(Course course : students.get(i).courses) {
+//                course.userId = students.get(i).getId();
+//                course.courseId = db.coursesDao().maxId() + 1;
+//                db.coursesDao().insert(course);
+//            }
+//            nearbyMessage += "*" + students.get(i);
         }
 
         for(int i = 0; i < dataList.size(); i++) {
@@ -186,11 +188,11 @@ public class FindNearbyActivity extends AppCompatActivity {
             if(isClassMate) {
                 validDataList.add(dataList.get(i));
 
-                db.userWithCoursesDao().insert(dataList.get(i).user);
-                for (Course course : dataList.get(i).courses) {
-                    course.userId = dataList.get(i).user.getId();
-                    db.coursesDao().insert(course);
-                }
+//                db.userWithCoursesDao().insert(dataList.get(i).user);
+//                for (Course course : dataList.get(i).courses) {
+//                    course.userId = dataList.get(i).user.getId();
+//                    db.coursesDao().insert(course);
+//                }
             }
         }
 
@@ -218,11 +220,11 @@ public class FindNearbyActivity extends AppCompatActivity {
                 }
                 sortedDataList.add(this.recordedDataList.get(maxIndex));
                 personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
-                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
-                for (Course course : this.recordedDataList.get(maxIndex).courses) {
-                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
-                    db.coursesDao().insert(course);
-                }
+//                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
+//                for (Course course : this.recordedDataList.get(maxIndex).courses) {
+//                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
+//                    db.coursesDao().insert(course);
+//                }
                 db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
                 this.recordedDataList.remove(maxIndex);
             }
@@ -243,11 +245,11 @@ public class FindNearbyActivity extends AppCompatActivity {
                 }
                 sortedDataList.add(this.recordedDataList.get(maxIndex));
                 personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
-                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
-                for (Course course : this.recordedDataList.get(maxIndex).courses) {
-                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
-                    db.coursesDao().insert(course);
-                }
+//                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
+//                for (Course course : this.recordedDataList.get(maxIndex).courses) {
+//                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
+//                    db.coursesDao().insert(course);
+//                }
                 db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
                 this.recordedDataList.remove(maxIndex);
             }
@@ -268,11 +270,11 @@ public class FindNearbyActivity extends AppCompatActivity {
                 }
                 sortedDataList.add(this.recordedDataList.get(minIndex));
                 personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
-                db.userWithCoursesDao().insert(this.recordedDataList.get(minIndex).user);
-                for (Course course : this.recordedDataList.get(minIndex).courses) {
-                    course.userId = this.recordedDataList.get(minIndex).user.getId();
-                    db.coursesDao().insert(course);
-                }
+//                db.userWithCoursesDao().insert(this.recordedDataList.get(minIndex).user);
+//                for (Course course : this.recordedDataList.get(minIndex).courses) {
+//                    course.userId = this.recordedDataList.get(minIndex).user.getId();
+//                    db.coursesDao().insert(course);
+//                }
                 db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(minIndex).user));
                 this.recordedDataList.remove(minIndex);
             }
@@ -294,9 +296,9 @@ public class FindNearbyActivity extends AppCompatActivity {
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        mockFindingNearbyUsers();
         intent.putExtra("parser_type", "nearby_user");
         startService(intent);
+        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
     }
 
@@ -418,9 +420,9 @@ public class FindNearbyActivity extends AppCompatActivity {
         if(!currSession.getSession().hasName()) {
             Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
             intentSave.putExtra("user_id", test_user_id);
-            ArrayList<Long> user_ids = new ArrayList<>();
+            long[] user_ids = new long[validDataList.size()];
             for (int i = 0; i < this.validDataList.size(); i++) {
-                user_ids.add(this.validDataList.get(i).user.getId());
+                user_ids[i] = this.validDataList.get(i).user.getId();
             }
             intentSave.putExtra("user_ids", user_ids);
             startActivity(intentSave);

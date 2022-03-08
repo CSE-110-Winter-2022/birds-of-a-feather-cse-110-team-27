@@ -68,7 +68,11 @@ public class SessionViewAdapter extends RecyclerView.Adapter<SessionViewAdapter.
 
         public void setSession(SessionWithUsers session){
             this.session = session;
-            this.sessionTextview.setText(session.getSessionName());
+            if(session.getSession().hasName()) {
+                this.sessionTextview.setText(session.getSessionName());
+            } else {
+                this.sessionTextview.setText(session.getSession().getDate());
+            }
         }
         public void setUserId(long userId) {
            this.userId = userId;

@@ -57,8 +57,8 @@ public class FindNearbyService extends Service {
                         }
                     };
                     FindNearbyActivity.messageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyMessage);
-                    wait(300000);
                     Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.messageListener);
+                    wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
