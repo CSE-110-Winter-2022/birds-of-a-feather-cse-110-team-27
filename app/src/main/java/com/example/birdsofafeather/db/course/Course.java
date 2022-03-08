@@ -4,6 +4,9 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.birdsofafeather.utils.Utilities;
+
+import java.util.Objects;
 
 @Entity(tableName = "courses")
 public class Course  extends ICourse {
@@ -39,6 +42,19 @@ public class Course  extends ICourse {
         this.course_number = course_number;
         this.size = size;
     }
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Course course = (Course) o;
+//        return year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(courseId, userId, year, quarter, department, course_number);
+//    }
 
     @Override
     public long getId() {

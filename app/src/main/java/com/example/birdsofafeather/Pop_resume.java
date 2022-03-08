@@ -10,6 +10,8 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.session.Session;
 import com.example.birdsofafeather.db.session.SessionWithUsers;
 
+import java.util.List;
+
 public class Pop_resume extends Activity {
     private long test_user_id;
 
@@ -38,11 +40,12 @@ public class Pop_resume extends Activity {
 
         Intent intent = new Intent(this, FindNearbyActivity.class);
         intent.putExtra("user_id", test_user_id);
+        intent.putExtra("session_id", session_id);
         startActivity(intent);
     }
 
     public void resumeClicked(View view) {
-        Intent intent = new Intent(this, FindNearbyActivity.class);
+        Intent intent = new Intent(this, Resume_session.class);
         intent.putExtra("user_id", test_user_id);
         startActivity(intent);
         finish();

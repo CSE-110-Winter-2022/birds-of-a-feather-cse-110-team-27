@@ -27,8 +27,8 @@ public abstract class SessionWithUsersDao {
     public void addUsersToSession(long sessionId, List<User> users) {
         for(User user : users) {
            user.setSessionId(sessionId);
+           insertUser(user);
         }
-        insertUsers(users);
     }
 
 //    public List<User> getUsersForSessionId(long sessionId) {
@@ -40,7 +40,7 @@ public abstract class SessionWithUsersDao {
     public abstract SessionWithUsers getForId(long sessionId);
 
     @Query("SELECT * FROM sessions")
-    abstract List<SessionWithUsers> getAllSessions();
+    public abstract List<SessionWithUsers> getAllSessions();
 
     @Query("SELECT * FROM users WHERE sessionId=:sessionId")
     public abstract List<User> getUsersForSessionId(long sessionId);
@@ -51,6 +51,9 @@ public abstract class SessionWithUsersDao {
 
     @Insert(onConflict = REPLACE)
     abstract void insertUsers(List<User> userWithCourses);
+
+    @Insert(onConflict = REPLACE)
+    abstract void insertUser(User user);
 
     @Delete
     abstract void delete(Session session);

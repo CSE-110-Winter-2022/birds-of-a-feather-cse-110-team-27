@@ -9,6 +9,7 @@ import com.example.birdsofafeather.db.course.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "users")
 public class User {
@@ -52,8 +53,13 @@ public class User {
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
     }
+
     public long getId(){
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -18,6 +18,10 @@
         android:theme="@style/Theme.BirdsOfAFeather">
         <activity
             android:name=".EnterMockDataActivity"
+            android:exported="false"
+            />
+        <activity
+            android:name=".Resume_session"
             android:exported="false" />
         <activity
             android:name=".UploadProfilePicture"
