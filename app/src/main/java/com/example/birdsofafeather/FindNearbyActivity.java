@@ -46,14 +46,17 @@ public class FindNearbyActivity extends AppCompatActivity {
     private AppDatabase db;
     List<Course> myCourseList;
 
+    public static MessageListener findMessageListener;
+    public static MessageListener waveMessageListener;
+    public static String nearbyUsersMessage;
+    public static String nearbyWave;
+    private static final String TAG = "FindNearbyActivity";
 
-    public static MessageListener messageListener;
-    public static String nearbyMessage;
     private long test_user_id;
     private long curr_session_id;
     private UserWithCourses me;
     private SessionWithUsers currSession;
-    private static final String TAG = "FindNearbyActivity";
+
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
 //    public static List<Long> userIdsFromMockCSV = new ArrayList<>();
@@ -332,7 +335,13 @@ public class FindNearbyActivity extends AppCompatActivity {
             FindNearbyService.LocalBinder localBinder = (FindNearbyService.LocalBinder)iBinder;
             currentFindNearbyService = localBinder.getService();
             isBound = true;
-            while(currentFindNearbyService.getMockUserIds().isEmpty()) { }
+//            while(currentFindNearbyService.getMockUserIds().isEmpty()) {
+//            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             mockFindingNearbyUsers();
         }
 
@@ -343,35 +352,46 @@ public class FindNearbyActivity extends AppCompatActivity {
     };
 
     public void startClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        List<UserWithCourses> us = db.userWithCoursesDao().getAll();
+        Intent startFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        intent.putExtra("parser_type", "nearby_user");
-        startService(intent);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        startFindIntent.putExtra("parser_type", "nearby_user");
+        startService(startFindIntent);
+        startService(startWaveIntent);
+        bindService(startFindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 //        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
     }
 
     public void stopClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
-        stopService(intent);
+        stopService(stopFindIntent);
         if(isBound) {
            unbindService(serviceConnection);
            isBound = false;
         }
         Log.d(this.TAG, "Stopped Nearby Service");
 
+        stopService(stopWaveIntent);
+
+        //need to update database based on onFound WaveService
+
+        Log.d(this.TAG, "Stopped Wave Service");
+
 //        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
 //        intentSave.putExtra("user_id",test_user_id);
-//        ArrayList<Long> user_ids = new ArrayList<>();
+//        ArrayList<Integer> user_ids = new ArrayList<>();
 //        for(int i = 0; i < this.validDataList.size(); ++i) {
 //            user_ids.add(this.validDataList.get(i).user.getId());
 //        }
-//        intentSave.putExtra("user_ids", user_ids);
-//        startActivity(intentSave);
+//        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
+        //startActivity(intentSave);
+
     }
 
 
@@ -434,8 +454,15 @@ public class FindNearbyActivity extends AppCompatActivity {
         return courses;
     }
 
-    public void onMockBluetoothClicked(View view) {
+    public void onMockNearbyClicked(View view) {
         Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+        intent.putExtra("mock_type", "nearby");
+        startActivity(intent);
+    }
+
+    public void onMockWaveClicked(View view) {
+        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+        intent.putExtra("mock_type", "wave");
         startActivity(intent);
     }
 

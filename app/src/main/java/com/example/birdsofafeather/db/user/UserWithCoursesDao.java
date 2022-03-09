@@ -31,6 +31,10 @@ public abstract class UserWithCoursesDao {
     public abstract UserWithCourses getUserForUUID(String uuid);
 
     @Transaction
+    @Query("SELECT * FROM users where uuid=:uuid")
+    public abstract List<UserWithCourses> getUsersForUUID(String uuid);
+
+    @Transaction
     @Query("SELECT * FROM courses where user_id=:userId")
     public abstract List<Course> getCoursesForUserId(long userId);
 
@@ -44,6 +48,9 @@ public abstract class UserWithCoursesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract long insert(User user);
+
+    @Update
+    public abstract void update(User user);
 
 
 
