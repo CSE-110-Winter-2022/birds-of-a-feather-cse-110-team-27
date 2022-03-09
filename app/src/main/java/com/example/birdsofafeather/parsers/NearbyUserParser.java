@@ -1,10 +1,11 @@
 package com.example.birdsofafeather.parsers;
 
+import android.app.Service;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.example.birdsofafeather.FindNearbyActivity;
+import com.example.birdsofafeather.FindNearbyService;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
@@ -15,7 +16,7 @@ public class NearbyUserParser implements Parser {
     private String fieldSeparator = ",,,,";
 
     @Override
-    public void parse(Context context, String message) {
+    public void parse(Context context, String message, Service service) {
         AppDatabase db = AppDatabase.singleton(context);
         String[] fields = message.split(fieldSeparator);
         if(fields.length <= 3) {
@@ -30,10 +31,13 @@ public class NearbyUserParser implements Parser {
         String pic_url = fields[2].replaceAll("\n", "");
         User user = new User(name, "", pic_url);
         user.uuid = uuid;
-        if(db.userWithCoursesDao().getUserForUUID(uuid) != null) {
-            Log.d("NearbyUserParser", String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
-            return;
-        }
+//        UserWithCourses tmpCheckUser = db.userWithCoursesDao().getUserForUUID(uuid);
+//        if(tmpCheckUser != null && tmpCheckUser.user.getSessionId() == ) {
+//            UserWithCourses u = db.userWithCoursesDao().getUser(tmpCheckUser.getId());
+//            ((FindNearbyService)(service)).addUserId(tmpCheckUser.getId());
+//            Log.d("NearbyUserParser", String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
+//            return;
+//        }
         long userId = db.userWithCoursesDao().insert(user);
 
         String[] courses = fields[3].split("\n");
@@ -77,6 +81,7 @@ public class NearbyUserParser implements Parser {
             Course new_course = new Course(userId, Integer.parseInt(year), parsed_quarter, department, Integer.parseInt(course_number), parsed_size);
             db.coursesDao().insert(new_course);
         }
-        FindNearbyActivity.userIdsFromMockCSV.add(userId);
+//        FindNearbyActivity.userIdsFromMockCSV.add(userId);
+        ((FindNearbyService)(service)).addUserId(userId);
     }
 }

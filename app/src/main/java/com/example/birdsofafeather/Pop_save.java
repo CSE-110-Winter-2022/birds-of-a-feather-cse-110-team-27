@@ -54,7 +54,7 @@ public class Pop_save extends Activity {
 //        List<User> users = new ArrayList<>();
         for (long id : user_ids) {
             UserWithCourses user = db.userWithCoursesDao().getUser(id);
-            db.sessionWithUsersDao().addUsersToSession(session_id, Arrays.asList(user.user));
+            db.sessionWithUsersDao().addUsersToSession(session_id, Arrays.asList(user));
 //            users.add(user.user);
         }
 //        sessionWithUsers.addUsers(users);

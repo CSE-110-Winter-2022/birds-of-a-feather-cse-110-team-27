@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +56,8 @@ public class FindNearbyActivity extends AppCompatActivity {
     private static final String TAG = "FindNearbyActivity";
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
-    public static List<Long> userIdsFromMockCSV = new ArrayList<>();
+//    public static List<Long> userIdsFromMockCSV = new ArrayList<>();
+//    private List<Long> storedUserIds = new ArrayList<>();
 
     protected RecyclerView personsRecyclerView;
     protected RecyclerView.LayoutManager personsLayoutManager;
@@ -60,6 +65,8 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     private List<UserWithCourses> sortedDataList;
 
+    private FindNearbyService currentFindNearbyService;
+    private boolean isBound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +81,13 @@ public class FindNearbyActivity extends AppCompatActivity {
         me = db.userWithCoursesDao().getUser(test_user_id);
         currSession = db.sessionWithUsersDao().getForId(curr_session_id);
         myCourseList= me.getCourses();
+
+//        userIdsFromMockCSV.clear();
+//        List<User> us = currSession.getUsers();
+//        System.out.println();
+//        for(User u : currSession.getUsers()) {
+//            userIdsFromMockCSV.add(u.getId());
+//        }
 
         start = findViewById(R.id.start_button);
         stop = findViewById(R.id.stop_button);
@@ -138,7 +152,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
         List<UserWithCourses> students = new ArrayList<>();
-        for(Long userId : userIdsFromMockCSV) {
+        for(Long userId : currentFindNearbyService.getMockUserIds()) {
             students.add(db.userWithCoursesDao().getUser(userId));
         }
         if(students.isEmpty()) {
@@ -225,7 +239,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 //                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
 //                    db.coursesDao().insert(course);
 //                }
-                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
+//                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
                 this.recordedDataList.remove(maxIndex);
             }
                 for (int i = 0; i < sortedDataList.size(); i++) {
@@ -250,7 +264,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 //                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
 //                    db.coursesDao().insert(course);
 //                }
-                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
+//                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(maxIndex).user));
                 this.recordedDataList.remove(maxIndex);
             }
             for(int i = 0; i < sortedDataList.size(); i++) {
@@ -275,7 +289,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 //                    course.userId = this.recordedDataList.get(minIndex).user.getId();
 //                    db.coursesDao().insert(course);
 //                }
-                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(minIndex).user));
+//                db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(this.recordedDataList.get(minIndex).user));
                 this.recordedDataList.remove(minIndex);
             }
             for(int i = 0; i < sortedDataList.size(); i++) {
@@ -285,12 +299,48 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         }
 
+        for(int i = 0; i < recordedDataList.size(); i++){
+            UserWithCourses user = recordedDataList.get(i);
+            if(user.isFavorite()){
+                recordedDataList.remove(i);
+                sortedDataList.remove(i);
 
+                recordedDataList.add(0,user);
+                sortedDataList.add(0, user);
+                i--;
+            }
+        }
+
+        for(UserWithCourses user : sortedDataList) {
+//           user.user.setSessionId(currSession.getSession().getId());
+           db.sessionWithUsersDao().addUsersToSession(currSession.getSession().getId(), Arrays.asList(user));
+
+        }
+
+//        recordedDataList.clear();
+//        validDataList.clear();
+//        sortedDataList.clear();
 
 //        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
 //        personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
+
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            FindNearbyService.LocalBinder localBinder = (FindNearbyService.LocalBinder)iBinder;
+            currentFindNearbyService = localBinder.getService();
+            isBound = true;
+            while(currentFindNearbyService.getMockUserIds().isEmpty()) { }
+            mockFindingNearbyUsers();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            isBound = false;
+        }
+    };
 
     public void startClicked(View view){
         Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
@@ -298,7 +348,8 @@ public class FindNearbyActivity extends AppCompatActivity {
         stop.setVisibility(View.VISIBLE);
         intent.putExtra("parser_type", "nearby_user");
         startService(intent);
-        mockFindingNearbyUsers();
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
     }
 
@@ -307,6 +358,10 @@ public class FindNearbyActivity extends AppCompatActivity {
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
         stopService(intent);
+        if(isBound) {
+           unbindService(serviceConnection);
+           isBound = false;
+        }
         Log.d(this.TAG, "Stopped Nearby Service");
 
 //        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);

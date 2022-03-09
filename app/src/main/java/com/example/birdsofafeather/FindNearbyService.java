@@ -2,6 +2,7 @@ package com.example.birdsofafeather;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -22,14 +25,22 @@ public class FindNearbyService extends Service {
     public static final String TAG = "FindNearbyService";
     ExecutorService executor = Executors.newSingleThreadExecutor();
     private Parser parser;
+    private final IBinder mBinder = new LocalBinder();
+    private List<Long> mockUserIds = new ArrayList<>();
+
+
+    public class LocalBinder extends Binder {
+        FindNearbyService getService() {
+            return FindNearbyService.this;
+        }
+    }
 
     public FindNearbyService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        return mBinder;
     }
 
     @Override
@@ -48,7 +59,7 @@ public class FindNearbyService extends Service {
                         @Override
                         public void onFound(@NonNull Message message) {
                             Log.d(FindNearbyService.TAG, "Found message: " + new String(message.getContent()));
-                            parser.parse(getApplicationContext(), new String(message.getContent()));
+                            parser.parse(getApplicationContext(), new String(message.getContent()), FindNearbyService.this);
                         }
 
                         @Override
@@ -69,6 +80,7 @@ public class FindNearbyService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+
     @Override
     public void onDestroy() {
         ((FakedMessageListener)(FindNearbyActivity.messageListener)).stopMessages();
@@ -76,5 +88,16 @@ public class FindNearbyService extends Service {
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
         stopSelf();
         super.onDestroy();
+    }
+
+    public void addUserId(long userId) {
+        if(!mockUserIds.contains(new Long(userId))) {
+            mockUserIds.add(userId);
+        }
+        System.out.println();
+    }
+
+    public List<Long> getMockUserIds() {
+        return this.mockUserIds;
     }
 }
