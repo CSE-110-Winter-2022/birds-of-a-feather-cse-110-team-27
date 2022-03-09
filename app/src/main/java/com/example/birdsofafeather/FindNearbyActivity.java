@@ -25,6 +25,7 @@ import com.example.birdsofafeather.utils.CheckUserSmallestSameCourse;
 import com.example.birdsofafeather.utils.Constants;
 import com.example.birdsofafeather.utils.CourseComparison;
 import com.example.birdsofafeather.utils.CheckUserLastSameCourse;
+import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.lang.reflect.Array;
@@ -37,12 +38,15 @@ public class FindNearbyActivity extends AppCompatActivity {
     private AppDatabase db;
     List<Course> myCourseList;
 
+    public static MessageListener findMessageListener;
+    public static MessageListener waveMessageListener;
+    public static String nearbyUsersMessage;
+    public static String nearbyWave;
+    private static final String TAG = "FindNearbyActivity";
 
-    public static MessageListener messageListener;
-    public static String nearbyMessage;
     private int test_user_id;
     private UserWithCourses me;
-    private static final String TAG = "FindNearbyActivity";
+
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
 
@@ -106,11 +110,11 @@ public class FindNearbyActivity extends AppCompatActivity {
 
 
         validDataList= new ArrayList<UserWithCourses>();
-        nearbyMessage = "";
+        nearbyUsersMessage = "";
         int numStudents = (int)(4);
         for(int i = 0; i < numStudents; i++){
             dataList.add(students.get(i).getUserWithCourses());
-            nearbyMessage += "*" + students.get(i);
+            nearbyUsersMessage += "*" + students.get(i);
         }
 
         for(int i = 0; i < dataList.size(); i++) {
@@ -210,7 +214,17 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
 
+        for(int i = 0; i < recordedDataList.size(); i++){
+            UserWithCourses user = recordedDataList.get(i);
+            if(user.isFavorite()){
+                recordedDataList.remove(i);
+                sortedDataList.remove(i);
 
+                recordedDataList.add(0,user);
+                sortedDataList.add(0, user);
+                i--;
+            }
+        }
 
 
 
@@ -224,19 +238,26 @@ public class FindNearbyActivity extends AppCompatActivity {
     }
 
     public void startClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent startFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
         mockFindingNearbyUsers();
-        startService(intent);
+        startService(startFindIntent);
+        startService(startWaveIntent);
         Log.d(this.TAG, "Started Nearby Service");
     }
 
     public void stopClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
-        stopService(intent);
+        stopService(stopFindIntent);
+        stopService(stopWaveIntent);
+
+        //need to update database based on onFound WaveService
+
         Log.d(this.TAG, "Stopped Nearby Service");
 
         Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
@@ -246,7 +267,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             user_ids.add(this.validDataList.get(i).user.getId());
         }
         intentSave.putIntegerArrayListExtra("user_ids", user_ids);
-        startActivity(intentSave);
+        //startActivity(intentSave);
 
     }
 

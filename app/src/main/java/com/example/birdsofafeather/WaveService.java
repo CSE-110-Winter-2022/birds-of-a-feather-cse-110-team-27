@@ -14,11 +14,11 @@ import com.google.android.gms.nearby.messages.MessageListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class FindNearbyService extends Service {
-    public static final String TAG = "FindNearbyService";
+public class WaveService extends Service {
+    public static final String TAG = "WaveService";
     ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public FindNearbyService() {
+    public WaveService() {
     }
 
     @Override
@@ -29,22 +29,22 @@ public class FindNearbyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(FindNearbyService.this, "Start Finding Nearby Users", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Start Finding Nearby Users", Toast.LENGTH_SHORT).show();
         executor.submit(() -> {
             synchronized (this) {
                 try {
                     MessageListener realListener = new MessageListener() {
                         @Override
                         public void onFound(@NonNull Message message) {
-                            Log.d(FindNearbyService.TAG, "Found message: " + new String(message.getContent()));
+                            Log.d(WaveService.TAG, "Found message: " + new String(message.getContent()));
                         }
 
                         @Override
                         public void onLost(@NonNull Message message) {
-                            Log.d(FindNearbyService.TAG, "Lost sign of message: " + new String(message.getContent()));
+                            Log.d(WaveService.TAG, "Lost sign of message: " + new String(message.getContent()));
                         }
                     };
-                    FindNearbyActivity.findMessageListener = new FakedMessageListener(realListener, 1, FindNearbyActivity.nearbyUsersMessage);
+                    FindNearbyActivity.waveMessageListener = new FakedMessageListener(realListener, 1, "B");
                     wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -58,8 +58,8 @@ public class FindNearbyService extends Service {
 
     @Override
     public void onDestroy() {
-        ((FakedMessageListener)(FindNearbyActivity.findMessageListener)).executor.shutdown();
-        Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
+        ((FakedMessageListener)(FindNearbyActivity.waveMessageListener)).executor.shutdown();
+        Toast.makeText(this, "Stop Waving", Toast.LENGTH_SHORT).show();
         super.onDestroy();
     }
 }

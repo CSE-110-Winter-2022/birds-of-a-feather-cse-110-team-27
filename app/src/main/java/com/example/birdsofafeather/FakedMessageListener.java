@@ -10,16 +10,16 @@ import java.util.concurrent.TimeUnit;
 
 public class FakedMessageListener extends MessageListener{
     private final MessageListener messageListener;
-    private final ScheduledExecutorService executor;
+    public final ScheduledExecutorService executor;
 
     public FakedMessageListener(MessageListener realMessageListener, int frequency, String messageStr) {
         this.messageListener = realMessageListener;
         this.executor = Executors.newSingleThreadScheduledExecutor();
 
-        executor.schedule(() -> {
+        executor.scheduleAtFixedRate(() -> {
             Message message = new Message(messageStr.getBytes(StandardCharsets.UTF_8));
             this.messageListener.onFound(message);
             this.messageListener.onLost(message);
-        }, 0, TimeUnit.SECONDS);
+        }, 0, frequency, TimeUnit.SECONDS);
     }
 }
