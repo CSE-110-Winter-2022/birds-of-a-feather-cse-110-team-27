@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.Relation;
 
 import com.example.birdsofafeather.db.course.Course;
+import com.example.birdsofafeather.utils.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,7 @@ public class User {
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
         this.wavedToMe = false;
+        this.uuid = Utilities.generateUniqueId();
     }
 
     public long getId(){
@@ -121,4 +123,8 @@ public class User {
 
     public boolean getWavedToMe() { return this.wavedToMe; }
     public void setWavedToMe(boolean bool) {this.wavedToMe = bool;}
+
+    public String getUuid() {
+        return uuid;
+    }
 }

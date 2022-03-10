@@ -21,12 +21,12 @@ public class Utilities {
         alertDialog.show();
     }
 
-    public static int generateUniqueId() {
+    public static String generateUniqueId() {
         UUID idOne = UUID.randomUUID();
-        String str=""+idOne;
-        int uid=str.hashCode();
-        String filterStr=""+uid;
-        str=filterStr.replaceAll("-", "");
-        return Integer.parseInt(str);
+        String str=""+idOne.toString();
+//        int uid=str.hashCode();
+//        String filterStr=""+uid;
+//        str=filterStr.replaceAll("-", "");
+        return str;
     }
 }

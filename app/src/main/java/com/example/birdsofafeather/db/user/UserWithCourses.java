@@ -121,5 +121,9 @@ public class UserWithCourses implements IUser {
         this.user.setSmallestSameCourseSize(smallestSameCourseSize);
     }
 
+    public String getUuid() {
+        return user.getUuid();
+    }
+
 
 }

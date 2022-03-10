@@ -114,7 +114,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         sortedDataList.addAll(uWCourses);
 
-        personsViewAdapter = new PersonsViewAdapter(sortedDataList);
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id);
         personsRecyclerView.setAdapter(personsViewAdapter);
 
 

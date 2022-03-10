@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.generator.Generator;
+import com.example.birdsofafeather.generator.WaveCSVGenerator;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 
@@ -30,10 +32,12 @@ import java.util.List;
 
 public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.ViewHolder> {
     private final List<? extends UserWithCourses> persons;
+    public final long testUserID;
 
-    public PersonsViewAdapter(List<? extends UserWithCourses> persons) {
+    public PersonsViewAdapter(List<? extends UserWithCourses> persons, long testUserID) {
         super();
         this.persons = persons;
+        this.testUserID = testUserID;
     }
 
     @NonNull
@@ -49,6 +53,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setPerson(persons.get(position));
+        holder.setUserID(testUserID);
     }
 
     @Override
@@ -64,6 +69,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         public UserWithCourses person;
         private TextView numSameView;
         private TextView favorite;
+        private long userID = -1;
 
 
         ViewHolder(View itemView) {
@@ -100,7 +106,14 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
         public void waveClicked(View view){
             Context context = view.getContext();
             wave.setEnabled(false);
-            Toast.makeText(context, "Wave Clicked!", Toast.LENGTH_SHORT).show();
+            if (this.userID == -1) {
+                Toast.makeText(context, "Can't find current user in db", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Generator generator = new WaveCSVGenerator();
+            String resultCSV = generator.generateCSV(context, this.userID, this.person.getId());
+            Toast.makeText(context, resultCSV, Toast.LENGTH_SHORT).show();
+
             Nearby.getMessagesClient(context).publish(new Message("my info".getBytes(StandardCharsets.UTF_8)));
         }
 
@@ -116,6 +129,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
                 if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");
             }
+        }
+
+        public void setUserID(long userID) {
+            this.userID = userID;
         }
 
         @Override
@@ -142,7 +159,6 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             if (isFavorite) Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show();
             else Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     public static ArrayList<String> courseArrayMaker(List<Course> courses, String name) {

@@ -40,7 +40,7 @@ public class DisplayOtherUserActivity extends AppCompatActivity {
         personsLayoutManager = new LinearLayoutManager(this);
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
-        personsViewAdapter = new PersonsViewAdapter(dataList);
+        personsViewAdapter = new PersonsViewAdapter(dataList, -1);
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
