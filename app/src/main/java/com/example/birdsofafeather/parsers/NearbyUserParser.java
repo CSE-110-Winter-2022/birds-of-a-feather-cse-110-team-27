@@ -32,9 +32,9 @@ public class NearbyUserParser implements Parser {
         User user = new User(name, "", pic_url);
         user.uuid = uuid;
 //        UserWithCourses tmpCheckUser = db.userWithCoursesDao().getUserForUUID(uuid);
-//        if(tmpCheckUser != null && tmpCheckUser.user.getSessionId() == ) {
-//            UserWithCourses u = db.userWithCoursesDao().getUser(tmpCheckUser.getId());
+//        if(tmpCheckUser != null) {
 //            ((FindNearbyService)(service)).addUserId(tmpCheckUser.getId());
+////            db.userWithCoursesDao().update(tmpCheckUser.user);
 //            Log.d("NearbyUserParser", String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
 //            return;
 //        }
@@ -82,6 +82,17 @@ public class NearbyUserParser implements Parser {
             db.coursesDao().insert(new_course);
         }
 //        FindNearbyActivity.userIdsFromMockCSV.add(userId);
-        ((FindNearbyService)(service)).addUserId(userId);
+        boolean userAlreadyExistsInCurrMockUsers = false;
+        for (Long l : ((FindNearbyService)(service)).getMockUserIds()){
+            UserWithCourses u = db.userWithCoursesDao().getUser(l);
+            if(u != null) {
+               if(u.user.uuid.equals(uuid)) {
+                  userAlreadyExistsInCurrMockUsers = true;
+               }
+            }
+        }
+        if(!userAlreadyExistsInCurrMockUsers) {
+            ((FindNearbyService)(service)).addUserId(userId);
+        }
     }
 }

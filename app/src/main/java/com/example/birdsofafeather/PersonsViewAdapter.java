@@ -19,8 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.google.android.gms.nearby.Nearby;
+import com.google.android.gms.nearby.messages.Message;
 
 import java.lang.reflect.Array;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +60,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView personNameView;
+        private TextView wave;
         public UserWithCourses person;
         private TextView numSameView;
         private TextView favorite;
@@ -67,6 +71,8 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             this.personNameView = itemView.findViewById(R.id.person_row_name);
             this.numSameView = itemView.findViewById(R.id.num_same_courses_view);
             this.favorite = itemView.findViewById(R.id.favorite);
+            this.wave = itemView.findViewById(R.id.wave);
+
             itemView.setOnClickListener(this);
 
             itemView.findViewById(R.id.favorite).setOnClickListener(new View.OnClickListener() {
@@ -82,6 +88,20 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
                 }
 
             });
+
+            itemView.findViewById(R.id.wave).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    waveClicked(v);
+                }
+            });
+        }
+
+        public void waveClicked(View view){
+            Context context = view.getContext();
+            wave.setEnabled(false);
+            Toast.makeText(context, "Wave Clicked!", Toast.LENGTH_SHORT).show();
+            Nearby.getMessagesClient(context).publish(new Message("my info".getBytes(StandardCharsets.UTF_8)));
         }
 
         public void setPerson(UserWithCourses person) {
@@ -90,6 +110,8 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
 
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
+                // TODO: DELETE THIS just to see if waving works
+                if (person.user.wavedToMe) this.personNameView.setText(person.getName() + " WAVED");
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
                 if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");

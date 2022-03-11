@@ -45,6 +45,9 @@ public class User {
     @ColumnInfo(name = "favorite")
     public Boolean favorite;
 
+    @ColumnInfo(name = "wavedToMe")
+    public boolean wavedToMe;
+
     //TODO: randomly generate id
     public User(String name, String email, String profilePictureUrl) {
 //        this.id = id;
@@ -56,6 +59,7 @@ public class User {
         this.favorite = false;
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
+        this.wavedToMe = false;
     }
 
     public long getId(){
@@ -114,4 +118,7 @@ public class User {
     public long getSessionId() { return this.sessionId; }
 
     public void setSessionId(long sessionId) { this.sessionId = sessionId; }
+
+    public boolean getWavedToMe() { return this.wavedToMe; }
+    public void setWavedToMe(boolean bool) {this.wavedToMe = bool;}
 }

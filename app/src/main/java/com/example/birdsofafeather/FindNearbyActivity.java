@@ -46,14 +46,17 @@ public class FindNearbyActivity extends AppCompatActivity {
     private AppDatabase db;
     List<Course> myCourseList;
 
+    public static MessageListener findMessageListener;
+    public static MessageListener waveMessageListener;
+    public static String nearbyUsersMessage;
+    public static String nearbyWave;
+    private static final String TAG = "FindNearbyActivity";
 
-    public static MessageListener messageListener;
-    public static String nearbyMessage;
     private long test_user_id;
     private long curr_session_id;
     private UserWithCourses me;
     private SessionWithUsers currSession;
-    private static final String TAG = "FindNearbyActivity";
+
     private List<UserWithCourses> recordedDataList = new ArrayList<UserWithCourses>();
     List<UserWithCourses> validDataList;
 //    public static List<Long> userIdsFromMockCSV = new ArrayList<>();
@@ -152,7 +155,8 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         List<UserWithCourses> dataList = new ArrayList<UserWithCourses>();
         List<UserWithCourses> students = new ArrayList<>();
-        for(Long userId : currentFindNearbyService.getMockUserIds()) {
+        List<Long> mockUserIds = currentFindNearbyService.getMockUserIds();
+        for(Long userId : mockUserIds) {
             students.add(db.userWithCoursesDao().getUser(userId));
         }
         if(students.isEmpty()) {
@@ -172,7 +176,16 @@ public class FindNearbyActivity extends AppCompatActivity {
         for(int i = 0; i < students.size(); i++){
             students.get(i).user.setSessionId(curr_session_id);
 //            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1); //del?
-            dataList.add(students.get(i));
+            // checking for duplicate users that already existed
+            boolean duplicateExistsInUIListAlready = false;
+           for(UserWithCourses u : sortedDataList)  {
+               if(u.user.uuid.equals(students.get(i).user.uuid)) {
+                   duplicateExistsInUIListAlready = true;
+               }
+           }
+           if(!duplicateExistsInUIListAlready) {
+               dataList.add(students.get(i));
+           }
 //            for(Course course : students.get(i).courses) {
 //                course.userId = students.get(i).getId();
 //                course.courseId = db.coursesDao().maxId() + 1;
@@ -232,8 +245,17 @@ public class FindNearbyActivity extends AppCompatActivity {
                         maxIndex = j;
                     }
                 }
-                sortedDataList.add(this.recordedDataList.get(maxIndex));
-                personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                boolean duplicateExistsInUIListAlready = false;
+                for(UserWithCourses u : sortedDataList)  {
+                    if(u.user.uuid.equals(this.recordedDataList.get(maxIndex).user.uuid)) {
+                        duplicateExistsInUIListAlready = true;
+                    }
+                }
+                if(!duplicateExistsInUIListAlready) {
+                    sortedDataList.add(this.recordedDataList.get(maxIndex));
+                    personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                }
+
 //                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
 //                for (Course course : this.recordedDataList.get(maxIndex).courses) {
 //                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
@@ -257,8 +279,16 @@ public class FindNearbyActivity extends AppCompatActivity {
                         maxIndex = j;
                     }
                 }
-                sortedDataList.add(this.recordedDataList.get(maxIndex));
-                personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                boolean duplicateExistsInUIListAlready = false;
+                for(UserWithCourses u : sortedDataList)  {
+                    if(u.user.uuid.equals(this.recordedDataList.get(maxIndex).user.uuid)) {
+                        duplicateExistsInUIListAlready = true;
+                    }
+                }
+                if(!duplicateExistsInUIListAlready) {
+                    sortedDataList.add(this.recordedDataList.get(maxIndex));
+                    personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                }
 //                db.userWithCoursesDao().insert(this.recordedDataList.get(maxIndex).user);
 //                for (Course course : this.recordedDataList.get(maxIndex).courses) {
 //                    course.userId = this.recordedDataList.get(maxIndex).user.getId();
@@ -282,8 +312,16 @@ public class FindNearbyActivity extends AppCompatActivity {
                         minIndex = j;
                     }
                 }
-                sortedDataList.add(this.recordedDataList.get(minIndex));
-                personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                boolean duplicateExistsInUIListAlready = false;
+                for(UserWithCourses u : sortedDataList)  {
+                    if(u.user.uuid.equals(this.recordedDataList.get(minIndex).user.uuid)) {
+                        duplicateExistsInUIListAlready = true;
+                    }
+                }
+                if(!duplicateExistsInUIListAlready) {
+                    sortedDataList.add(this.recordedDataList.get(minIndex));
+                    personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
+                }
 //                db.userWithCoursesDao().insert(this.recordedDataList.get(minIndex).user);
 //                for (Course course : this.recordedDataList.get(minIndex).courses) {
 //                    course.userId = this.recordedDataList.get(minIndex).user.getId();
@@ -332,7 +370,13 @@ public class FindNearbyActivity extends AppCompatActivity {
             FindNearbyService.LocalBinder localBinder = (FindNearbyService.LocalBinder)iBinder;
             currentFindNearbyService = localBinder.getService();
             isBound = true;
-            while(currentFindNearbyService.getMockUserIds().isEmpty()) { }
+//            while(currentFindNearbyService.getMockUserIds().isEmpty()) {
+//            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             mockFindingNearbyUsers();
         }
 
@@ -343,35 +387,48 @@ public class FindNearbyActivity extends AppCompatActivity {
     };
 
     public void startClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        List<UserWithCourses> us = db.userWithCoursesDao().getAll();
+        Intent startFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        intent.putExtra("parser_type", "nearby_user");
-        startService(intent);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        startFindIntent.putExtra("parser_type", "nearby_user");
+        startService(startFindIntent);
+        startService(startWaveIntent);
+        bindService(startFindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 //        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
     }
 
     public void stopClicked(View view){
-        Intent intent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
+        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
-        stopService(intent);
+//        currentFindNearbyService.clearMockUserIds();
+        stopService(stopFindIntent);
+
         if(isBound) {
            unbindService(serviceConnection);
            isBound = false;
         }
         Log.d(this.TAG, "Stopped Nearby Service");
 
+        stopService(stopWaveIntent);
+
+        //need to update database based on onFound WaveService
+
+        Log.d(this.TAG, "Stopped Wave Service");
+
 //        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
 //        intentSave.putExtra("user_id",test_user_id);
-//        ArrayList<Long> user_ids = new ArrayList<>();
+//        ArrayList<Integer> user_ids = new ArrayList<>();
 //        for(int i = 0; i < this.validDataList.size(); ++i) {
 //            user_ids.add(this.validDataList.get(i).user.getId());
 //        }
-//        intentSave.putExtra("user_ids", user_ids);
-//        startActivity(intentSave);
+//        intentSave.putIntegerArrayListExtra("user_ids", user_ids);
+        //startActivity(intentSave);
+
     }
 
 
@@ -434,8 +491,15 @@ public class FindNearbyActivity extends AppCompatActivity {
         return courses;
     }
 
-    public void onMockBluetoothClicked(View view) {
+    public void onMockNearbyClicked(View view) {
         Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+        intent.putExtra("mock_type", "nearby");
+        startActivity(intent);
+    }
+
+    public void onMockWaveClicked(View view) {
+        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+        intent.putExtra("mock_type", "wave");
         startActivity(intent);
     }
 

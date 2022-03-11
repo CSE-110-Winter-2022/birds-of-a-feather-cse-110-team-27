@@ -67,8 +67,8 @@ public class FindNearbyService extends Service {
                             Log.d(FindNearbyService.TAG, "Lost sign of message: " + new String(message.getContent()));
                         }
                     };
-                    FindNearbyActivity.messageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyMessage);
-                    Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.messageListener);
+                    FindNearbyActivity.findMessageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyUsersMessage);
+                    Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.findMessageListener);
                     wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -83,8 +83,9 @@ public class FindNearbyService extends Service {
 
     @Override
     public void onDestroy() {
-        ((FakedMessageListener)(FindNearbyActivity.messageListener)).stopMessages();
-        Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.messageListener);
+//        mockUserIds.clear();
+        ((FakedMessageListener)(FindNearbyActivity.findMessageListener)).stopMessages();
+        Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.findMessageListener);
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
         stopSelf();
         super.onDestroy();
@@ -100,4 +101,6 @@ public class FindNearbyService extends Service {
     public List<Long> getMockUserIds() {
         return this.mockUserIds;
     }
+
+//    public void clearMockUserIds() { this.mockUserIds.clear();}
 }

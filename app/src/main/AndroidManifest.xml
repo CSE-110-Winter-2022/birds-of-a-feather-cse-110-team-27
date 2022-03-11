@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.birdsofafeather">
+    package="com.example.birdsofafeather" >
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -23,6 +23,12 @@
         <activity
             android:name=".Resume_session"
             android:exported="false" />
+        <service
+            android:name=".WaveService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
         <activity
             android:name=".UploadProfilePicture"
             android:exported="false" />
@@ -64,7 +70,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
