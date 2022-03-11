@@ -14,6 +14,8 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.generator.Generator;
+import com.example.birdsofafeather.generator.WaveCSVGenerator;
 
 import java.util.List;
 
@@ -134,5 +136,32 @@ public class DatabaseTest {
         db.coursesDao().delete(classCancelled);
         UserWithCourses studentData = db.userWithCoursesDao().getUser(student.getId());
         assertEquals(0,studentData.getCourses().size());
+    }
+
+    @Test
+    public void testWaveCSV() {
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
+
+        AppDatabase db = AppDatabase.singleton(appContext);
+        User Rick = new User("Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        db.userWithCoursesDao().insert(Rick);
+        User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        db.userWithCoursesDao().insert(Morty);
+        Course RickCourse1 = new Course(Rick.getId(), 1985, "FALL", "MATH",130, "TINY");
+        db.coursesDao().insert(RickCourse1);
+        Course RickCourse2 = new Course(Rick.getId(), 1985, "FALL", "CHEM",7, "TINY");
+        db.coursesDao().insert(RickCourse2);
+        Course MortyCourse1 = new Course(Morty.getId(), 2018, "WINTER", "MMW",3, "TINY");
+        db.coursesDao().insert(MortyCourse1);
+        List<Course> courses= db.coursesDao().getAll();
+        System.out.println(courses.toString());
+
+        UserWithCourses RickData = db.userWithCoursesDao().getUser(Rick.getId());
+        UserWithCourses MortyData = db.userWithCoursesDao().getUser(Morty.getId());
+        Generator generator = new WaveCSVGenerator();
+        String resultCSV = generator.generateCSV(appContext, RickData.getId(), MortyData.getId());
+        System.out.println(resultCSV);
+        assertEquals(1, 0);
     }
 }
