@@ -14,6 +14,8 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.generator.Generator;
+import com.example.birdsofafeather.generator.WaveCSVGenerator;
 
 import java.util.List;
 
@@ -32,9 +34,9 @@ public class DatabaseTest {
 
         AppDatabase db = AppDatabase.singleton(appContext);
         User newUser = new User("User Name", "userEmail@ucsd.edu", "");
-        db.userWithCoursesDao().insert(newUser);
+        long userId = db.userWithCoursesDao().insert(newUser);
 
-        UserWithCourses user = db.userWithCoursesDao().getUser(0);
+        UserWithCourses user = db.userWithCoursesDao().getUser(userId);
         assertEquals("User Name", user.getName());
         assertEquals("userEmail@ucsd.edu", user.getEmail());
         assertEquals(true, user.getCourses().isEmpty());
@@ -52,30 +54,13 @@ public class DatabaseTest {
         Course newCourse = new Course(userId, 2022, "WINTER", "CSE", 110, "Tiny");
         db.coursesDao().insert(newCourse);
 
-        UserWithCourses user = db.userWithCoursesDao().getUser(0);
+        UserWithCourses user = db.userWithCoursesDao().getUser(userId);
         Course course = user.getCourses().get(0);
         assertEquals(false, user.getCourses().isEmpty());
         assertEquals("CSE", course.getDepartment());
         assertEquals(110, course.getCourseNumber());
         assertEquals("WINTER", course.getQuarter());
         assertEquals(2022, course.getYear());
-    }
-
-    @Test
-    public void checkCourseRemovedFromDB(){
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
-
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User("User Name", "userEmail@ucsd.edu", "");
-        long userId = db.userWithCoursesDao().insert(newUser);
-        Course newCourse = new Course(userId, 2022, "WINTER", "CSE", 110, "Tiny");
-        db.coursesDao().insert(newCourse);
-        db.coursesDao().delete(newCourse);
-
-        UserWithCourses user = db.userWithCoursesDao().getUser(0);
-
-        assertEquals(true, user.getCourses().isEmpty());
     }
 
     @Test
@@ -101,20 +86,20 @@ public class DatabaseTest {
 
         AppDatabase db = AppDatabase.singleton(appContext);
         User Rick = new User("Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
-        db.userWithCoursesDao().insert(Rick);
+        long rickid = db.userWithCoursesDao().insert(Rick);
         User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
-        db.userWithCoursesDao().insert(Morty);
-        Course RickCourse1 = new Course(Rick.getId(), 1985, "FALL", "MATH",130, "TINY");
+        long mortyid = db.userWithCoursesDao().insert(Morty);
+        Course RickCourse1 = new Course(rickid, 1985, "FALL", "MATH",130, "TINY");
         db.coursesDao().insert(RickCourse1);
-        Course RickCourse2 = new Course(Rick.getId(), 1985, "FALL", "CHEM",7, "TINY");
+        Course RickCourse2 = new Course(rickid, 1985, "FALL", "CHEM",7, "TINY");
         db.coursesDao().insert(RickCourse2);
-        Course MortyCourse1 = new Course(Morty.getId(), 2018, "WINTER", "MMW",3, "TINY");
+        Course MortyCourse1 = new Course(mortyid, 2018, "WINTER", "MMW",3, "TINY");
         db.coursesDao().insert(MortyCourse1);
         List<Course> courses= db.coursesDao().getAll();
         System.out.println(courses.toString());
 
-        UserWithCourses RickData = db.userWithCoursesDao().getUser(Rick.getId());
-        UserWithCourses MortyData = db.userWithCoursesDao().getUser(Morty.getId());
+        UserWithCourses RickData = db.userWithCoursesDao().getUser(rickid);
+        UserWithCourses MortyData = db.userWithCoursesDao().getUser(mortyid);
 
         assertEquals(1,MortyData.getCourses().size());
         assertEquals(2,RickData.getCourses().size());
@@ -127,12 +112,40 @@ public class DatabaseTest {
 
         AppDatabase db = AppDatabase.singleton(appContext);
         User student = new User("X", "******@ucsd.edu", "");
-        db.userWithCoursesDao().insert(student);
+        long studentid = db.userWithCoursesDao().insert(student);
 
         Course classCancelled = new Course(student.getId(), 2021, "WINTER", "HUM",1, "TINY");
         db.coursesDao().insert(classCancelled);
         db.coursesDao().delete(classCancelled);
-        UserWithCourses studentData = db.userWithCoursesDao().getUser(student.getId());
+        UserWithCourses studentData = db.userWithCoursesDao().getUser(studentid);
         assertEquals(0,studentData.getCourses().size());
+    }
+
+    @Test
+    public void testWaveCSV() {
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
+
+        AppDatabase db = AppDatabase.singleton(appContext);
+        User Rick = new User("Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        long rickid = db.userWithCoursesDao().insert(Rick);
+        User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
+        long mortyid = db.userWithCoursesDao().insert(Morty);
+        Course RickCourse1 = new Course(rickid, 1985, "FALL", "MATH",130, "Tiny (<40)");
+        db.coursesDao().insert(RickCourse1);
+        Course RickCourse2 = new Course(rickid, 1985, "FALL", "CHEM",7, "Tiny (<40)");
+        db.coursesDao().insert(RickCourse2);
+        Course MortyCourse1 = new Course(mortyid, 2018, "WINTER", "MMW",3, "Tiny (<40)");
+        db.coursesDao().insert(MortyCourse1);
+        List<Course> courses= db.coursesDao().getAll();
+        System.out.println(courses.toString());
+
+        UserWithCourses RickData = db.userWithCoursesDao().getUser(rickid);
+        UserWithCourses MortyData = db.userWithCoursesDao().getUser(mortyid);
+        Generator generator = new WaveCSVGenerator();
+        String resultCSV = generator.generateCSV(appContext, RickData.getId(), MortyData.getId());
+        System.out.println(resultCSV);
+        String expectedString = Rick.getUuid() + ",,,,\n" + Rick.getName() + ",,,,\n" + Rick.getProfilePictureUrl() + ",,,,\n" + "1985,FA,MATH,130,Tiny\n" + "1985,FA,CHEM,7,Tiny\n" + Morty.getUuid() + ",wave,,,";
+        assertEquals(expectedString, resultCSV);
     }
 }

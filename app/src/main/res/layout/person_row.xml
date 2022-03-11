@@ -38,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="200sp"
         android:layout_marginTop="16sp"
+        android:onClick="onWaveClicked"
         android:text="👋" />
 
 </FrameLayout>
