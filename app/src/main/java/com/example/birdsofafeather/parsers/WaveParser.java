@@ -14,7 +14,7 @@ import com.example.birdsofafeather.utils.Constants;
 import java.util.Arrays;
 import java.util.List;
 
-public class WaveParser implements Parser {
+public class  WaveParser implements Parser {
     private String fieldSeparator = ",,,,";
     private final String TAG = "WaveParser";
     @Override
