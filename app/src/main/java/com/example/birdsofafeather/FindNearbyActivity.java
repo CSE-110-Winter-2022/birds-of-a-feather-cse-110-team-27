@@ -304,7 +304,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                 this.recordedDataList.add(sortedDataList.get(i));
             }
         }
-        else if(sortOption.equals("Class size")) {
+        else{
             int iterations = this.recordedDataList.size();
             for(int i = 0; i < iterations; i++){
                 int min = 999;
@@ -336,8 +336,6 @@ public class FindNearbyActivity extends AppCompatActivity {
             for(int i = 0; i < sortedDataList.size(); i++) {
                 this.recordedDataList.add(sortedDataList.get(i));
             }
-        }  else {
-
         }
 
         for(int i = 0; i < recordedDataList.size(); i++){
