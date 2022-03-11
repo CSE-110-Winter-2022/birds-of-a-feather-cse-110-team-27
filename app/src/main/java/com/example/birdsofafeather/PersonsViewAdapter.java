@@ -65,7 +65,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView personNameView;
-        private TextView wave;
+        private Button wave;
         public UserWithCourses person;
         private TextView numSameView;
         private TextView favorite;
@@ -123,8 +123,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
 
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
-                // TODO: DELETE THIS just to see if waving works
-                if (person.user.wavedToMe) this.personNameView.setText(person.getName() + " WAVED");
+                if (person.user.wavedToMe) {
+                    this.wave.setText("Wave back");
+                    this.wave.setBackgroundColor(Color.RED);
+                }
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
                 if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");
