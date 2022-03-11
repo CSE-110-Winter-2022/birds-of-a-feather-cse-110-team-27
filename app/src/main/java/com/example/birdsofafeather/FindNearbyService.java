@@ -16,6 +16,7 @@ import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -27,6 +28,7 @@ public class FindNearbyService extends Service {
     private Parser parser;
     private final IBinder mBinder = new LocalBinder();
     private List<Long> mockUserIds = new ArrayList<>();
+    private Message currMessage;
 
 
     public class LocalBinder extends Binder {
@@ -70,6 +72,8 @@ public class FindNearbyService extends Service {
                     };
                     FindNearbyActivity.findMessageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyUsersMessage);
                     Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.findMessageListener);
+                    currMessage = new Message("user info csv".getBytes(StandardCharsets.UTF_8));
+                    Nearby.getMessagesClient(this).publish(currMessage);
                     wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -85,6 +89,7 @@ public class FindNearbyService extends Service {
     @Override
     public void onDestroy() {
 //        mockUserIds.clear();
+        Nearby.getMessagesClient(this).unpublish(currMessage);
         ((FakedMessageListener)(FindNearbyActivity.findMessageListener)).stopMessages();
         Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.findMessageListener);
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
@@ -96,7 +101,6 @@ public class FindNearbyService extends Service {
         if(!mockUserIds.contains(new Long(userId))) {
             mockUserIds.add(userId);
         }
-        System.out.println();
     }
 
     public List<Long> getMockUserIds() {
@@ -104,4 +108,8 @@ public class FindNearbyService extends Service {
     }
 
 //    public void clearMockUserIds() { this.mockUserIds.clear();}
+
+    public void updateCurMessage(String newMessage) {
+        this.currMessage = new Message(newMessage.getBytes(StandardCharsets.UTF_8));
+    }
 }

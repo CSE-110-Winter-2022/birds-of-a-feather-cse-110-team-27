@@ -114,7 +114,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         sortedDataList.addAll(uWCourses);
 
-        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id);
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id, currentFindNearbyService);
         personsRecyclerView.setAdapter(personsViewAdapter);
 
 
@@ -419,6 +419,14 @@ public class FindNearbyActivity extends AppCompatActivity {
         //need to update database based on onFound WaveService
 
         Log.d(this.TAG, "Stopped Wave Service");
+        if (personsRecyclerView != null) {
+            for (int x = personsRecyclerView.getChildCount(), i = 0; i < x; ++i) {
+                PersonsViewAdapter.ViewHolder holder = (PersonsViewAdapter.ViewHolder) personsRecyclerView.getChildViewHolder(personsRecyclerView.getChildAt(i));
+                AppDatabase db = AppDatabase.singleton(this);
+                UserWithCourses user = db.userWithCoursesDao().getUser(holder.person.getId());
+                holder.setPerson(user);
+            }
+        }
 
 //        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
 //        intentSave.putExtra("user_id",test_user_id);
