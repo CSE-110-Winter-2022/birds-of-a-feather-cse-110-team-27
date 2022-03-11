@@ -85,6 +85,9 @@ public class FindNearbyActivity extends AppCompatActivity {
         currSession = db.sessionWithUsersDao().getForId(curr_session_id);
         myCourseList= me.getCourses();
 
+        TextView UUIDTextView = this.findViewById(R.id.editUUIDTextView);
+        UUIDTextView.setText(me.getUuid());
+
 //        userIdsFromMockCSV.clear();
 //        List<User> us = currSession.getUsers();
 //        System.out.println();
@@ -502,6 +505,12 @@ public class FindNearbyActivity extends AppCompatActivity {
     public void onMockNearbyClicked(View view) {
         Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
         startActivity(intent);
+    }
+
+    public void onUpdateUUIDButtonClicked(View view) {
+        TextView UUIDTextView = this.findViewById(R.id.editUUIDTextView);
+        me.setUuid(UUIDTextView.getText().toString());
+        db.userWithCoursesDao().update(me.user);
     }
 
 //    public void onMockWaveClicked(View view) {
