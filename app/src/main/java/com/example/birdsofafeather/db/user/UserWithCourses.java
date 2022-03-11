@@ -125,5 +125,8 @@ public class UserWithCourses implements IUser {
         return user.getUuid();
     }
 
+    public void setUuid(String uuid) {
+        this.user.setUuid(uuid);
+    }
 
 }

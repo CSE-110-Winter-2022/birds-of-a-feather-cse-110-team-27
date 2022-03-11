@@ -47,9 +47,9 @@ public class FindNearbyActivity extends AppCompatActivity {
     List<Course> myCourseList;
 
     public static MessageListener findMessageListener;
-    public static MessageListener waveMessageListener;
+//    public static MessageListener waveMessageListener;
     public static String nearbyUsersMessage;
-    public static String nearbyWave;
+//    public static String nearbyWave;
     private static final String TAG = "FindNearbyActivity";
 
     private long test_user_id;
@@ -85,6 +85,9 @@ public class FindNearbyActivity extends AppCompatActivity {
         currSession = db.sessionWithUsersDao().getForId(curr_session_id);
         myCourseList= me.getCourses();
 
+        TextView UUIDTextView = this.findViewById(R.id.editUUIDTextView);
+        UUIDTextView.setText(me.getUuid());
+
 //        userIdsFromMockCSV.clear();
 //        List<User> us = currSession.getUsers();
 //        System.out.println();
@@ -114,7 +117,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         sortedDataList.addAll(uWCourses);
 
-        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id);
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id, currentFindNearbyService);
         personsRecyclerView.setAdapter(personsViewAdapter);
 
 
@@ -301,7 +304,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                 this.recordedDataList.add(sortedDataList.get(i));
             }
         }
-        else if(sortOption.equals("Class size")) {
+        else{
             int iterations = this.recordedDataList.size();
             for(int i = 0; i < iterations; i++){
                 int min = 999;
@@ -333,8 +336,6 @@ public class FindNearbyActivity extends AppCompatActivity {
             for(int i = 0; i < sortedDataList.size(); i++) {
                 this.recordedDataList.add(sortedDataList.get(i));
             }
-        }  else {
-
         }
 
         for(int i = 0; i < recordedDataList.size(); i++){
@@ -389,12 +390,12 @@ public class FindNearbyActivity extends AppCompatActivity {
     public void startClicked(View view){
         List<UserWithCourses> us = db.userWithCoursesDao().getAll();
         Intent startFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
-        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
+//        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        startFindIntent.putExtra("parser_type", "nearby_user");
+        startFindIntent.putExtra("user_id", me.getId());
         startService(startFindIntent);
-        startService(startWaveIntent);
+//        startService(startWaveIntent);
         bindService(startFindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 //        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
@@ -402,7 +403,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void stopClicked(View view){
         Intent stopFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
-        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
+//        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
 //        currentFindNearbyService.clearMockUserIds();
@@ -414,11 +415,19 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         Log.d(this.TAG, "Stopped Nearby Service");
 
-        stopService(stopWaveIntent);
+//        stopService(stopWaveIntent);
 
         //need to update database based on onFound WaveService
 
         Log.d(this.TAG, "Stopped Wave Service");
+        if (personsRecyclerView != null) {
+            for (int x = personsRecyclerView.getChildCount(), i = 0; i < x; ++i) {
+                PersonsViewAdapter.ViewHolder holder = (PersonsViewAdapter.ViewHolder) personsRecyclerView.getChildViewHolder(personsRecyclerView.getChildAt(i));
+                AppDatabase db = AppDatabase.singleton(this);
+                UserWithCourses user = db.userWithCoursesDao().getUser(holder.person.getId());
+                holder.setPerson(user);
+            }
+        }
 
 //        Intent intentSave = new Intent(FindNearbyActivity.this, Pop_save.class);
 //        intentSave.putExtra("user_id",test_user_id);
@@ -493,15 +502,20 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void onMockNearbyClicked(View view) {
         Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
-        intent.putExtra("mock_type", "nearby");
         startActivity(intent);
     }
 
-    public void onMockWaveClicked(View view) {
-        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
-        intent.putExtra("mock_type", "wave");
-        startActivity(intent);
+    public void onUpdateUUIDButtonClicked(View view) {
+        TextView UUIDTextView = this.findViewById(R.id.editUUIDTextView);
+        me.setUuid(UUIDTextView.getText().toString());
+        db.userWithCoursesDao().update(me.user);
     }
+
+//    public void onMockWaveClicked(View view) {
+//        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+//        intent.putExtra("mock_type", "wave");
+//        startActivity(intent);
+//    }
 
     private class DropdownAdapter extends ArrayAdapter {
 

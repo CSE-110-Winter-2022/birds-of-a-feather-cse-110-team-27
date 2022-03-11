@@ -16,15 +16,16 @@ import java.util.List;
 
 public class WaveParser implements Parser {
     private String fieldSeparator = ",,,,";
+    private final String TAG = "WaveParser";
     @Override
-    public void parse(Context context, String message, Service service) {
+    public void parse(Context context, String message, Service service, long ourUserId) {
         AppDatabase db = AppDatabase.singleton(context);
         String[] fields = message.split(fieldSeparator);
         if(fields.length <= 3) {
             for(String field : fields) {
                 System.out.println(field);
             }
-            Log.d("NearbyUserParser", "Nearby User Message was missing fields");
+            Log.d(TAG, "Nearby User Message was missing fields");
             return;
         }
         String uuid = fields[0].replaceAll("\n", "");
@@ -32,12 +33,19 @@ public class WaveParser implements Parser {
         String pic_url = fields[2].replaceAll("\n", "");
         User user = new User(name, "", pic_url);
         user.uuid = uuid;
-        user.setWavedToMe(true);
-        List<UserWithCourses> tmpCheckUsers = db.userWithCoursesDao().getUsersForUUID(uuid);
-        for(UserWithCourses userWithCourses : tmpCheckUsers) {
-           userWithCourses.user.setWavedToMe(true);
-           db.userWithCoursesDao().update(userWithCourses.user);
-            Log.d("NearbyUserParser", String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
+
+        String[] courses = fields[3].split("\n");
+        // this has our curr uuid if we need to use it (last line of wave csv)
+        String waveUuid = courses[courses.length - 1].split(",")[0];
+
+        if(waveUuid.equals(db.userWithCoursesDao().getUser(ourUserId).getUuid())) {
+            user.setWavedToMe(true);
+            List<UserWithCourses> tmpCheckUsers = db.userWithCoursesDao().getUsersForUUID(uuid);
+            for (UserWithCourses userWithCourses : tmpCheckUsers) {
+                userWithCourses.user.setWavedToMe(true);
+                db.userWithCoursesDao().update(userWithCourses.user);
+                Log.d(TAG, String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
+            }
         }
 //        if(tmpCheckUser != null) {
 //            tmpCheckUser.user.setWavedToMe(true);
@@ -55,9 +63,6 @@ public class WaveParser implements Parser {
 
         // this has our curr uuid if we need to use it (last line of wave csv)
         String waveMsg = courses[courses.length - 1];
-
-        //??? never uncomment this. cursed line
-//        courses.remove(courses.size() - 1);
 
         int count = 0;
         for(String course : courses) {

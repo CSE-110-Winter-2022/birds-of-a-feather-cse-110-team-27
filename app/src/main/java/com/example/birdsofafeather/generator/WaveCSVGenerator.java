@@ -11,6 +11,7 @@ import java.util.List;
 public class WaveCSVGenerator implements  Generator {
     @Override
     public String generateCSV(Context context, long myID, long targetID) {
+
         AppDatabase db = AppDatabase.singleton(context);
         UserWithCourses me = db.userWithCoursesDao().getUser(myID);
         UserWithCourses target = db.userWithCoursesDao().getUser(targetID);
@@ -68,5 +69,6 @@ public class WaveCSVGenerator implements  Generator {
         String targetIDStr = target.getUuid();
         resultCSV += myIDStr + ",,,,\n" + myName + ",,,,\n" + myProfilePictureUrl + ",,,,\n" + courseCSV + "\n" + targetIDStr + ",wave,,,";
         return resultCSV;
+
     }
 }

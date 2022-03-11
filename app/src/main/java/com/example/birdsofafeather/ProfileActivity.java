@@ -58,7 +58,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void onToggleFavorite(View view) {
 
-        int userId = getIntent().getIntExtra("userId", -1);
+        long userId = getIntent().getLongExtra("userId", -1);
         AppDatabase db = AppDatabase.singleton(this);
 
         UserWithCourses user = db.userWithCoursesDao().getUser(userId);

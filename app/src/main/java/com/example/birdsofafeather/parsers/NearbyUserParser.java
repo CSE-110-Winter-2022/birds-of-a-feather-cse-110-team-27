@@ -14,16 +14,17 @@ import com.example.birdsofafeather.utils.Constants;
 
 public class NearbyUserParser implements Parser {
     private String fieldSeparator = ",,,,";
+    private final String TAG = "NearbyUserParser";
 
     @Override
-    public void parse(Context context, String message, Service service) {
+    public void parse(Context context, String message, Service service, long ourUserId) {
         AppDatabase db = AppDatabase.singleton(context);
         String[] fields = message.split(fieldSeparator);
         if(fields.length <= 3) {
             for(String field : fields) {
                 System.out.println(field);
             }
-            Log.d("NearbyUserParser", "Nearby User Message was missing fields");
+            Log.d(TAG, "Nearby User Message was missing fields");
             return;
         }
         String uuid = fields[0].replaceAll("\n", "");

@@ -36,7 +36,7 @@
         android:id="@+id/wave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="200sp"
+        android:layout_marginLeft="160sp"
         android:layout_marginTop="16sp"
         android:onClick="onWaveClicked"
         android:text="👋" />

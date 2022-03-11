@@ -1,5 +1,6 @@
 package com.example.birdsofafeather;
 
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,11 +34,13 @@ import java.util.List;
 public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.ViewHolder> {
     private final List<? extends UserWithCourses> persons;
     public final long testUserID;
+    private FindNearbyService currFindNearbyService;
 
-    public PersonsViewAdapter(List<? extends UserWithCourses> persons, long testUserID) {
+    public PersonsViewAdapter(List<? extends UserWithCourses> persons, long testUserID, FindNearbyService findNearbyService) {
         super();
         this.persons = persons;
         this.testUserID = testUserID;
+        this.currFindNearbyService = findNearbyService;
     }
 
     @NonNull
@@ -54,6 +57,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.setPerson(persons.get(position));
         holder.setUserID(testUserID);
+        holder.setCurrFindNearbyService(currFindNearbyService);
     }
 
     @Override
@@ -65,11 +69,12 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             extends RecyclerView.ViewHolder
             implements View.OnClickListener {
         private final TextView personNameView;
-        private TextView wave;
+        private Button wave;
         public UserWithCourses person;
         private TextView numSameView;
         private TextView favorite;
         private long userID = -1;
+        private FindNearbyService currFindNearbyService;
 
 
         ViewHolder(View itemView) {
@@ -110,11 +115,16 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
                 Toast.makeText(context, "Can't find current user in db", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Generator generator = new WaveCSVGenerator();
-            String resultCSV = generator.generateCSV(context, this.userID, this.person.getId());
-            Toast.makeText(context, resultCSV, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Waved at " + this.person.getName(), Toast.LENGTH_SHORT).show();
 
-            Nearby.getMessagesClient(context).publish(new Message("my info".getBytes(StandardCharsets.UTF_8)));
+            if(currFindNearbyService != null) {
+                currFindNearbyService.setGenerator(new WaveCSVGenerator());
+                currFindNearbyService.updateCurMessage(context, this.userID, this.person.getId());
+            }
+        }
+
+        public void setCurrFindNearbyService(FindNearbyService findNearbyService) {
+           this.currFindNearbyService = findNearbyService;
         }
 
         public void setPerson(UserWithCourses person) {
@@ -123,8 +133,10 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
 
             if(person.getNumSamCourses() != 0) {
                 this.personNameView.setText(person.getName());
-                // TODO: DELETE THIS just to see if waving works
-                if (person.user.wavedToMe) this.personNameView.setText(person.getName() + " WAVED");
+                if (person.user.wavedToMe) {
+                    this.wave.setText("Wave back");
+                    this.wave.setBackgroundColor(Color.RED);
+                }
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
                 if (person.isFavorite()) this.favorite.setText("⭐");
                 else this.favorite.setText("✩");
