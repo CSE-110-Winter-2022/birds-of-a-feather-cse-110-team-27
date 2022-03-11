@@ -131,11 +131,11 @@ public class DatabaseTest {
         long rickid = db.userWithCoursesDao().insert(Rick);
         User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
         long mortyid = db.userWithCoursesDao().insert(Morty);
-        Course RickCourse1 = new Course(rickid, 1985, "FALL", "MATH",130, "TINY");
+        Course RickCourse1 = new Course(rickid, 1985, "FALL", "MATH",130, "Tiny (<40)");
         db.coursesDao().insert(RickCourse1);
-        Course RickCourse2 = new Course(rickid, 1985, "FALL", "CHEM",7, "TINY");
+        Course RickCourse2 = new Course(rickid, 1985, "FALL", "CHEM",7, "Tiny (<40)");
         db.coursesDao().insert(RickCourse2);
-        Course MortyCourse1 = new Course(mortyid, 2018, "WINTER", "MMW",3, "TINY");
+        Course MortyCourse1 = new Course(mortyid, 2018, "WINTER", "MMW",3, "Tiny (<40)");
         db.coursesDao().insert(MortyCourse1);
         List<Course> courses= db.coursesDao().getAll();
         System.out.println(courses.toString());
@@ -145,6 +145,7 @@ public class DatabaseTest {
         Generator generator = new WaveCSVGenerator();
         String resultCSV = generator.generateCSV(appContext, RickData.getId(), MortyData.getId());
         System.out.println(resultCSV);
-        assertEquals(1, 0);
+        String expectedString = Rick.getUuid() + ",,,,\n" + Rick.getName() + ",,,,\n" + Rick.getProfilePictureUrl() + ",,,,\n" + "1985,FA,MATH,130,Tiny\n" + "1985,FA,CHEM,7,Tiny\n" + Morty.getUuid() + ",wave,,,";
+        assertEquals(expectedString, resultCSV);
     }
 }
