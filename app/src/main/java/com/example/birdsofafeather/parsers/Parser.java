@@ -5,5 +5,5 @@ import android.content.Context;
 
 public interface Parser {
 
-    void parse(Context context, String message, Service service);
+    void parse(Context context, String message, Service service, long ourUserId);
 }

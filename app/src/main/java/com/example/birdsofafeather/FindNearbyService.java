@@ -54,6 +54,7 @@ public class FindNearbyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(FindNearbyService.this, "Start Finding Nearby Users", Toast.LENGTH_SHORT).show();
+        long myUserId = intent.getLongExtra("user_id", -1);
         executor.submit(() -> {
             synchronized (this) {
                 try {
@@ -68,7 +69,7 @@ public class FindNearbyService extends Service {
                             } else {
                                 parser = new NearbyUserParser();
                             }
-                            parser.parse(getApplicationContext(), new String(message.getContent()), FindNearbyService.this);
+                            parser.parse(getApplicationContext(), new String(message.getContent()), FindNearbyService.this, myUserId);
                         }
 
                         @Override
@@ -80,7 +81,6 @@ public class FindNearbyService extends Service {
                     Log.d(TAG, "Subscribed to messages");
                     Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.findMessageListener);
                     setGenerator(new UserInfoCSVGenerator());
-                    long myUserId = intent.getLongExtra("user_id", -1);
                     currMessage = new Message(nearbyMessageGenerator.generateCSV(this, myUserId, -1).getBytes(StandardCharsets.UTF_8));
                     Nearby.getMessagesClient(this).publish(currMessage);
                     Log.d(TAG, "Published nearby message with content: ");
