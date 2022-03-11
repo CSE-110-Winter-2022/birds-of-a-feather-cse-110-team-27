@@ -115,12 +115,11 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
                 Toast.makeText(context, "Can't find current user in db", Toast.LENGTH_SHORT).show();
                 return;
             }
-            Generator generator = new WaveCSVGenerator();
-            String resultCSV = generator.generateCSV(context, this.userID, this.person.getId());
-            Toast.makeText(context, resultCSV, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Waved at " + this.person.getName(), Toast.LENGTH_SHORT).show();
 
             if(currFindNearbyService != null) {
-                currFindNearbyService.updateCurMessage(resultCSV);
+                currFindNearbyService.setGenerator(new WaveCSVGenerator());
+                currFindNearbyService.updateCurMessage(context, this.userID, this.person.getId());
             }
         }
 

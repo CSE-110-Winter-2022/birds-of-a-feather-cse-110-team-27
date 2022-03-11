@@ -63,4 +63,5 @@ public class Resume_session extends AppCompatActivity {
         sessionViewAdapter = new SessionViewAdapter(sessions_to_display, personId);
         sessionRecyclerView.setAdapter(sessionViewAdapter);
     }
+
 }

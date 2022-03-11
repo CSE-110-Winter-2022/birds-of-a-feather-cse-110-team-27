@@ -392,7 +392,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 //        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-//        startFindIntent.putExtra("parser_type", "nearby_user");
+        startFindIntent.putExtra("user_id", me.getId());
         startService(startFindIntent);
 //        startService(startWaveIntent);
         bindService(startFindIntent, serviceConnection, Context.BIND_AUTO_CREATE);

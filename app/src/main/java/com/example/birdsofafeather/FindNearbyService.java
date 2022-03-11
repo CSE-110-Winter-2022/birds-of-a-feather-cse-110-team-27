@@ -1,6 +1,7 @@
 package com.example.birdsofafeather;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.birdsofafeather.generator.Generator;
+import com.example.birdsofafeather.generator.UserInfoCSVGenerator;
+import com.example.birdsofafeather.generator.WaveCSVGenerator;
 import com.example.birdsofafeather.parsers.NearbyUserParser;
 import com.example.birdsofafeather.parsers.Parser;
 import com.example.birdsofafeather.parsers.WaveParser;
@@ -18,6 +22,7 @@ import com.google.android.gms.nearby.messages.MessageListener;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +34,7 @@ public class FindNearbyService extends Service {
     private final IBinder mBinder = new LocalBinder();
     private List<Long> mockUserIds = new ArrayList<>();
     private Message currMessage;
+    private Generator nearbyMessageGenerator;
 
 
     public class LocalBinder extends Binder {
@@ -71,9 +77,13 @@ public class FindNearbyService extends Service {
                         }
                     };
                     FindNearbyActivity.findMessageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyUsersMessage);
+                    Log.d(TAG, "Subscribed to messages");
                     Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.findMessageListener);
-                    currMessage = new Message("user info csv".getBytes(StandardCharsets.UTF_8));
+                    setGenerator(new UserInfoCSVGenerator());
+                    long myUserId = intent.getLongExtra("user_id", -1);
+                    currMessage = new Message(nearbyMessageGenerator.generateCSV(this, myUserId, -1).getBytes(StandardCharsets.UTF_8));
                     Nearby.getMessagesClient(this).publish(currMessage);
+                    Log.d(TAG, "Published nearby message with content: ");
                     wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -88,9 +98,12 @@ public class FindNearbyService extends Service {
 
     @Override
     public void onDestroy() {
-//        mockUserIds.clear();
-        Nearby.getMessagesClient(this).unpublish(currMessage);
+        if(currMessage != null) {
+            Log.d(TAG, "Unpublished nearby message with content: " + Arrays.toString(currMessage.getContent()));
+            Nearby.getMessagesClient(this).unpublish(currMessage);
+        }
         ((FakedMessageListener)(FindNearbyActivity.findMessageListener)).stopMessages();
+        Log.d(TAG, "Unsubscribed from listening to messages");
         Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.findMessageListener);
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
         stopSelf();
@@ -98,7 +111,7 @@ public class FindNearbyService extends Service {
     }
 
     public void addUserId(long userId) {
-        if(!mockUserIds.contains(new Long(userId))) {
+        if(!mockUserIds.contains(userId)) {
             mockUserIds.add(userId);
         }
     }
@@ -107,9 +120,17 @@ public class FindNearbyService extends Service {
         return this.mockUserIds;
     }
 
-//    public void clearMockUserIds() { this.mockUserIds.clear();}
+    public void setGenerator(Generator generator) {
+        this.nearbyMessageGenerator = generator;
+    }
 
-    public void updateCurMessage(String newMessage) {
-        this.currMessage = new Message(newMessage.getBytes(StandardCharsets.UTF_8));
+
+    public void updateCurMessage(Context context, long userID, long targetID) {
+        String resultCSV = nearbyMessageGenerator.generateCSV(context, userID, targetID);
+        Log.d(TAG, "Unpublished nearby message with content: " + Arrays.toString(currMessage.getContent()));
+        Nearby.getMessagesClient(this).unpublish(currMessage);
+        this.currMessage = new Message(resultCSV.getBytes(StandardCharsets.UTF_8));
+        Nearby.getMessagesClient(this).publish(currMessage);
+        Log.d(TAG, "Published nearby message with content: " + resultCSV);
     }
 }
