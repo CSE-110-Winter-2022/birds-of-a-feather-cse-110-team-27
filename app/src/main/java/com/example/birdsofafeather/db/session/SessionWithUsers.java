@@ -13,7 +13,7 @@ public class SessionWithUsers {
     private Session session;
 
     @Relation(parentColumn = "id",
-            entityColumn = "id",
+            entityColumn = "sessionId",
             entity = User.class
     )
     private List<User> users;
@@ -23,7 +23,7 @@ public class SessionWithUsers {
     }
 
     public void setSessionName(String name) {
-        this.session.name = name;
+        this.session.setName(name);
     }
 
     public String getSessionName() {

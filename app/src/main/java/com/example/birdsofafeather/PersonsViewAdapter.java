@@ -72,7 +72,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             itemView.findViewById(R.id.favorite).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int userId = person.getId();
+                    long userId = person.getId();
                     AppDatabase db = AppDatabase.singleton(v.getContext());
                     UserWithCourses user = db.userWithCoursesDao().getUser(userId);
                     user.toggleFavorite();
@@ -104,7 +104,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             String name = this.person.getName();
             String profilePictureUrl = person.getProfilePictureUrl();
             Boolean isFavorite = person.isFavorite();
-            int userId = person.getId();
+            long userId = person.getId();
             ArrayList<String> courseArray = courseArrayMaker(person_course, name);
             intent.putStringArrayListExtra("course_names", courseArray);
             intent.putExtra("userId", userId);

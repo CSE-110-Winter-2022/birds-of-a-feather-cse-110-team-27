@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EnterMockDataActivity">
+
+    <TextView
+        android:id="@+id/enter_data_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="147dp"
+        android:text="Enter CSV data for mocking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/csvDataInput"
+        android:layout_width="210dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="61dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="CSV Data"
+        app:layout_constraintBottom_toTopOf="@+id/save_csv_data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enter_data_title" />
+
+    <Button
+        android:id="@+id/save_csv_data"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="61dp"
+        android:text="Save"
+        android:onClick="onSaveCSVClicked"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/csvDataInput" />
+</androidx.constraintlayout.widget.ConstraintLayout>

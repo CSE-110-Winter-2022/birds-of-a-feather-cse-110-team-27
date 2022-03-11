@@ -89,7 +89,7 @@ public class EnterClassActivity extends AppCompatActivity {
        }
 
         System.out.println("User" + user.getId());
-        Course newCourse = new Course(db.coursesDao().maxId() + 1, user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue(), size);
+        Course newCourse = new Course(user.getId(), year_int.intValue(), quarter, department, course_number_int.intValue(), size);
         db.coursesDao().insert(newCourse);
         System.out.println(db.coursesDao().maxId());
         courseViewAdapter.addCourse(newCourse);
@@ -152,7 +152,7 @@ public class EnterClassActivity extends AppCompatActivity {
         sizeDropDown.setAdapter(sizeSelectionAdapter);
 
         Intent intent = getIntent();
-        int userId = intent.getIntExtra( "user_id", -1); //for now default is 0. Maybe last activity pass some value???
+        long userId = intent.getLongExtra( "user_id", -1); //for now default is 0. Maybe last activity pass some value???
 
         db = AppDatabase.singleton(this);
         user = db.userWithCoursesDao().getUser(userId);

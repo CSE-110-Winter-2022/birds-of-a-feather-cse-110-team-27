@@ -1,6 +1,8 @@
 package com.example.birdsofafeather.db.course;
 
+import static androidx.room.OnConflictStrategy.ABORT;
 import static androidx.room.OnConflictStrategy.IGNORE;
+import static androidx.room.OnConflictStrategy.REPLACE;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -25,8 +27,8 @@ public interface CoursesDao {
     @Query("SELECT * FROM courses")
     List<Course> getAll();
 
-    @Insert(onConflict = IGNORE)
-    void insert(Course course);
+    @Insert(onConflict = REPLACE)
+    long insert(Course course);
 
     @Delete
     void delete(Course course);

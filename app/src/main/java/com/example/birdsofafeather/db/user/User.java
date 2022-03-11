@@ -9,13 +9,14 @@ import com.example.birdsofafeather.db.course.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(tableName = "users")
 public class User {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    int id;
+    public long id;
 
     @ColumnInfo(name = "sessionId")
     long sessionId;
@@ -35,6 +36,9 @@ public class User {
     @ColumnInfo(name = "email")
     public String email;
 
+    @ColumnInfo(name = "uuid")
+    public String uuid;
+
     @ColumnInfo(name = "profile_picture_url")
     public String profilePictureUrl;
 
@@ -42,18 +46,24 @@ public class User {
     public Boolean favorite;
 
     //TODO: randomly generate id
-    public User(int id, String name, String email, String profilePictureUrl) {
-        this.id = id;
+    public User(String name, String email, String profilePictureUrl) {
+//        this.id = id;
         this.name = name;
         this.email = email;
+        this.uuid = "";
         this.profilePictureUrl = profilePictureUrl;
         this.numSameCourses = 0;
         this.favorite = false;
         this.lastSameCourseTime = 0;
         this.smallestSameCourseSize = 999;
     }
-    public int getId(){
+
+    public long getId(){
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

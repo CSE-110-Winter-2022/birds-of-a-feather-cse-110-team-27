@@ -14,7 +14,7 @@ public class CheckSmallestSameCourseTest {
 
     @Test
     public void sameSizeCourseComparison() {
-        User user = new User(0,"Emil", "emil@ucsd.edu","mockimage.jpg");
+        User user = new User("Emil", "emil@ucsd.edu","mockimage.jpg");
         UserWithCourses emil = new UserWithCourses();
         emil.user = user;
         user.setSmallestSameCourseSize(150);
@@ -25,7 +25,7 @@ public class CheckSmallestSameCourseTest {
 
     @Test
     public void smallerSizeCourseComparison() {
-        User user = new User(0,"Emil", "emil@ucsd.edu","mockimage.jpg");
+        User user = new User("Emil", "emil@ucsd.edu","mockimage.jpg");
         UserWithCourses emil = new UserWithCourses();
         emil.user = user;
         user.setSmallestSameCourseSize(40);
@@ -36,7 +36,7 @@ public class CheckSmallestSameCourseTest {
 
     @Test
     public void biggerSizeCourseComparison() {
-        User user = new User(0,"Emil", "emil@ucsd.edu","mockimage.jpg");
+        User user = new User("Emil", "emil@ucsd.edu","mockimage.jpg");
         UserWithCourses emil = new UserWithCourses();
         emil.user = user;
         user.setSmallestSameCourseSize(400);

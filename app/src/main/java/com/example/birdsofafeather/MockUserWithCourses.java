@@ -1,5 +1,7 @@
 package com.example.birdsofafeather;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.example.birdsofafeather.db.course.Course;
@@ -11,19 +13,18 @@ import java.util.List;
 
 public class MockUserWithCourses{
     public UserWithCourses student;
-    Course testCourse_1 = new Course(0,0,2021, "FALL", "ECE", 100, "Large (150-250)");
-    Course testCourse_2 = new Course(0,0,2021, "FALL", "ECE", 65, "Large (150-250)");
-    Course testCourse_3 = new Course(0,0,2021, "FALL", "MATH", 109, "Medium (75-150)");
-    Course testCourse_4 = new Course(0,0,2022, "WINTER", "CSE", 110, "Large (150-250)");
+    Course testCourse_1 = new Course(0,2021, "FALL", "ECE", 100, "TINY");
+    Course testCourse_2 = new Course(0,2021, "FALL", "ECE", 65, "TINY");
+    Course testCourse_3 = new Course(0,2021, "FALL", "MATH", 109, "TINY");
     Course[] courses = {
-                new Course(0,0,2021, "FALL", "ECE", 101, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "BILD", 1, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "MATH", 183, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "MATH", 18, "Tiny (<40)"),
-                new Course(0,0,2020, "FALL", "HILD", 7, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "HUM", 2, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "CHEM", 40, "Medium (75-150)"),
-                new Course(0,0,2020, "FALL", "DOC", 1, "Medium (75-150)"),
+                new Course(0,2021, "FALL", "ECE", 101, "TINY"),
+                new Course(0,2020, "FALL", "BILD", 1, "TINY"),
+                new Course(0,2020, "FALL", "MATH", 183, "TINY"),
+                new Course(0,2020, "FALL", "MATH", 18, "TINY"),
+                new Course(0,2020, "FALL", "HILD", 7, "TINY"),
+                new Course(0,2020, "FALL", "HUM", 2, "TINY"),
+                new Course(0,2020, "FALL", "CHEM", 40, "TINY"),
+                new Course(0,2020, "FALL", "DOC", 1, "TINY"),
             };
     public static String[] studentNames = {"John", "Amy", "Zoey", "Matt"};
     public static String[] studentEmails = {"john@ucsd.edu", "amy@ucsd.edu", "zoey@ucsd.edu", "matt@ucsd.edu"};
@@ -37,7 +38,7 @@ public class MockUserWithCourses{
 
 
     public MockUserWithCourses(int studentNum){
-        User user = new User(studentNum,studentNames[studentNum], studentEmails[studentNum], studentProfilePictureUrls[studentNum]);
+        User user = new User(studentNames[studentNum], studentEmails[studentNum], studentProfilePictureUrls[studentNum]);
 
         List<Course> listOfCourses = new ArrayList<Course>();
         if(studentNum != 3){
@@ -52,7 +53,7 @@ public class MockUserWithCourses{
             }
         }
         else {
-            listOfCourses.add(testCourse_4);
+            listOfCourses.add(testCourse_3);
         }
         if(studentNum == 2) {
             listOfCourses.add(testCourse_1);

@@ -20,7 +20,19 @@ public abstract class UserWithCoursesDao {
 
     @Transaction
     @Query("SELECT * FROM users where id=:userId")
-    public abstract UserWithCourses getUser(int userId);
+    public abstract UserWithCourses getUser(long userId);
+
+    @Transaction
+    @Query("SELECT * FROM users where email=:email")
+    public abstract UserWithCourses getUserForEmail(String email);
+
+    @Transaction
+    @Query("SELECT * FROM users where uuid=:uuid")
+    public abstract UserWithCourses getUserForUUID(String uuid);
+
+    @Transaction
+    @Query("SELECT * FROM courses where user_id=:userId")
+    public abstract List<Course> getCoursesForUserId(long userId);
 
 //    @Transaction
 //    @Query("SELECT * FROM users where email=:email")
@@ -31,7 +43,10 @@ public abstract class UserWithCoursesDao {
     public abstract List<UserWithCourses> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract void insert(User user);
+    public abstract long insert(User user);
+
+
+
 
 //    @Insert(onConflict = OnConflictStrategy.IGNORE)
 //    public abstract void insertCourse(Course course);

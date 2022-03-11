@@ -59,18 +59,20 @@ public class UploadProfilePicture extends AppCompatActivity {
 
     public void onConfirmClicked(View view) {
         AppDatabase db = AppDatabase.singleton(this);
-        int userId = personEmail.hashCode();
-        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(userId);
+//        UserWithCourses userWithCourses = db.userWithCoursesDao().getUser(0);
+        UserWithCourses userWithCourses = db.userWithCoursesDao().getUserForEmail(personEmail);
         User user;
+        long userId;
         if (userWithCourses == null) {
-            user = new User(userId, name, personEmail, image_url);
-            db.userWithCoursesDao().insert(user);
+            user = new User(name, personEmail, image_url);
+            userId = db.userWithCoursesDao().insert(user);
         } else {
             user = userWithCourses.user;
+            userId = userWithCourses.user.getId();
         }
 
         Intent enterClassesIntent = new Intent(this, EnterClassActivity.class);
-        enterClassesIntent.putExtra("user_id", user.getId());
+        enterClassesIntent.putExtra("user_id", userId);
         startActivity(enterClassesIntent);
         Log.d(this.TAG, "Confirming Photo and Going to Find Nearby Activity");
     }

@@ -10,6 +10,7 @@ import com.example.birdsofafeather.db.course.Course;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 //@Entity(tableName = "users_with_courses")
 public class UserWithCourses implements IUser {
@@ -33,8 +34,22 @@ public class UserWithCourses implements IUser {
 //        this.courses = new ArrayList<>();
 //    }
 
+
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        UserWithCourses that = (UserWithCourses) o;
+//        return Objects.equals(user, that.user) && Objects.equals(courses, that.courses);
+//    }
+
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(user, courses);
+//    }
+
     @Override
-    public int getId() {
+    public long getId() {
         return this.user.id;
     }
 

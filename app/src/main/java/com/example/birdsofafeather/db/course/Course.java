@@ -2,21 +2,21 @@ package com.example.birdsofafeather.db.course;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.example.birdsofafeather.utils.Utilities;
 
+import java.util.Objects;
 
 @Entity(tableName = "courses")
 public class Course  extends ICourse {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "course_id")
-    public int courseId;
+    public long courseId;
 
     @ColumnInfo(name = "user_id")
-    public int userId;
+    public long userId;
 
     @ColumnInfo(name = "year")
     public int year;
@@ -33,8 +33,8 @@ public class Course  extends ICourse {
     @ColumnInfo(name = "size")
     public String size;
 
-    public Course(int courseId, int userId, int year, String quarter, String department, int course_number, String size){
-        this.courseId = courseId;
+    public Course(long userId, int year, String quarter, String department, int course_number, String size){
+//        this.courseId = courseId;
         this.userId = userId;
         this.year = year;
         this.quarter = quarter;
@@ -43,8 +43,21 @@ public class Course  extends ICourse {
         this.size = size;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//        Course course = (Course) o;
+//        return year == course.year && course_number == course.course_number && Objects.equals(quarter, course.quarter) && Objects.equals(department, course.department);
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Objects.hash(courseId, userId, year, quarter, department, course_number);
+//    }
+
     @Override
-    public int getId() {
+    public long getId() {
         return this.courseId;
     }
 

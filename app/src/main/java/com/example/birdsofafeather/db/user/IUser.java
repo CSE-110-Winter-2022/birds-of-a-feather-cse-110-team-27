@@ -5,7 +5,7 @@ import com.example.birdsofafeather.db.course.Course;
 import java.util.List;
 
 public interface IUser {
-    int getId();
+    long getId();
     String getName();
     String getEmail();
     String getProfilePictureUrl();
