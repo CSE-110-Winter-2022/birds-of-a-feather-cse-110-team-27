@@ -45,12 +45,6 @@ public class FindNearbyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String parser_type = intent.getStringExtra("parser_type");
-        if(parser_type.equals("nearby_user")) {
-            parser = new NearbyUserParser();
-        } else if(parser_type.equals("wave")) {
-            parser = new WaveParser();
-        }
         Toast.makeText(FindNearbyService.this, "Start Finding Nearby Users", Toast.LENGTH_SHORT).show();
         executor.submit(() -> {
             synchronized (this) {
@@ -59,6 +53,13 @@ public class FindNearbyService extends Service {
                         @Override
                         public void onFound(@NonNull Message message) {
                             Log.d(FindNearbyService.TAG, "Found message: " + new String(message.getContent()));
+                            String[] lines = new String(message.getContent()).split("\n");
+                            String[] lastLine = lines[lines.length - 1].split(",");
+                            if(lastLine[1].equals("wave")) {
+                                parser = new WaveParser();
+                            } else {
+                                parser = new NearbyUserParser();
+                            }
                             parser.parse(getApplicationContext(), new String(message.getContent()), FindNearbyService.this);
                         }
 

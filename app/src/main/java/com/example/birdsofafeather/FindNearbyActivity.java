@@ -47,9 +47,9 @@ public class FindNearbyActivity extends AppCompatActivity {
     List<Course> myCourseList;
 
     public static MessageListener findMessageListener;
-    public static MessageListener waveMessageListener;
+//    public static MessageListener waveMessageListener;
     public static String nearbyUsersMessage;
-    public static String nearbyWave;
+//    public static String nearbyWave;
     private static final String TAG = "FindNearbyActivity";
 
     private long test_user_id;
@@ -389,12 +389,12 @@ public class FindNearbyActivity extends AppCompatActivity {
     public void startClicked(View view){
         List<UserWithCourses> us = db.userWithCoursesDao().getAll();
         Intent startFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
-        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
+//        Intent startWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         start.setVisibility(View.INVISIBLE);
         stop.setVisibility(View.VISIBLE);
-        startFindIntent.putExtra("parser_type", "nearby_user");
+//        startFindIntent.putExtra("parser_type", "nearby_user");
         startService(startFindIntent);
-        startService(startWaveIntent);
+//        startService(startWaveIntent);
         bindService(startFindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 //        mockFindingNearbyUsers();
         Log.d(this.TAG, "Started Nearby Service");
@@ -402,7 +402,7 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void stopClicked(View view){
         Intent stopFindIntent = new Intent(FindNearbyActivity.this, FindNearbyService.class);
-        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
+//        Intent stopWaveIntent = new Intent(FindNearbyActivity.this, WaveService.class);
         stop.setVisibility(View.INVISIBLE);
         start.setVisibility(View.VISIBLE);
 //        currentFindNearbyService.clearMockUserIds();
@@ -414,7 +414,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         Log.d(this.TAG, "Stopped Nearby Service");
 
-        stopService(stopWaveIntent);
+//        stopService(stopWaveIntent);
 
         //need to update database based on onFound WaveService
 
@@ -493,15 +493,14 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void onMockNearbyClicked(View view) {
         Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
-        intent.putExtra("mock_type", "nearby");
         startActivity(intent);
     }
 
-    public void onMockWaveClicked(View view) {
-        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
-        intent.putExtra("mock_type", "wave");
-        startActivity(intent);
-    }
+//    public void onMockWaveClicked(View view) {
+//        Intent intent = new Intent(FindNearbyActivity.this, EnterMockDataActivity.class);
+//        intent.putExtra("mock_type", "wave");
+//        startActivity(intent);
+//    }
 
     private class DropdownAdapter extends ArrayAdapter {
 

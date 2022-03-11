@@ -55,32 +55,29 @@
         android:layout_marginStart="14dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
         android:onClick="onMockNearbyClicked"
         android:text="Mock Nearby"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintEnd_toStartOf="@+id/start_button"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="OnClick" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="135dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="21dp"
-        android:onClick="onMockWaveClicked"
-        android:text="Mock Wave"
-        app:layout_constraintBottom_toTopOf="@+id/sort_options"
-        app:layout_constraintEnd_toStartOf="@+id/start_button"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button"
-        tools:ignore="OnClick" />
+<!--    <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="135dp"-->
+<!--        android:layout_height="51dp"-->
+<!--        android:layout_marginStart="14dp"-->
+<!--        android:layout_marginTop="4dp"-->
+<!--        android:layout_marginEnd="8dp"-->
+<!--        android:layout_marginBottom="21dp"-->
+<!--        android:onClick="onMockWaveClicked"-->
+<!--        android:text="Mock Wave"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/sort_options"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/start_button"-->
+<!--        app:layout_constraintHorizontal_bias="0.0"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/button"-->
+<!--        tools:ignore="OnClick" />-->
 
     <Button
         android:id="@+id/saveSessionButton"
