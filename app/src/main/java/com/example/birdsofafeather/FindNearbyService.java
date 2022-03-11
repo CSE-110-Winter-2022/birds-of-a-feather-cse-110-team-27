@@ -83,6 +83,7 @@ public class FindNearbyService extends Service {
 
     @Override
     public void onDestroy() {
+//        mockUserIds.clear();
         ((FakedMessageListener)(FindNearbyActivity.findMessageListener)).stopMessages();
         Nearby.getMessagesClient(getApplicationContext()).unsubscribe(FindNearbyActivity.findMessageListener);
         Toast.makeText(FindNearbyService.this, "Stop Finding Nearby Users", Toast.LENGTH_SHORT).show();
@@ -100,4 +101,6 @@ public class FindNearbyService extends Service {
     public List<Long> getMockUserIds() {
         return this.mockUserIds;
     }
+
+//    public void clearMockUserIds() { this.mockUserIds.clear();}
 }

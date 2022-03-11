@@ -82,6 +82,17 @@ public class NearbyUserParser implements Parser {
             db.coursesDao().insert(new_course);
         }
 //        FindNearbyActivity.userIdsFromMockCSV.add(userId);
-        ((FindNearbyService)(service)).addUserId(userId);
+        boolean userAlreadyExistsInCurrMockUsers = false;
+        for (Long l : ((FindNearbyService)(service)).getMockUserIds()){
+            UserWithCourses u = db.userWithCoursesDao().getUser(l);
+            if(u != null) {
+               if(u.user.uuid.equals(uuid)) {
+                  userAlreadyExistsInCurrMockUsers = true;
+               }
+            }
+        }
+        if(!userAlreadyExistsInCurrMockUsers) {
+            ((FindNearbyService)(service)).addUserId(userId);
+        }
     }
 }
