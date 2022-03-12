@@ -7,7 +7,7 @@ import com.example.birdsofafeather.utils.CourseComparison;
 
 import org.junit.Test;
 
-public class CourseComparisonTest {
+public class   CourseComparisonTest {
 
     @Test
     public void compareSameCourses() {
