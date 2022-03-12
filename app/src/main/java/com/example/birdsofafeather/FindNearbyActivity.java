@@ -71,6 +71,7 @@ public class FindNearbyActivity extends AppCompatActivity {
     protected PersonsViewAdapter personsViewAdapter;
 
     private List<UserWithCourses> sortedDataList;
+    List<UserWithCourses> dataList;
 
     private FindNearbyService currentFindNearbyService;
     private boolean isBound;
@@ -111,6 +112,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         personsRecyclerView.setLayoutManager(personsLayoutManager);
 
         sortedDataList = new ArrayList<>();
+        dataList = new ArrayList<>();
         List<User> users = currSession.getUsers();
         List<UserWithCourses> uWCourses = new ArrayList<>();
         for (User user : users) {
@@ -120,6 +122,8 @@ public class FindNearbyActivity extends AppCompatActivity {
             uWCourses.add(newUWCourse);
         }
         sortedDataList.addAll(uWCourses);
+        dataList.addAll(uWCourses);
+        recordedDataList.addAll(uWCourses);
 
 
         personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id, currentFindNearbyService);
@@ -200,24 +204,16 @@ public class FindNearbyActivity extends AppCompatActivity {
         for(Long userId : mockUserIds) {
             students.add(db.userWithCoursesDao().getUser(userId));
         }
-        if(students.isEmpty()) {
-            return;
-        }
+
 
         Spinner sort_dropdown = this.findViewById(R.id.sort_options);
         String sortOption = sort_dropdown.getSelectedItem().toString();
 
+
+        // the first time it doesnt populate the array
         for(int i = 0; i < students.size(); i++){
             students.get(i).user.setSessionId(curr_session_id);
-            boolean duplicateExistsInUIListAlready = false;
-           for(UserWithCourses u : sortedDataList)  {
-               if(u.user.uuid.equals(students.get(i).user.uuid)) {
-                   duplicateExistsInUIListAlready = true;
-               }
-           }
-           if(!duplicateExistsInUIListAlready) {
-               dataList.add(students.get(i));
-           }
+            dataList.add(students.get(i));
         }
 
         for(int i = 0; i < dataList.size(); i++) {
@@ -255,74 +251,56 @@ public class FindNearbyActivity extends AppCompatActivity {
             }
         }
         if(sortOption.equals("Recency")) {
-            sortRecency();
-        }
+            for (int i = 0; i < recordedDataList.size() - 1; i++) {
+                for (int j = 0; j < recordedDataList.size() - i - 1; j++) {
+                    if (this.recordedDataList.get(j).getLastSameCourseTime() < this.recordedDataList.get(j + 1).getLastSameCourseTime()) {
+                        UserWithCourses tmp = this.recordedDataList.get(j);
+                        this.recordedDataList.set(j, this.recordedDataList.get(j + 1));
+                        this.recordedDataList.set(j + 1, tmp);
+                    }
+                }
+            }
 
-        else if(sortOption.equals("# of same courses")) {
-            int iterations = this.recordedDataList.size();
-            for(int i = 0; i < iterations; i++){
-                int max = 0;
-                int maxIndex = 0;
-                for(int j =0; j<this.recordedDataList.size(); j++) {
-                    if(this.recordedDataList.get(j).getNumSamCourses() >max) {
-                        max = this.recordedDataList.get(j).getNumSamCourses();
-                        maxIndex = j;
+            sortedDataList.clear();
+            sortedDataList.addAll(this.recordedDataList);
+
+        } else if(sortOption.equals("# of same courses")) {
+            for (int i = 0; i < recordedDataList.size() - 1; i++) {
+                for (int j = 0; j < recordedDataList.size() - i - 1; j++) {
+                    if (this.recordedDataList.get(j).getNumSamCourses() < this.recordedDataList.get(j + 1).getNumSamCourses()) {
+                        UserWithCourses tmp = this.recordedDataList.get(j);
+                        this.recordedDataList.set(j, this.recordedDataList.get(j + 1));
+                        this.recordedDataList.set(j + 1, tmp);
                     }
-                }
-                boolean duplicateExistsInUIListAlready = false;
-                for(UserWithCourses u : sortedDataList)  {
-                    if(u.user.uuid.equals(this.recordedDataList.get(maxIndex).user.uuid)) {
-                        duplicateExistsInUIListAlready = true;
-                    }
-                }
-                if(!duplicateExistsInUIListAlready) {
-                    sortedDataList.add(this.recordedDataList.get(maxIndex));
-                    personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
                 }
 
-                this.recordedDataList.remove(maxIndex);
             }
-            for(int i = 0; i < sortedDataList.size(); i++) {
-                this.recordedDataList.add(sortedDataList.get(i));
-            }
-        }
-        else{
-            int iterations = this.recordedDataList.size();
-            for(int i = 0; i < iterations; i++){
-                int min = 999;
-                int minIndex = 0;
-                for(int j =0; j<this.recordedDataList.size(); j++) {
-                    if(this.recordedDataList.get(j).getSmallestSameCourseSize() < min) {
-                        min = this.recordedDataList.get(j).getSmallestSameCourseSize();
-                        minIndex = j;
+
+            sortedDataList.clear();
+            sortedDataList.addAll(this.recordedDataList);
+
+        } else {
+            for (int i = 0; i < recordedDataList.size() - 1; i++) {
+                for (int j = 0; j < recordedDataList.size() - i - 1; j++) {
+                    if (this.recordedDataList.get(j).getSmallestSameCourseSize() > this.recordedDataList.get(j + 1).getSmallestSameCourseSize()) {
+                        UserWithCourses tmp = this.recordedDataList.get(j);
+                        this.recordedDataList.set(j, this.recordedDataList.get(j + 1));
+                        this.recordedDataList.set(j + 1, tmp);
                     }
                 }
-                boolean duplicateExistsInUIListAlready = false;
-                for(UserWithCourses u : sortedDataList)  {
-                    if(u.user.uuid.equals(this.recordedDataList.get(minIndex).user.uuid)) {
-                        duplicateExistsInUIListAlready = true;
-                    }
-                }
-                if(!duplicateExistsInUIListAlready) {
-                    sortedDataList.add(this.recordedDataList.get(minIndex));
-                    personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
-                }
-                this.recordedDataList.remove(minIndex);
             }
-            for(int i = 0; i < sortedDataList.size(); i++) {
-                this.recordedDataList.add(sortedDataList.get(i));
-            }
+
+            sortedDataList.clear();
+            sortedDataList.addAll(this.recordedDataList);
         }
 
+        System.out.println();
         for(int i = 0; i < recordedDataList.size(); i++){
             UserWithCourses user = recordedDataList.get(i);
-            if(user.user.wavedToMe){
+            if(!user.user.wavedToMe) {
                 recordedDataList.remove(i);
                 sortedDataList.remove(i);
-
-                recordedDataList.add(0,user);
-                sortedDataList.add(0, user);
-                i--;
+               i--;
             }
         }
 
@@ -332,7 +310,8 @@ public class FindNearbyActivity extends AppCompatActivity {
 
         }
 
-        personsViewAdapter = new PersonsViewAdapter(sortedDataList, 0, null);
+        personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id, currentFindNearbyService);
+
         personsRecyclerView.setAdapter(personsViewAdapter);
     }
 
@@ -402,7 +381,6 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void favoritesListClicked(View view){
 
-        List<Long> favoriteUserIds = new ArrayList<Long>();
         long[] arr = new long[sortedDataList.size()];
         int i = 0;
         for(UserWithCourses user: sortedDataList){
