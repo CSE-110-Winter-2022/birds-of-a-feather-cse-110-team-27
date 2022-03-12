@@ -35,6 +35,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
     private final List<? extends UserWithCourses> persons;
     public final long testUserID;
     private FindNearbyService currFindNearbyService;
+    private int favoriteCount = 0;
 
     public PersonsViewAdapter(List<? extends UserWithCourses> persons, long testUserID, FindNearbyService findNearbyService) {
         super();
@@ -131,17 +132,17 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
             if (this.person == null) this.person = person;
             else this.person.user = person.user;
 
-            if(person.getNumSamCourses() != 0) {
-                this.personNameView.setText(person.getName());
-                if (person.user.wavedToMe) {
-                    this.wave.setText("Wave back");
-                    this.wave.setBackgroundColor(Color.RED);
-                    this.personNameView.setText(person.getName() + "\uD83D\uDC4B");
+                if (person != null && person.getNumSamCourses() != 0) {
+                    this.personNameView.setText(person.getName());
+                    if (person.user.wavedToMe) {
+                        this.wave.setText("Wave back");
+                        this.wave.setBackgroundColor(Color.RED);
+                        this.personNameView.setText(person.getName() + "\uD83D\uDC4B");
+                    }
+                    this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
+                    if (person.isFavorite()) this.favorite.setText("⭐");
+                    else this.favorite.setText("✩");
                 }
-                this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
-                if (person.isFavorite()) this.favorite.setText("⭐");
-                else this.favorite.setText("✩");
-            }
         }
 
         public void setUserID(long userID) {

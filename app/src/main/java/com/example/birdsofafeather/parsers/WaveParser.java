@@ -2,7 +2,10 @@ package com.example.birdsofafeather.parsers;
 
 import android.app.Service;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.birdsofafeather.FindNearbyService;
 import com.example.birdsofafeather.db.AppDatabase;
@@ -10,6 +13,7 @@ import com.example.birdsofafeather.db.course.Course;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
 import com.example.birdsofafeather.utils.Constants;
+import com.example.birdsofafeather.utils.Utilities;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +49,17 @@ public class  WaveParser implements Parser {
                 userWithCourses.user.setWavedToMe(true);
                 db.userWithCoursesDao().update(userWithCourses.user);
                 Log.d(TAG, String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
+                Log.d(TAG, String.format("%s waved to me", user.getName()));
+
+                // NONE of these show up
+                new Handler(Looper.getMainLooper()).post(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(context, user.getName() + " waved to me !!!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
             }
         }
 //        if(tmpCheckUser != null) {

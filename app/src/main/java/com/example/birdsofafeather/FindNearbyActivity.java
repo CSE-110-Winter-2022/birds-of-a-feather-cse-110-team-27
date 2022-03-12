@@ -123,6 +123,7 @@ public class FindNearbyActivity extends AppCompatActivity {
         }
         sortedDataList.addAll(uWCourses);
         dataList.addAll(uWCourses);
+        recordedDataList.addAll(uWCourses);
 
 
         personsViewAdapter = new PersonsViewAdapter(sortedDataList, test_user_id, currentFindNearbyService);
@@ -293,11 +294,13 @@ public class FindNearbyActivity extends AppCompatActivity {
             sortedDataList.addAll(this.recordedDataList);
         }
 
+        System.out.println();
         for(int i = 0; i < recordedDataList.size(); i++){
             UserWithCourses user = recordedDataList.get(i);
-            if(user.user.wavedToMe) {
+            if(!user.user.wavedToMe) {
                 recordedDataList.remove(i);
                 sortedDataList.remove(i);
+               i--;
             }
         }
 
@@ -378,7 +381,6 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void favoritesListClicked(View view){
 
-        List<Long> favoriteUserIds = new ArrayList<Long>();
         long[] arr = new long[sortedDataList.size()];
         int i = 0;
         for(UserWithCourses user: sortedDataList){
