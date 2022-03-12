@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.birdsofafeather" >
+    package="com.example.birdsofafeather">
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -17,17 +17,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BirdsOfAFeather">
         <activity
+            android:name=".FavoritesListActivity"
+            android:exported="false" />
+        <activity
             android:name=".EnterMockDataActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".Resume_session"
             android:exported="false" />
+
         <service
             android:name=".WaveService"
             android:enabled="true"
-            android:exported="true" >
-        </service>
+            android:exported="true"></service>
 
         <activity
             android:name=".UploadProfilePicture"
@@ -70,7 +72,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -79,11 +81,11 @@
         </activity>
         <activity
             android:name=".Pop_save"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+            android:theme="@style/AppTheme.CustomTheme" />
         <activity
             android:name=".Pop_resume"
             android:noHistory="true"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+            android:theme="@style/AppTheme.CustomTheme" />
     </application>
 
 </manifest>
