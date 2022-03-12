@@ -82,6 +82,7 @@ public class NearbyUserParser implements Parser {
             Course new_course = new Course(userId, Integer.parseInt(year), parsed_quarter, department, Integer.parseInt(course_number), parsed_size);
             db.coursesDao().insert(new_course);
         }
+        if (service != null) {
 //        FindNearbyActivity.userIdsFromMockCSV.add(userId);
         boolean userAlreadyExistsInCurrMockUsers = false;
         for (Long l : ((FindNearbyService)(service)).getMockUserIds()){
@@ -94,6 +95,7 @@ public class NearbyUserParser implements Parser {
         }
         if(!userAlreadyExistsInCurrMockUsers) {
             ((FindNearbyService)(service)).addUserId(userId);
+            }
         }
     }
 }
