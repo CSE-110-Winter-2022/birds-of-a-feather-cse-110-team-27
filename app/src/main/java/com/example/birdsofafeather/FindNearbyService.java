@@ -19,6 +19,11 @@ import com.example.birdsofafeather.parsers.WaveParser;
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.messages.Message;
 import com.google.android.gms.nearby.messages.MessageListener;
+import com.google.android.gms.nearby.messages.PublishCallback;
+import com.google.android.gms.nearby.messages.PublishOptions;
+import com.google.android.gms.nearby.messages.Strategy;
+import com.google.android.gms.nearby.messages.SubscribeCallback;
+import com.google.android.gms.nearby.messages.SubscribeOptions;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,6 +40,12 @@ public class FindNearbyService extends Service {
     private List<Long> mockUserIds = new ArrayList<>();
     private Message currMessage;
     private Generator nearbyMessageGenerator;
+    private static final Strategy PUB_SUB_STRATEGY = new Strategy.Builder()
+            .setTtlSeconds(20).build();
+    private static final String MISSING_API_KEY = "It's possible that you haven't added your" +
+            " API-KEY. See  " +
+            "https://developers.google.com/nearby/messages/android/get-started#step_4_configure_your_project";
+
 
 
     public class LocalBinder extends Binder {
@@ -78,12 +89,31 @@ public class FindNearbyService extends Service {
                         }
                     };
                     FindNearbyActivity.findMessageListener = new FakedMessageListener(realListener, 3, FindNearbyActivity.nearbyUsersMessage);
+//                    FindNearbyActivity.findMessageListener = realListener;
                     Log.d(TAG, "Subscribed to messages");
+//                    SubscribeOptions options = new SubscribeOptions.Builder()
+//                            .setStrategy(PUB_SUB_STRATEGY)
+//                            .setCallback(new SubscribeCallback() {
+//                                @Override
+//                                public void onExpired() {
+//                                    super.onExpired();
+//                                    Log.i(TAG, "No longer subscribing");
+//                                }
+//                            }).build();
                     Nearby.getMessagesClient(getApplicationContext()).subscribe(FindNearbyActivity.findMessageListener);
                     setGenerator(new UserInfoCSVGenerator());
                     currMessage = new Message(nearbyMessageGenerator.generateCSV(this, myUserId, -1).getBytes(StandardCharsets.UTF_8));
+//                    PublishOptions pubOptions = new PublishOptions.Builder()
+//                            .setStrategy(PUB_SUB_STRATEGY)
+//                            .setCallback(new PublishCallback() {
+//                                @Override
+//                                public void onExpired() {
+//                                    super.onExpired();
+//                                    Log.i(TAG, "No longer publishing");
+//                                }
+//                            }).build();
                     Nearby.getMessagesClient(this).publish(currMessage);
-                    Log.d(TAG, "Published nearby message with content: ");
+                    Log.d(TAG, "Published nearby message with content: " + new String(currMessage.getContent()));
                     wait(300000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
