@@ -28,42 +28,6 @@ import java.util.List;
  */
 @RunWith(AndroidJUnit4.class)
 public class DatabaseTest {
-    @Test
-    public void checkUserWasAddedToDB() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
-
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User("User Name", "userEmail@ucsd.edu", "");
-        long userId = db.userWithCoursesDao().insert(newUser);
-
-        UserWithCourses user = db.userWithCoursesDao().getUser(userId);
-        assertEquals("User Name", user.getName());
-        assertEquals("userEmail@ucsd.edu", user.getEmail());
-        assertEquals(true, user.getCourses().isEmpty());
-    }
-
-    @Test
-    public void checkCourseWasAddedToDB() {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
-
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User newUser = new User( "User Name", "userEmail@ucsd.edu", "");
-        long userId = db.userWithCoursesDao().insert(newUser);
-        Course newCourse = new Course(userId, 2022, "WINTER", "CSE", 110, "Tiny");
-        db.coursesDao().insert(newCourse);
-
-        UserWithCourses user = db.userWithCoursesDao().getUser(userId);
-        Course course = user.getCourses().get(0);
-        assertEquals(false, user.getCourses().isEmpty());
-        assertEquals("CSE", course.getDepartment());
-        assertEquals(110, course.getCourseNumber());
-        assertEquals("WINTER", course.getQuarter());
-        assertEquals(2022, course.getYear());
-    }
 
     @Test
     public void checkURLInsertedIntoDB(){
@@ -81,31 +45,7 @@ public class DatabaseTest {
         assertEquals("https://i.insider.com/602ee9ced3ad27001837f2ac?width=1000&format=jpeg&auto=webp", urlFromDB);
     }
 
-    @Test
-    public void checkUserWithCourse(){
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
 
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User Rick = new User("Rick", "RickRick@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
-        long rickid = db.userWithCoursesDao().insert(Rick);
-        User Morty = new User("Morty", "Mooorty@gmail.com", "https://images.app.goo.gl/g8byPRgsPjgD2LGx5");
-        long mortyid = db.userWithCoursesDao().insert(Morty);
-        Course RickCourse1 = new Course(rickid, 1985, "FALL", "MATH",130, "TINY");
-        db.coursesDao().insert(RickCourse1);
-        Course RickCourse2 = new Course(rickid, 1985, "FALL", "CHEM",7, "TINY");
-        db.coursesDao().insert(RickCourse2);
-        Course MortyCourse1 = new Course(mortyid, 2018, "WINTER", "MMW",3, "TINY");
-        db.coursesDao().insert(MortyCourse1);
-        List<Course> courses= db.coursesDao().getAll();
-        System.out.println(courses.toString());
-
-        UserWithCourses RickData = db.userWithCoursesDao().getUser(rickid);
-        UserWithCourses MortyData = db.userWithCoursesDao().getUser(mortyid);
-
-        assertEquals(1,MortyData.getCourses().size());
-        assertEquals(2,RickData.getCourses().size());
-    }
 
     @Test
     public void testDelete(){
@@ -121,48 +61,5 @@ public class DatabaseTest {
         db.coursesDao().delete(classCancelled);
         UserWithCourses studentData = db.userWithCoursesDao().getUser(studentid);
         assertEquals(0,studentData.getCourses().size());
-    }
-
-    @Test
-    public void checkUserWSession(){
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
-
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User Gary = new User("Gary", "GG@ucsd.edu", "");
-        Gary.setSessionId(9527);
-        assertEquals(9527, Gary.getSessionId());
-    }
-    @Test
-
-    public void checkSessionWUsers() {
-        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
-
-        AppDatabase db = AppDatabase.singleton(appContext);
-        User A = new User("A", "a@ucsd.edu", "");
-        long Aid = db.userWithCoursesDao().insert(A);
-        User B = new User("B", "b@ucsd.edu", "");
-        long Bid = db.userWithCoursesDao().insert(B);
-        User C = new User("C", "b@ucsd.edu", "");
-        long Cid = db.userWithCoursesDao().insert(C);
-
-        UserWithCourses Adata = db.userWithCoursesDao().getUser(Aid);
-        UserWithCourses Bdata = db.userWithCoursesDao().getUser(Bid);
-        UserWithCourses Cdata = db.userWithCoursesDao().getUser(Cid);
-
-        Session session = new Session("session");
-        long sessionid = db.sessionWithUsersDao().insertSession(session);
-        List<UserWithCourses> listOfUsers = new ArrayList<UserWithCourses>();
-        listOfUsers.add(Adata);
-        listOfUsers.add(Bdata);
-        listOfUsers.add(Cdata);
-
-        db.sessionWithUsersDao().addUsersToSession(sessionid, listOfUsers);
-        List<User> users = db.sessionWithUsersDao().getUsersForSessionId(sessionid);
-        System.out.println(users.toString());
-        assertEquals("A", users.get(0).getName());
-        assertEquals("B", users.get(1).getName());
-        assertEquals("C", users.get(2).getName());
     }
 }
