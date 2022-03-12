@@ -79,7 +79,7 @@ public class SessionsTest {
 
         SessionWithUsers session2 = db.sessionWithUsersDao().getForId(SID2);
         assertEquals("S2", session2.getSessionName());
-        assertEquals(true, session.getSession().hasName());
+        assertEquals(true, session2.getSession().hasName());
     }
 
     @Test
