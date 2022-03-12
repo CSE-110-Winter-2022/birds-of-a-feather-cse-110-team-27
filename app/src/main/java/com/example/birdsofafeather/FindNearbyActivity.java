@@ -71,6 +71,15 @@ public class FindNearbyActivity extends AppCompatActivity {
     private FindNearbyService currentFindNearbyService;
     private boolean isBound;
 
+    public boolean checkDulicate(List<UserWithCourses> sorted, List<UserWithCourses> recorded, int Index){
+        for(UserWithCourses u : sorted)  {
+            if(u.user.uuid.equals(recorded.get(Index).user.uuid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -180,13 +189,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             students.get(i).user.setSessionId(curr_session_id);
 //            students.get(i).student.user.setId(db.userWithCoursesDao().maxId() + 1); //del?
             // checking for duplicate users that already existed
-            boolean duplicateExistsInUIListAlready = false;
-           for(UserWithCourses u : sortedDataList)  {
-               if(u.user.uuid.equals(students.get(i).user.uuid)) {
-                   duplicateExistsInUIListAlready = true;
-               }
-           }
-           if(!duplicateExistsInUIListAlready) {
+           if(!checkDulicate(sortedDataList, students, i)) {
                dataList.add(students.get(i));
            }
 //            for(Course course : students.get(i).courses) {
@@ -248,13 +251,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                         maxIndex = j;
                     }
                 }
-                boolean duplicateExistsInUIListAlready = false;
-                for(UserWithCourses u : sortedDataList)  {
-                    if(u.user.uuid.equals(this.recordedDataList.get(maxIndex).user.uuid)) {
-                        duplicateExistsInUIListAlready = true;
-                    }
-                }
-                if(!duplicateExistsInUIListAlready) {
+                if(!checkDulicate(sortedDataList, recordedDataList, maxIndex)) {
                     sortedDataList.add(this.recordedDataList.get(maxIndex));
                     personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
                 }
@@ -282,13 +279,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                         maxIndex = j;
                     }
                 }
-                boolean duplicateExistsInUIListAlready = false;
-                for(UserWithCourses u : sortedDataList)  {
-                    if(u.user.uuid.equals(this.recordedDataList.get(maxIndex).user.uuid)) {
-                        duplicateExistsInUIListAlready = true;
-                    }
-                }
-                if(!duplicateExistsInUIListAlready) {
+                if(!checkDulicate(sortedDataList, recordedDataList, maxIndex)) {
                     sortedDataList.add(this.recordedDataList.get(maxIndex));
                     personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
                 }
@@ -315,13 +306,7 @@ public class FindNearbyActivity extends AppCompatActivity {
                         minIndex = j;
                     }
                 }
-                boolean duplicateExistsInUIListAlready = false;
-                for(UserWithCourses u : sortedDataList)  {
-                    if(u.user.uuid.equals(this.recordedDataList.get(minIndex).user.uuid)) {
-                        duplicateExistsInUIListAlready = true;
-                    }
-                }
-                if(!duplicateExistsInUIListAlready) {
+                if(!checkDulicate(sortedDataList, recordedDataList, minIndex)) {
                     sortedDataList.add(this.recordedDataList.get(minIndex));
                     personsViewAdapter.notifyItemInserted(sortedDataList.size() - 1);
                 }

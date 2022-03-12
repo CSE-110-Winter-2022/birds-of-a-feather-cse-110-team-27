@@ -10,6 +10,7 @@ import com.example.birdsofafeather.db.AppDatabase;
 import com.example.birdsofafeather.db.session.Session;
 import com.example.birdsofafeather.db.user.User;
 import com.example.birdsofafeather.db.user.UserWithCourses;
+import com.example.birdsofafeather.db.session.SessionWithUsers;
 
 import org.junit.Test;
 
@@ -58,5 +59,49 @@ public class SessionsTest {
         assertEquals("A", users.get(0).getName());
         assertEquals("B", users.get(1).getName());
         assertEquals("C", users.get(2).getName());
+    }
+    @Test
+    public void checkSessionWasAddedToDB() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
+
+        AppDatabase db = AppDatabase.singleton(appContext);
+        Session newSession = new Session();
+        long SID = db.sessionWithUsersDao().insertSession(newSession);
+
+        SessionWithUsers session = db.sessionWithUsersDao().getForId(SID);
+        assertEquals(null, session.getSessionName());
+        assertEquals(false, session.getSession().hasName());
+
+        Session newSession2 = new Session("S2");
+        long SID2 = db.sessionWithUsersDao().insertSession(newSession2);
+
+        SessionWithUsers session2 = db.sessionWithUsersDao().getForId(SID2);
+        assertEquals("S2", session2.getSessionName());
+        assertEquals(true, session.getSession().hasName());
+    }
+
+    @Test
+    public void getForIDTest() {
+        // Context of the app under test.
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        assertEquals("com.example.birdsofafeather", appContext.getPackageName());
+
+        AppDatabase db = AppDatabase.singleton(appContext);
+        Session newSession = new Session("S1");
+        long SID = db.sessionWithUsersDao().insertSession(newSession);
+
+        SessionWithUsers session = db.sessionWithUsersDao().getForId(SID);
+        assertEquals("S1", session.getSessionName());
+        assertEquals(true, session.getSession().hasName());
+
+        Session newSession2 = new Session("S2");
+        long SID2 = db.sessionWithUsersDao().insertSession(newSession2);
+
+        SessionWithUsers session2 = db.sessionWithUsersDao().getForId(SID2);
+        assertEquals("S2", session2.getSessionName());
+        assertEquals(true, session.getSession().hasName());
+
     }
 }

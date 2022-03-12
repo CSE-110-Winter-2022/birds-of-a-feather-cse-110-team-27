@@ -122,8 +122,4 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("userId", user.getId());
         context.startActivity(intent);
     }
-
-
-
-
 }
