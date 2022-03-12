@@ -51,7 +51,6 @@ public class  WaveParser implements Parser {
                 Log.d(TAG, String.format("User %s with UUID of %s already exists in DB", user.getName(), user.uuid));
                 Log.d(TAG, String.format("%s waved to me", user.getName()));
 
-                // NONE of these show up
                 new Handler(Looper.getMainLooper()).post(
                         new Runnable() {
                             @Override
