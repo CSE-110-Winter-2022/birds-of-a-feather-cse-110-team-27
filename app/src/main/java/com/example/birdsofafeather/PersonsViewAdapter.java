@@ -136,6 +136,7 @@ public class PersonsViewAdapter extends RecyclerView.Adapter<PersonsViewAdapter.
                 if (person.user.wavedToMe) {
                     this.wave.setText("Wave back");
                     this.wave.setBackgroundColor(Color.RED);
+                    this.personNameView.setText(person.getName() + "\uD83D\uDC4B");
                 }
                 this.numSameView.setText(String.valueOf(person.getNumSamCourses()));
                 if (person.isFavorite()) this.favorite.setText("⭐");
