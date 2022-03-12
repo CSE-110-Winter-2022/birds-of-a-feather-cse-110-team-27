@@ -278,7 +278,7 @@ public class FindNearbyActivity extends AppCompatActivity {
             sortedDataList.clear();
             sortedDataList.addAll(this.recordedDataList);
 
-        } else{
+        } else {
             for (int i = 0; i < recordedDataList.size() - 1; i++) {
                 for (int j = 0; j < recordedDataList.size() - i - 1; j++) {
                     if (this.recordedDataList.get(j).getSmallestSameCourseSize() > this.recordedDataList.get(j + 1).getSmallestSameCourseSize()) {
@@ -291,13 +291,14 @@ public class FindNearbyActivity extends AppCompatActivity {
 
             sortedDataList.clear();
             sortedDataList.addAll(this.recordedDataList);
+        }
 
         for(int i = 0; i < recordedDataList.size(); i++){
             UserWithCourses user = recordedDataList.get(i);
-            if(user.user.wavedToMe){
+            if(user.user.wavedToMe) {
                 recordedDataList.remove(i);
                 sortedDataList.remove(i);
-
+            }
         }
 
         for(UserWithCourses user : sortedDataList) {
