@@ -395,16 +395,27 @@ public class FindNearbyActivity extends AppCompatActivity {
 
     public void favoritesListClicked(View view){
 
-        long[] arr = new long[sortedDataList.size()];
-        int i = 0;
+//        long[] arr = new long[sortedDataList.size()];
+//        int i = 0;
+//        for(UserWithCourses user: sortedDataList){
+//            if(user.user.isFavorite()){
+//                long num = (user.getId());
+//                arr[i] = num;
+//            }
+//            i++;
+//        }
+//
+//        long[] arr =
+        List<Long> ls = new ArrayList<>();
         for(UserWithCourses user: sortedDataList){
-            if(user.user.isFavorite()){
-                long num = (user.getId());
-                arr[i] = num;
+            if(user.user.isFavorite()) {
+                ls.add(user.getId());
             }
-            i++;
         }
-
+        long[] arr = new long[ls.size()];
+        for(int i = 0; i < arr.length; i++) {
+            arr[i] = ls.get(i);
+        }
         Intent intent = new Intent(this, FavoritesListActivity.class);
         intent.putExtra("favoritesList", arr);
         startActivity(intent);
